@@ -14,3 +14,14 @@
 // To declare rules for a specific mode, create a child rule
 // for the .md, .ios, or .wp mode classes. The mode class is
 // automatically applied to the <body> element in the app.
+
+.menu-item {
+    min-height: 2em;
+}
+.menu-top {
+    margin-left: 0.5em;    
+}
+.menuActive {
+    color: map-get($colors, danger);
+    font-weight: bold;
+}

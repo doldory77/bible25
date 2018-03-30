@@ -1,15 +1,34 @@
 <ion-menu [content]="content">
   <ion-header>
-    <ion-toolbar>
+    <ion-toolbar color="primary">
       <ion-title>Menu</ion-title>
     </ion-toolbar>
   </ion-header>
 
   <ion-content>
     <ion-list>
-      <button menuClose ion-item *ngFor="let p of pages" (click)="openPage(p)">
+      <!-- <button menuClose ion-item *ngFor="let p of pages" (click)="openPage(p)">
         {{p.title}}
-      </button>
+      </button> -->
+
+      <button menuClose ion-item><ion-icon name="home"></ion-icon><span class="menu-top">홈</span></button>
+      <ion-item>
+        <div (click)="todayMenuIsOpen = !todayMenuIsOpen">
+            <ion-icon name="search"></ion-icon>
+            <span class="menu-top">오늘</span>
+        </div>
+        <ion-list *ngIf="todayMenuIsOpen">
+          <button menuClose ion-item (click)="openPage('today_menu1')"><div [ngClass]="{menuActive:menuData.today_menu1.selected}">말씀따라</div></button>  
+          <button menuClose ion-item (click)="openPage('today_menu2')"><div [ngClass]="{menuActive:menuData.today_menu2.selected}">컬럼</div></button>  
+          <button menuClose ion-item>십자가</button>  
+          <button menuClose ion-item>메일아침</button>  
+          <button menuClose ion-item>오늘하루</button>  
+          <button menuClose ion-item>축복기도</button>  
+          <button menuClose ion-item>말씀</button>  
+          <button menuClose ion-item>손편지</button>  
+        </ion-list>
+      </ion-item>
+      <button menuClose ion-item>기독뉴스</button>
     </ion-list>
   </ion-content>
 
