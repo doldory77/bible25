@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, Platform, MenuController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, Platform, MenuController, NavParams, ViewController } from 'ionic-angular';
 
 import { Observable, pipe, Subscription } from 'rxjs/Rx'
 import { map, delay } from 'rxjs/operators'
@@ -14,7 +14,8 @@ export class HomePage {
   constructor(public navCtrl: NavController,
     private platform: Platform,
     private menuCtrl: MenuController,
-    private navParams: NavParams) {
+    private navParams: NavParams,
+    private viewCtrl: ViewController) {
 
   }
 
@@ -35,11 +36,11 @@ export class HomePage {
 
   ionViewDidLoad() {
     this.iframe = document.getElementById('iframe')['contentWindow'];
-    
-    this.unRegisterBackButton = this.customBackButton();
-    this.platform.registerBackButtonAction(() => {
-      this.iframe.history.history.back();
-    });
+    console.log('==> page index : ', this.viewCtrl.index);
+    // this.unRegisterBackButton = this.customBackButton();
+    // this.platform.registerBackButtonAction(() => {
+    //   this.iframe.history.history.back();
+    // });
   }
 
   /*
@@ -70,6 +71,10 @@ export class HomePage {
 
   onBack() {
     this.iframe.history.back();
+  }
+
+  public goPage(url: string) {
+    this.iframe.location.href = url;
   }
 
 }

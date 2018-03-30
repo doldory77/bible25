@@ -2,9 +2,11 @@ import { Component, ViewChild, OnInit } from '@angular/core';
 import { Nav, Platform } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
+import { ViewController } from 'ionic-angular';
 
 import { MenuType } from '../model/model-type';
 import { MenuProvider } from '../providers/menu/menu';
+import { HomePage } from '../pages/home/home';
 
 @Component({
   templateUrl: 'app.html'
@@ -14,8 +16,6 @@ export class MyApp implements OnInit {
 
   rootPage: any = 'HomePage';
 
-  // pages: Array<{title: string, component: any}>;
-
   /* accordian menu */
   todayMenuIsOpen = false;
 
@@ -24,12 +24,6 @@ export class MyApp implements OnInit {
     public splashScreen: SplashScreen,
     public menuProvider: MenuProvider) {
     this.initializeApp();
-
-    // used for an example of ngFor and navigation
-    // this.pages = [
-    //   { title: 'Home', component: HomePage },
-    //   { title: 'List', component: ListPage }
-    // ];
 
   }
 
@@ -51,14 +45,24 @@ export class MyApp implements OnInit {
 
   openPage(menu: string) {
     let targetMenu: MenuType = this.menuData.get(menu);
-    // console.log(targetMenu);
     this.menuHighlight(menu);
-    if (menu === 'home') {
-      console.log("=====================>");
-      this.nav.setRoot(targetMenu.page);
-    } else {
-      this.nav.push('SubPage', targetMenu);
-    }
+    this.goUrl(targetMenu.url);
+
+    // console.log(targetMenu);
+    
+    // if (menu === 'home') {
+    //   console.log("=====================>");
+    //   this.nav.setRoot(targetMenu.page);
+    // } else {
+    //   this.nav.push('SubPage', targetMenu);
+    //   this.nav.getViews()
+    //   .forEach((view: ViewController) => {
+    //     if (view.index != 0) {
+    //       console.log(view.index)
+    //       view.dismiss();
+    //     }
+    //   });
+    // }
   }
 
   /* 
@@ -82,5 +86,11 @@ export class MyApp implements OnInit {
     // Reset the content nav to have just this page
     // we wouldn't want the back button to show in this scenario
     this.nav.setRoot(page.component);
+  }
+
+  goUrl(url: string) {
+    if (url) {
+      document.getElementById('iframe')['contentWindow'].location.href = url;
+    }
   }
 }
