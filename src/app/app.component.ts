@@ -1,35 +1,35 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, ViewChild, OnInit } from '@angular/core';
 import { Nav, Platform } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
-import { HomePage } from '../pages/home/home';
-import { ListPage } from '../pages/list/list';
-import { menu } from '../menu/menu';
+import { MenuType } from '../model/model-type';
+import { MenuProvider } from '../providers/menu/menu';
 
 @Component({
   templateUrl: 'app.html'
 })
-export class MyApp {
+export class MyApp implements OnInit {
   @ViewChild(Nav) nav: Nav;
 
-  rootPage: any = HomePage;
+  rootPage: any = 'HomePage';
 
-  pages: Array<{title: string, component: any}>;
+  // pages: Array<{title: string, component: any}>;
 
-  /* menu */
+  /* accordian menu */
   todayMenuIsOpen = false;
 
   constructor(public platform: Platform,
     public statusBar: StatusBar,
-    public splashScreen: SplashScreen) {
+    public splashScreen: SplashScreen,
+    public menuProvider: MenuProvider) {
     this.initializeApp();
 
     // used for an example of ngFor and navigation
-    this.pages = [
-      { title: 'Home', component: HomePage },
-      { title: 'List', component: ListPage }
-    ];
+    // this.pages = [
+    //   { title: 'Home', component: HomePage },
+    //   { title: 'List', component: ListPage }
+    // ];
 
   }
 
@@ -42,12 +42,40 @@ export class MyApp {
     });
   }
 
-  menuData = menu;
+  ngOnInit() {
+    this.menuData = this.menuProvider.MenuData;
+    // console.log(this.menuData);
+  }
+
+  menuData: Map<string, MenuType>;
 
   openPage(menu: string) {
-    let menuItem: any = this.menuData[menu];
-    console.log(menuItem);
-    menuItem.selected = !menuItem.selected; 
+    let targetMenu: MenuType = this.menuData.get(menu);
+    // console.log(targetMenu);
+    this.menuHighlight(menu);
+    if (menu === 'home') {
+      console.log("=====================>");
+      this.nav.setRoot(targetMenu.page);
+    } else {
+      this.nav.push('SubPage', targetMenu);
+    }
+  }
+
+  /* 
+  선택한 메뉴 하이라이트
+  Top 메뉴 선택시 아코디언메뉴 접기
+  */
+  menuHighlight(target: string) {
+    if (this.menuData.get(target).menuLevel === 'top_menu') {
+      this.todayMenuIsOpen = false;
+    }
+    Array.from(this.menuData.keys())
+      .forEach(key => {
+        if (key !== target) {
+          this.menuData.get(key).selected = false;
+        }
+      });
+    this.menuData.get(target).selected = !this.menuData.get(target).selected;  
   }
 
   openPageBack(page) {
