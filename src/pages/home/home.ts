@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, Platform, MenuController, NavParams, ViewController } from 'ionic-angular';
+import { IonicPage, LoadingController, NavController, Platform, MenuController, NavParams, ViewController, Loading } from 'ionic-angular';
 
 import { Observable, pipe, Subscription } from 'rxjs/Rx'
 import { map, delay } from 'rxjs/operators'
@@ -15,7 +15,8 @@ export class HomePage {
     private platform: Platform,
     private menuCtrl: MenuController,
     private navParams: NavParams,
-    private viewCtrl: ViewController) {
+    private viewCtrl: ViewController,
+    public indicator: LoadingController) {
 
   }
 
@@ -24,6 +25,7 @@ export class HomePage {
   topBackIconIsNotActive: boolean = true;
   topBackIconStateSubscription: Subscription;
   topSearchBtnFlag = false;
+  loading: Loading = null;
 
   /*
   Android Back Button 오버라이드
@@ -45,7 +47,6 @@ export class HomePage {
 
   ionViewDidLoad() {
     this.iframe = document.getElementById('iframe')['contentWindow'];
-    console.log('==> page index : ', this.viewCtrl.index);
     this.unRegisterBackButton = this.customBackButton();
     // this.platform.registerBackButtonAction(() => {
     //   this.iframe.history.history.back();
@@ -56,6 +57,7 @@ export class HomePage {
   시작시 메인홈 감시 시작(페이지 오픈시 매번 호출)
   */
   ionViewWillEnter() {
+    // console.log('==> ', this.navCtrl.getActive().name);
     this.topBackIconStateSubscription = Observable.interval(1000).subscribe(_ => {
       this.topBackIconIsNotActive = this.isBibleMainUrl();
     });
@@ -84,6 +86,25 @@ export class HomePage {
 
   public goPage(url: string) {
     this.iframe.location.href = url;
+  }
+
+  iframeLoaded() {
+    if (this.loading) {
+      this.loading.dismiss();
+    }
+  }
+
+  goUrl(url: string) {
+    if (url) {
+      this.loading = this.indicator.create({
+        showBackdrop: false,
+        content: `<div>Loading...</div>`, 
+        spinner: 'circles', 
+        dismissOnPageChange: true, 
+      });
+      this.loading.present();
+      this.iframe.location.href = url;
+    }
   }
 
 }

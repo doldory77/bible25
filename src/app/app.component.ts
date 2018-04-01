@@ -2,7 +2,7 @@ import { Component, ViewChild, OnInit } from '@angular/core';
 import { Nav, Platform } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
-import { ViewController } from 'ionic-angular';
+import { ViewController, LoadingController } from 'ionic-angular';
 
 import { MenuType } from '../model/model-type';
 import { MenuProvider } from '../providers/menu/menu';
@@ -22,7 +22,8 @@ export class MyApp implements OnInit {
   constructor(public platform: Platform,
     public statusBar: StatusBar,
     public splashScreen: SplashScreen,
-    public menuProvider: MenuProvider) {
+    public menuProvider: MenuProvider,
+    public indicator: LoadingController) {
     this.initializeApp();
 
   }
@@ -54,7 +55,6 @@ export class MyApp implements OnInit {
     } else {
       this.nav.push(targetMenu.page);
     }
-    
   }
 
   /* 
@@ -76,7 +76,11 @@ export class MyApp implements OnInit {
 
   goUrl(url: string) {
     if (url) {
-      document.getElementById('iframe')['contentWindow'].location.href = url;
+      const home: HomePage = <HomePage> this.nav.getByIndex(0).instance
+      // console.log('==> ', home.iframe)
+      // document.getElementById('iframe')['contentWindow'].location.href = url;
+      home.goUrl(url);
     }
   }
+
 }
