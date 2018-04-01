@@ -20,24 +20,33 @@ export class HomePage {
   }
 
   iframe: any;
-  unRegisterBackButton: any;
-  topBackIconIsActive: boolean = true;
+  unRegisterBackButton: Function;
+  topBackIconIsNotActive: boolean = true;
   topBackIconStateSubscription: Subscription;
   topSearchBtnFlag = false;
 
   /*
   Android Back Button 오버라이드
   */
-  customBackButton(): any {
+  customBackButton(): Function {
     return this.platform.registerBackButtonAction(() => {
-      this.iframe.history.back();
+      if (this.navCtrl.canGoBack()) {
+        this.navCtrl.pop();
+        return;
+      } else {
+        if (this.topBackIconIsNotActive) {
+          this.unRegisterBackButton();
+        } else {
+          this.iframe.history.back();
+        }
+      }
     });
   }
 
   ionViewDidLoad() {
     this.iframe = document.getElementById('iframe')['contentWindow'];
     console.log('==> page index : ', this.viewCtrl.index);
-    // this.unRegisterBackButton = this.customBackButton();
+    this.unRegisterBackButton = this.customBackButton();
     // this.platform.registerBackButtonAction(() => {
     //   this.iframe.history.history.back();
     // });
@@ -48,7 +57,7 @@ export class HomePage {
   */
   ionViewWillEnter() {
     this.topBackIconStateSubscription = Observable.interval(1000).subscribe(_ => {
-      this.topBackIconIsActive = this.isBibleMainUrl();
+      this.topBackIconIsNotActive = this.isBibleMainUrl();
     });
   }
 

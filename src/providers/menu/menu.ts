@@ -109,6 +109,13 @@ export class MenuProvider {
           menuLevel: 'top_menu',
           url: ''
       })
+      .set('hymn', {
+          name: '찬송',
+          page: 'HymnPage',
+          selected: false,
+          menuLevel: 'top_menu',
+          url: ''
+      })
 
   constructor() {
 

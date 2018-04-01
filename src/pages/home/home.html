@@ -1,15 +1,11 @@
 <ion-header>
   <ion-navbar>
-    <!-- <button ion-button menuToggle>
-      <ion-icon name="menu"></ion-icon>
-    </button>
-    <ion-title>Home</ion-title> -->
 
     <ion-buttons start class="left-ion-buttons">
       <button ion-button icon-only (click)="toggleMenu()">
         <ion-icon name="menu"></ion-icon>
       </button>
-      <button ion-button clear icon-only (click)="onBack()" [class.back-inActive]="topBackIconIsActive">
+      <button ion-button clear icon-only (click)="onBack()" [class.back-inActive]="topBackIconIsNotActive">
         <ion-icon name="arrow-round-back"></ion-icon>
       </button>
     </ion-buttons>

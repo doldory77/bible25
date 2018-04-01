@@ -7,9 +7,6 @@
 
   <ion-content>
     <ion-list>
-      <!-- <button menuClose ion-item *ngFor="let p of pages" (click)="openPage(p)">
-        {{p.title}}
-      </button> -->
 
       <button menuClose ion-item (click)="openPage('home')"><ion-icon name="home"></ion-icon><span class="menu-top" [ngClass]="{menuActive:menuData.get('home').selected}">홈</span></button>
       <ion-item>
@@ -34,8 +31,8 @@
       <button menuClose ion-item (click)="openPage('new_guide')"><ion-icon name="home"></ion-icon><span class="menu-top" [ngClass]="{menuActive:menuData.get('new_guide').selected}">새신자가이드</span></button>
       <button menuClose ion-item (click)="openPage('photo_bible')"><ion-icon name="home"></ion-icon><span class="menu-top" [ngClass]="{menuActive:menuData.get('photo_bible').selected}">포토성경사전</span></button>
       
-      <button menuClose ion-item (click)="openPage('bible')"><ion-icon name="home"></ion-icon><span class="menu-top" [ngClass]="{menuActive:menuData.get('photo_bible').selected}">성경</span></button>
-      <button menuClose ion-item><ion-icon name="home"></ion-icon><span class="menu-top">찬송</span></button>
+      <button menuClose ion-item (click)="openPage('bible')"><ion-icon name="home"></ion-icon><span class="menu-top" [ngClass]="{menuActive:menuData.get('bible').selected}">성경</span></button>
+      <button menuClose ion-item (click)="openPage('hymn')"><ion-icon name="home"></ion-icon><span class="menu-top" [ngClass]="{menuActive:menuData.get('hymn').selected}">찬송</span></button>
     </ion-list>
   </ion-content>
 

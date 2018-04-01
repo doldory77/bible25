@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 
 /**
- * Generated class for the BiblePage page.
+ * Generated class for the HymnPage page.
  *
  * See https://ionicframework.com/docs/components/#navigation for more info on
  * Ionic pages and navigation.
@@ -10,18 +10,18 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 
 @IonicPage()
 @Component({
-  selector: 'page-bible',
-  templateUrl: 'bible.html',
+  selector: 'page-hymn',
+  templateUrl: 'hymn.html',
 })
-export class BiblePage {
+export class HymnPage {
 
   constructor(public navCtrl: NavController, 
     public navParams: NavParams) {
-      
+
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad BiblePage');
+    console.log('ionViewDidLoad HymnPage');
     console.log('view cnt: ', this.navCtrl.getViews.length);
   }
 

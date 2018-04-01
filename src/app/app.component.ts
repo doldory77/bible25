@@ -44,25 +44,17 @@ export class MyApp implements OnInit {
   menuData: Map<string, MenuType>;
 
   openPage(menu: string) {
+    
     let targetMenu: MenuType = this.menuData.get(menu);
     this.menuHighlight(menu);
-    this.goUrl(targetMenu.url);
-
-    // console.log(targetMenu);
+    if (targetMenu.url) {
+      this.nav.popToRoot().then(() => {
+        this.goUrl(targetMenu.url);
+      });
+    } else {
+      this.nav.push(targetMenu.page);
+    }
     
-    // if (menu === 'home') {
-    //   console.log("=====================>");
-    //   this.nav.setRoot(targetMenu.page);
-    // } else {
-    //   this.nav.push('SubPage', targetMenu);
-    //   this.nav.getViews()
-    //   .forEach((view: ViewController) => {
-    //     if (view.index != 0) {
-    //       console.log(view.index)
-    //       view.dismiss();
-    //     }
-    //   });
-    // }
   }
 
   /* 
@@ -80,12 +72,6 @@ export class MyApp implements OnInit {
         }
       });
     this.menuData.get(target).selected = !this.menuData.get(target).selected;  
-  }
-
-  openPageBack(page) {
-    // Reset the content nav to have just this page
-    // we wouldn't want the back button to show in this scenario
-    this.nav.setRoot(page.component);
   }
 
   goUrl(url: string) {
