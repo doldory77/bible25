@@ -9,6 +9,7 @@ import { MenuProvider } from '../providers/menu/menu';
 import { SQLite } from '@ionic-native/sqlite';
 import { DbProvider } from '../providers/db/db';
 import { HttpClientModule } from '@angular/common/http';
+// import { LongPressModule } from 'ionic-long-press';
 
 @NgModule({
   declarations: [
@@ -17,7 +18,8 @@ import { HttpClientModule } from '@angular/common/http';
   imports: [
     BrowserModule,
     IonicModule.forRoot(MyApp),
-    HttpClientModule
+    HttpClientModule,
+    // LongPressModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [

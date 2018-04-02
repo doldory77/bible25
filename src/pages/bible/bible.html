@@ -23,20 +23,20 @@
   </ion-toolbar>
 
 
-  <ion-grid>
+  <ion-grid [hidden]="!isBibleMode">
     <ion-row>
-      <ion-col col-5 text-center>
+      <ion-col col-4 text-center>
         <button ion-button clear>창세기(1장)</button>
       </ion-col>
-      <ion-col col-3 text-center>
+      <ion-col col-4 text-center>
         <button ion-button clear>개역한글</button>
       </ion-col>
-      <ion-col col-2>
+      <ion-col col-2 text-center>
         <button ion-button icon-only clear>
           <ion-icon name="home"></ion-icon>
         </button>
       </ion-col>
-      <ion-col col-2>
+      <ion-col col-2 text-center>
           <button ion-button icon-only clear>
             <ion-icon name="home"></ion-icon>
           </button>
@@ -49,50 +49,49 @@
 
 
 <ion-content>
+  
+  <!-- <ion-list>
+    <ion-item>AAAA</ion-item>
+    <ion-item>AAAA</ion-item>
+    <ion-item>AAAA</ion-item>
+    <ion-item>AAAA</ion-item>
+    <ion-item>AAAA</ion-item>
+    <ion-item>AAAA</ion-item>
+    <ion-item>AAAA</ion-item>
+    <ion-item>AAAA</ion-item>
+    <ion-item>AAAA</ion-item>
+    <ion-item>AAAA</ion-item>
+    <ion-item>AAAA</ion-item>
+    <ion-item>AAAA</ion-item>
+    <ion-item>AAAA</ion-item>
+    <ion-item>AAAA</ion-item>
+  </ion-list> -->
 
-
-  <ion-list>
+  <iframe [hidden]="isBibleMode" id="iframe2" (load)="iframeLoaded()" src="http://ch2ho.bible25.com/m/bbs/board2.php?bo_table=bible&t=tab1&key=NKRV&key2=&key3=&book=1&jang=1&tab_title=Study" width="100%" height="100%" seamless></iframe>
+  <ion-list [hidden]="!isBibleMode">
+    <ion-item>0000</ion-item>
+    <!-- <ion-item text-wrap ion-long-press [interval]="500" (onPressStart)="pressed()" (onPressing)="active()" (onPressEnd)="released()">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Qui in reprehenderit corporis perferendis doloribus explicabo rem obcaecati officia sunt molestiae, quia itaque facere, quibusdam impedit. Inventore tempore sapiente dicta nam?</ion-item> -->
+    <ion-item text-wrap>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Qui in reprehenderit corporis perferendis doloribus explicabo rem obcaecati officia sunt molestiae, quia itaque facere, quibusdam impedit. Inventore tempore sapiente dicta nam?</ion-item>
+    <ion-item>AAAA</ion-item>
+    <ion-item>3333</ion-item>
+    <ion-item>AAAA</ion-item>
+    <ion-item>AAAA</ion-item>
+    <ion-item>1111</ion-item>
     <ion-item>AAAA</ion-item>
     <ion-item>AAAA</ion-item>
     <ion-item>AAAA</ion-item>
-    <ion-item>AAAA</ion-item>
-    <ion-item>AAAA</ion-item>
-    <ion-item>AAAA</ion-item>
-    <ion-item>AAAA</ion-item>
-    <ion-item>AAAA</ion-item>
-    <ion-item>AAAA</ion-item>
-    <ion-item>AAAA</ion-item>
-    <ion-item>AAAA</ion-item>
+    <ion-item>2222</ion-item>
     <ion-item>AAAA</ion-item>
     <ion-item>AAAA</ion-item>
     <ion-item>AAAA</ion-item>
   </ion-list>
-
 </ion-content>
 
 <ion-footer>
   <ion-grid>
     <ion-row>
-      <ion-col>
-        <div>성경</div>
-      </ion-col>
-      <ion-col>
-        <div>Study</div>
-      </ion-col>
-      <ion-col>
-        <div>해설</div>
-      </ion-col>
-      <ion-col>
-        <div>핵심</div>
-      </ion-col>
-      <ion-col>
-        <div>묵상</div>
-      </ion-col>
-      <ion-col>
-        <div>Q&A</div>
-      </ion-col>
-      <ion-col>
-        <div>포토</div>
+      <ion-col *ngFor="let menu of menuData; let i = index" (click)="onSubPage(i)">
+        <div class="footer-button">{{menu.name}}</div>
       </ion-col>
     </ion-row>
   </ion-grid>
