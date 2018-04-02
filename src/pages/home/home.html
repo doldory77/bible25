@@ -38,7 +38,7 @@
   <ion-toolbar *ngIf="topSearchBtnFlag">
     <ion-searchbar
       [(ngModel)]="searchKeyWord"
-      [debounce]="500">
+      [debounce]="500">`
     </ion-searchbar>
     <ion-buttons end>
         <button ion-button clear icon-only (click)="goSearchPage()">
