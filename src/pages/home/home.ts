@@ -1,5 +1,16 @@
 import { Component } from '@angular/core';
-import { IonicPage, LoadingController, NavController, Platform, MenuController, NavParams, ViewController, Loading } from 'ionic-angular';
+import { 
+  IonicPage, 
+  LoadingController, 
+  NavController, 
+  Platform, 
+  MenuController, 
+  NavParams, 
+  ViewController, 
+  Loading,
+  AlertController,
+  ActionSheetController 
+} from 'ionic-angular';
 
 import { Observable, pipe, Subscription } from 'rxjs/Rx'
 import { map, delay } from 'rxjs/operators'
@@ -16,7 +27,9 @@ export class HomePage {
     private menuCtrl: MenuController,
     private navParams: NavParams,
     private viewCtrl: ViewController,
-    public indicator: LoadingController) {
+    public indicator: LoadingController,
+    public alertCtrl: AlertController,
+    public sheetCtrl: ActionSheetController) {
 
   }
 
@@ -24,8 +37,9 @@ export class HomePage {
   unRegisterBackButton: Function;
   topBackIconIsNotActive: boolean = true;
   topBackIconStateSubscription: Subscription;
-  topSearchBtnFlag = false;
+  topSearchBtnFlag: boolean = false;
   loading: Loading = null;
+  searchKeyWord: string = '';
 
   /*
   Android Back Button 오버라이드
@@ -105,6 +119,51 @@ export class HomePage {
       this.loading.present();
       this.iframe.location.href = url;
     }
+  }
+
+  /**
+   * 종합검색 페이지로 이동
+   */
+  goSearchPage() {
+    this.searchKeyWord = '';
+    this.topSearchBtnFlag = false;
+    this.navCtrl.push('SearchPage');
+  }
+
+  showAlert() {
+    this.alertCtrl.create({
+      title: 'abcd',
+      subTitle: 'defg',
+      buttons: ['Dismiss']
+    }).present();
+  }
+
+  showSheet() {
+    this.sheetCtrl.create({
+      title: 'hello',
+      buttons: [
+        {
+          text: 'Destructive',
+          role: 'destructive',
+          handler: () => {
+            console.log('Destructive clicked');
+          }
+        },
+        {
+          text: 'Archive',
+          handler: () => {
+            console.log('Archive clicked');
+          }
+        },
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          handler: () => {
+            console.log('Cancel clicked');
+          }
+        }
+      ]
+    }).present();
   }
 
 }

@@ -19,21 +19,33 @@
         <button ion-button clear icon-only>
           <ion-icon name="contact"></ion-icon>
         </button>
-        <button ion-button clear icon-only (click)="test()">
+        <button ion-button clear icon-only (click)="showSheet()">
           <ion-icon name="settings"></ion-icon>
         </button>
     </ion-buttons>
 
   </ion-navbar>
 
-  <ion-item *ngIf="topSearchBtnFlag" class="searchBtnContainer">
+  <!-- <ion-item *ngIf="topSearchBtnFlag" class="searchBtnContainer">
     <ion-input class="search-input" type="text" value="ABCD..."></ion-input>
     <ion-buttons item-right>
-        <button ion-button clear icon-only>
+        <button ion-button clear icon-only (click)="goSearchPage()">
           <ion-icon name="search"></ion-icon>
         </button>
     </ion-buttons>
-  </ion-item>
+  </ion-item> -->
+
+  <ion-toolbar *ngIf="topSearchBtnFlag">
+    <ion-searchbar
+      [(ngModel)]="searchKeyWord"
+      [debounce]="500">
+    </ion-searchbar>
+    <ion-buttons end>
+        <button ion-button clear icon-only (click)="goSearchPage()">
+          <ion-icon name="search"></ion-icon>
+        </button>
+    </ion-buttons>
+  </ion-toolbar>
 
 </ion-header>
 
