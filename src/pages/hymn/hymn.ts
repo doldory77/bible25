@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { PlayerComponent } from '../../components/player/player';
 
 /**
  * Generated class for the HymnPage page.

@@ -9,7 +9,9 @@ import { MenuProvider } from '../providers/menu/menu';
 import { SQLite } from '@ionic-native/sqlite';
 import { DbProvider } from '../providers/db/db';
 import { HttpClientModule } from '@angular/common/http';
-// import { LongPressModule } from 'ionic-long-press';
+import { File } from '@ionic-native/file';
+import { FileTransfer } from '@ionic-native/file-transfer';
+import { Media } from '@ionic-native/media';
 
 @NgModule({
   declarations: [
@@ -18,8 +20,7 @@ import { HttpClientModule } from '@angular/common/http';
   imports: [
     BrowserModule,
     IonicModule.forRoot(MyApp),
-    HttpClientModule,
-    // LongPressModule
+    HttpClientModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -29,6 +30,9 @@ import { HttpClientModule } from '@angular/common/http';
     StatusBar,
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
+    File,
+    FileTransfer,
+    Media,
     MenuProvider,
     SQLite,
     DbProvider
