@@ -1,0 +1,114 @@
+<ion-header>
+
+  <ion-toolbar>
+    <ion-buttons start class="left-ion-buttons">
+      <button ion-button clear icon-only menuToggle>
+        <ion-icon name="menu"></ion-icon>
+      </button>
+    </ion-buttons>
+    <ion-title class="center-ion-title">성경</ion-title>
+    <ion-buttons end>
+      <button ion-button clear icon-only navPop>
+        <ion-icon name="close"></ion-icon>
+      </button> 
+    </ion-buttons>
+  </ion-toolbar>
+
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        <ion-segment color="primary" [(ngModel)]="bibleHistoryName">
+          <ion-segment-button value="구약" (click)="showList('구약')">
+            <b>구약</b>
+          </ion-segment-button>
+          <ion-segment-button value="신약" (click)="showList('신약')">
+            <b>신약</b>
+          </ion-segment-button>
+        </ion-segment>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col col-10><span style="line-height:2em;"> *{{bibleHistoryName}}성경 소개</span></ion-col> 
+      <ion-col col-2 text-right>
+        <ion-icon name="{{viewModeIconName}}" (click)="changeViewMode()" style="font-size: 2em; padding-right: 0.2em;"></ion-icon>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+</ion-header>
+
+
+<ion-content>
+
+  <ion-grid [hidden]="viewMode == 'type2'">
+    <ion-row>
+      <ion-col col-9>
+        <ion-list>
+          <ion-item *ngFor="let item of bibleList; index as i" (click)="showJangList(i)">{{item.name}}</ion-item>
+        </ion-list>
+      </ion-col>
+      <ion-col col-3>
+          <div class="bible-jang-list">
+              <ul>
+                <!-- <li *ngFor="let number of bibleList[0].range">{{number}}장</li> -->
+              </ul>  
+            </div>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <ion-list [hidden]="viewMode == 'type1'">
+    <ion-item text-wrap>
+      <div class="bible-item">
+        <div>창세기</div>
+        <ul>
+            <li>1</li>
+            <li>1</li>
+            <li>1</li>
+            <li>1</li>
+            <li>1</li>
+            <li>1</li>
+            <li>1</li>
+            <li>1</li>
+            <li>1</li>
+            <li>1</li>
+            <li>1</li>
+            <li>1</li>
+            <li>1</li>
+        </ul>  
+      </div>
+    </ion-item>
+    <ion-item text-wrap>
+      <div class="bible-item">
+        <div>창세기</div>
+        <ul>
+          <li>1</li>
+          <li>1</li>
+          <li>1</li>
+          <li>1</li>
+          <li>1</li>
+          <li>1</li>
+          <li>1</li>
+          <li>1</li>
+          <li>1</li>
+          <li>1</li>
+          <li>1</li>
+          <li>1</li>
+          <li>1</li>
+          <li>1</li>
+          <li>1</li>
+          <li>1</li>
+          <li>1</li>
+          <li>1</li>
+          <li>1</li>
+          <li>1</li>
+        </ul>  
+      </div>
+    </ion-item>
+  </ion-list>
+  
+</ion-content>
+
+<ion-footer>
+  <div text-center class="ad-demo-1">광고영역</div>
+</ion-footer>

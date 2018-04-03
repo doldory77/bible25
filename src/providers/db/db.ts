@@ -38,4 +38,31 @@ export class DbProvider {
     }
   }
 
+  getBibleList(ref:{book:number, name:string, total_jang:number, bibletype:number, range:number[]}[]): Promise<any> {
+
+    return this.openDb()
+      .then((dbo: SQLiteObject) => {
+        return dbo.executeSql("select * from bible_list_kr", {})
+      })
+      .then(rs => {
+        try {
+          for (let i=0, max=rs.rows.length; i<max; i++) {
+            let item = rs.rows.item(i);
+            ref.push({
+              book: item.book,
+              name: item.name,
+              total_jang: item.total_jang,
+              bibletype: item.bibletype,
+              range: Array.from(Array(item.total_jang).keys()).map(i => i+1)
+            });
+          }
+          return Promise.resolve({result:'ok', msg:'success'});
+        } catch (err) {
+          return Promise.reject({result:'fail', msg:err});
+        }
+      })
+      .catch(err => {return Promise.reject({result:'fail', msg:err})});
+
+  }
+
 }

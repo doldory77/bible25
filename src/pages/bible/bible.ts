@@ -47,6 +47,10 @@ export class BiblePage {
   ionViewDidLoad() {
     console.log('ionViewDidLoad BiblePage');
     this.iframe = document.getElementById('iframe2')['contentWindow'];
+
+    setTimeout(() => {
+      this.navCtrl.push('BibleListPage');
+    }, 2000);
     // this.getSelectedBibleTable();
   }
 

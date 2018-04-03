@@ -1,0 +1,40 @@
+page-bible-list {
+    .bible-jang-list {
+        position: fixed;
+        top: 25%;
+        right: 5%;
+        bottom: 7%;
+        overflow: auto;
+
+        ul {
+            list-style: none
+        }
+
+        li {
+            padding: 0.4em 1.2em 0.4em 0.4em;
+        }
+    }
+
+    .bible-item {
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+        & > div {
+            flex-basis: 7em;
+            flex-shrink: 0;
+        }
+
+        & > ul {
+            list-style: none;
+            margin: 0;
+            padding-left: 0.5em;
+        }
+        
+        li {
+            display: inline-block;
+            padding: 0.3em;
+            margin: 0.1em;
+            background: forestgreen;
+        }
+    }
+}
