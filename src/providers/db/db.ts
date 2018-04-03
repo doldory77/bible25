@@ -12,6 +12,8 @@ import { SQLite, SQLiteObject } from '@ionic-native/sqlite';
 @Injectable()
 export class DbProvider {
 
+  private 
+
   constructor(public http: HttpClient,
     private platform: Platform,
     private sqlite: SQLite) {
@@ -38,7 +40,7 @@ export class DbProvider {
     }
   }
 
-  getBibleList(ref:{book:number, name:string, total_jang:number, bibletype:number, range:number[]}[]): Promise<any> {
+  getBibleList(ref:{book:number, name:string, total_jang:number, bibletype:number}[]): Promise<any> {
 
     return this.openDb()
       .then((dbo: SQLiteObject) => {
@@ -53,7 +55,6 @@ export class DbProvider {
               name: item.name,
               total_jang: item.total_jang,
               bibletype: item.bibletype,
-              range: Array.from(Array(item.total_jang).keys()).map(i => i+1)
             });
           }
           return Promise.resolve({result:'ok', msg:'success'});
@@ -63,6 +64,59 @@ export class DbProvider {
       })
       .catch(err => {return Promise.reject({result:'fail', msg:err})});
 
+  }
+
+  getBibleListByType(typeNo:number, ref:{book:number, name:string, total_jang:number, bibletype:number}[]): Promise<any> {
+
+    return this.openDb()
+      .then((dbo: SQLiteObject) => {
+        return dbo.executeSql("select * from bible_list_kr where bibletype = ?", [typeNo])
+      })
+      .then(rs => {
+        try {
+          for (let i=0, max=rs.rows.length; i<max; i++) {
+            let item = rs.rows.item(i);
+            ref.push({
+              book: item.book,
+              name: item.name,
+              total_jang: item.total_jang,
+              bibletype: item.bibletype,
+            });
+          }
+          return Promise.resolve({result:'ok', msg:'success'});
+        } catch (err) {
+          return Promise.reject({result:'fail', msg:err});
+        }
+      })
+      .catch(err => {return Promise.reject({result:'fail', msg:err})});
+
+  }
+
+  getRangeMapByAllBook(ref:Map<number, number[]>): Promise<any> {
+    return this.openDb()
+      .then((dbo: SQLiteObject) => {
+        return dbo.executeSql(`
+          select a.book, group_concat(a.jang) range
+          from (
+            select book, jang 
+            from bible_nkrv
+            group by book, jang
+          ) a
+          group by a.book
+          `, {})
+      })
+      .then(rs => {
+        try {
+          for (let i=0, max=rs.rows.length; i<max; i++) {
+            let item = rs.rows.item(i);
+            ref.set(item.book,item.range.split(','));
+          }
+          return Promise.resolve({result:'ok', msg:'success'});
+        } catch (err) {
+          return Promise.reject({result:'fail', msg:err});
+        }
+      })
+      .catch(err => {return Promise.reject({result:'fail', msg:err})});
   }
 
 }
