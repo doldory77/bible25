@@ -1,5 +1,29 @@
 page-bible {
     .footer-button {
         text-align: center;
+        height: 2em;
+        line-height: 2em;
+    }
+    .footer {
+        .grid {
+            padding: 0;
+            .row {
+                border-top: 1px solid #c2c2c2;
+            }
+        }
+    }
+    .foot-menu-highlight {
+        background-color: orange;
+    }
+    .bible-content-list {
+        font-size: 0.8em;
+        .bible-jul {
+            color: map-get($colors, primary);
+            position: absolute;
+        }
+        .bible-content {
+            padding-left: 1.4em;
+            display: inline-block;
+        }
     }
 }

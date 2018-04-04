@@ -26,19 +26,19 @@
   <ion-grid [hidden]="!isBibleMode">
     <ion-row>
       <ion-col col-4 text-center>
-        <button ion-button clear>창세기(1장)</button>
+        <button ion-button clear small>{{currBookName}}({{currJangNumber}}장)</button>
       </ion-col>
       <ion-col col-4 text-center>
-        <button ion-button clear>개역한글</button>
+        <button ion-button clear small>{{currSelectedLanguage}}</button>
       </ion-col>
       <ion-col col-2 text-center>
-        <button ion-button icon-only clear>
-          <ion-icon name="home"></ion-icon>
+        <button ion-button icon-only clear small>
+          <ion-icon name="volume-up"></ion-icon>
         </button>
       </ion-col>
       <ion-col col-2 text-center>
-          <button ion-button icon-only clear>
-            <ion-icon name="home"></ion-icon>
+          <button ion-button icon-only clear small>
+            <ion-icon name="star-outline"></ion-icon>
           </button>
       </ion-col>
     </ion-row>
@@ -51,29 +51,26 @@
 <ion-content>
 
   <iframe [hidden]="isBibleMode" id="iframe2" (load)="iframeLoaded()" src="http://ch2ho.bible25.com/m/bbs/board2.php?bo_table=bible&t=tab1&key=NKRV&key2=&key3=&book=1&jang=1&tab_title=Study" width="100%" height="100%" seamless></iframe>
-  <ion-list [hidden]="!isBibleMode">
-    <ion-item>0000</ion-item>
-    <!-- <ion-item text-wrap ion-long-press [interval]="500" (onPressStart)="pressed()" (onPressing)="active()" (onPressEnd)="released()">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Qui in reprehenderit corporis perferendis doloribus explicabo rem obcaecati officia sunt molestiae, quia itaque facere, quibusdam impedit. Inventore tempore sapiente dicta nam?</ion-item> -->
-    <ion-item text-wrap>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Qui in reprehenderit corporis perferendis doloribus explicabo rem obcaecati officia sunt molestiae, quia itaque facere, quibusdam impedit. Inventore tempore sapiente dicta nam?</ion-item>
-    <ion-item>AAAA</ion-item>
-    <ion-item>3333</ion-item>
-    <ion-item>AAAA</ion-item>
-    <ion-item>AAAA</ion-item>
-    <ion-item>1111</ion-item>
-    <ion-item>AAAA</ion-item>
-    <ion-item>AAAA</ion-item>
-    <ion-item>AAAA</ion-item>
-    <ion-item>2222</ion-item>
-    <ion-item>AAAA</ion-item>
-    <ion-item>AAAA</ion-item>
-    <ion-item>AAAA</ion-item>
+  <ion-list [hidden]="!isBibleMode" class="bible-content-list">
+    <ion-item *ngFor="let item of bibleContents" text-wrap>
+      <span class="bible-jul">{{item.jul}}</span><span class="bible-content">{{item.content}}</span>
+    </ion-item>
   </ion-list>
+
+  <button ion-button small [hidden]="!isBibleMode">
+    <ion-icon name="arrow-back"></ion-icon>
+  </button>
+
+  <button ion-button small [hidden]="!isBibleMode">
+    <ion-icon name="arrow-forward"></ion-icon>
+  </button>
+
 </ion-content>
 
 <ion-footer>
   <ion-grid>
     <ion-row>
-      <ion-col *ngFor="let menu of menuData; let i = index" (click)="onSubPage(i)">
+      <ion-col *ngFor="let menu of menuData; let i = index" [ngClass]="{'foot-menu-highlight':menu.selected}" (click)="onSubPage(i)">
         <div class="footer-button">{{menu.name}}</div>
       </ion-col>
     </ion-row>

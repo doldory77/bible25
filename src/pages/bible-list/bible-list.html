@@ -16,7 +16,7 @@
 
   <ion-grid>
     <ion-row>
-      <ion-col>
+      <!-- <ion-col>
         <ion-segment color="primary" [(ngModel)]="bibleType">
           <ion-segment-button value="0" (click)="showList(0)">
             <b>구약</b>
@@ -25,7 +25,21 @@
             <b>신약</b>
           </ion-segment-button>
         </ion-segment>
+      </ion-col> -->
+
+      <ion-col>
+        <button ion-button small block [outline]="bibleType == 0 ? false : true" (click)="showList(0)">
+          <ion-icon name="home"></ion-icon>
+          <span>구약</span>
+        </button>
       </ion-col>
+      <ion-col>
+        <button ion-button small block [outline]="bibleType == 1 ? false : true" (click)="showList(1)">
+          <ion-icon name="home"></ion-icon>
+          <span>신약</span>
+        </button>
+      </ion-col>
+      
     </ion-row>
     <ion-row>
       <ion-col col-10><span style="line-height:2em;"> *{{bibleHistoryName}}성경 소개</span></ion-col> 

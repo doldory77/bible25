@@ -27,6 +27,12 @@ export class BiblePage {
   data: any[] = [];
   iframe: any;
   loading: Loading;
+  bibleContents: {lang:string, book:number, jul:number, content:string, ord:number}[] = [];
+
+  currBookName: string = '';
+  currJangNumber: number = 0;
+  currSelectedLanguage: string = '';
+  isChange: boolean = false;
 
   constructor(public navCtrl: NavController, 
     public navParams: NavParams,
@@ -41,34 +47,69 @@ export class BiblePage {
           this.menuData.push(this.menu.MenuData.get(key));
         });
 
-        console.log(this.menuData);
+        // console.log(this.menuData);
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad BiblePage');
     this.iframe = document.getElementById('iframe2')['contentWindow'];
+    this.menuData[0].selected = true;
 
     setTimeout(() => {
-      this.navCtrl.push('BibleListPage');
+      // this.navCtrl.push('BibleListPage');
+      console.log('TODO: 사용자가 최종 본 성경이 없으면 리스트 페이지 표시 후 되돌아오기')
     }, 2000);
-    // this.getSelectedBibleTable();
+    
   }
 
-  getSelectedBibleTable() {
-    this.db.openDb()
-      .then((dbo: SQLiteObject) => {
-        return dbo.executeSql("select eng_name from bible_db_name order by seq", {});
-      })
-      .then(data => {
-        console.log(data.rows.length)
-      })
-      .catch(err => {
-        console.log('database open error: ', err);
-      });
+  ionViewWillEnter() {
+
+    // this.getBibleWrap()
+
   }
 
+  getBibleWrap() {
+
+    this.db.getAppInfo()
+    .then(result => {
+      // console.log(result);
+      // console.log(this.db.appInfo);
+      let params = {
+        book: this.db.appInfo.view_bible_book,
+        jang: this.db.appInfo.view_bible_jang,
+        multiLang: this.db.appInfo.selected_eng_names.split(',')
+      }
+
+      if (this.currBookName == this.db.appInfo.book_name 
+          && this.currJangNumber == this.db.appInfo.view_bible_jang
+          && this.currSelectedLanguage == this.db.appInfo.selected_first_name) {
+        this.isChange = false;
+      } else {
+        this.currBookName = this.db.appInfo.book_name;
+        this.currJangNumber = this.db.appInfo.view_bible_jang;
+        this.currSelectedLanguage = this.db.appInfo.selected_first_name;
+        this.isChange = true;
+      }
+
+      if (this.isChange) {
+        this.db.getBibleContent(this.bibleContents, params)
+          .then(result => {
+            // console.log(result);
+            // console.log("===================================>");
+            // console.log(this.bibleContents);
+          })
+          .catch(err => console.log(err));
+      }
+    })
+    .catch(err => console.log(err));
+
+  }
+  
   onSubPage(menuNum: number) {
+    this.menuData.forEach(menu => menu.selected = false);
     const menu = this.menuData[menuNum];
+    menu.selected = true;
+
     if (menuNum > 0) {
       this.isBibleMode = false;
       this.loading = this.indicator.create({
