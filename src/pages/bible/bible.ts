@@ -63,9 +63,15 @@ export class BiblePage {
   }
 
   ionViewWillEnter() {
+    console.log('bible will enter=========>');
+    console.log(this.db.appInfo);
+    this.getBibleWrap()
 
-    // this.getBibleWrap()
+  }
 
+  test() {
+    this.db.getAppInfo();
+    console.log(this.db.appInfo);
   }
 
   getBibleWrap() {
@@ -90,7 +96,7 @@ export class BiblePage {
         this.currSelectedLanguage = this.db.appInfo.selected_first_name;
         this.isChange = true;
       }
-
+      console.log('===========> isChange: ', this.isChange);
       if (this.isChange) {
         this.db.getBibleContent(this.bibleContents, params)
           .then(result => {

@@ -16,17 +16,6 @@
 
   <ion-grid>
     <ion-row>
-      <!-- <ion-col>
-        <ion-segment color="primary" [(ngModel)]="bibleType">
-          <ion-segment-button value="0" (click)="showList(0)">
-            <b>구약</b>
-          </ion-segment-button>
-          <ion-segment-button value="1" (click)="showList(1)">
-            <b>신약</b>
-          </ion-segment-button>
-        </ion-segment>
-      </ion-col> -->
-
       <ion-col>
         <button ion-button small block [outline]="bibleType == 0 ? false : true" (click)="showList(0)">
           <ion-icon name="home"></ion-icon>
@@ -58,13 +47,13 @@
     <ion-row>
       <ion-col col-9>
         <ion-list>
-          <ion-item *ngFor="let item of bibleList; index as i" (click)="showJangList(item.book)">{{item.name}}</ion-item>
+          <ion-item *ngFor="let item of bibleList; index as i" (click)="showJangList(item.book, item.name)">{{item.name}}</ion-item>
         </ion-list>
       </ion-col>
       <ion-col col-3>
           <div class="bible-jang-list">
               <ul>
-                <li *ngFor="let number of bibleCurrentRange">{{number}}장</li>
+                <li *ngFor="let number of bibleCurrentRange" (click)="selectJang(number)">{{number}}장</li>
               </ul>  
             </div>
       </ion-col>

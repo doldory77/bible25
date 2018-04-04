@@ -26,4 +26,16 @@ page-bible {
             display: inline-block;
         }
     }
+    .bible-prev-button {
+        position: fixed;
+        bottom: 15%;
+        left: 1%;
+        opacity: 1;
+    }
+    .bible-next-button {
+        position: fixed;
+        bottom: 15%;
+        right: 1%;
+        opacity: 1;
+    }
 }

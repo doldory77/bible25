@@ -46,7 +46,7 @@ export class BibleListPage {
         .then(data => {
           // console.log(data);
           // console.log(this.bibleRangeMapByAllBook);
-          this.showJangList(1);
+          this.showJangList(1, '창세기');
         })
         .catch(err => console.log(err));
   }
@@ -61,8 +61,24 @@ export class BibleListPage {
     }
   }
 
-  showJangList(book: number) {
+  showJangList(book: number, name: string) {
     this.bibleCurrentRange = this.bibleRangeMapByAllBook.get(book);
+    this.db.appInfo.book_name = name;
+    this.db.appInfo.view_bible_book = book;
+  }
+
+  selectJang(jang: number) {
+    this.db.appInfo.view_bible_jang = jang;
+    let param: {book:number, jang:number, pnumber:string} = {
+      book: this.db.appInfo.view_bible_book,
+      jang: this.db.appInfo.view_bible_jang,
+      pnumber: this.db.appInfo.view_hymn_pnum
+    }
+    console.log('updat app info ======> ', param);
+    this.db.updateAppInfo(param);
+    setTimeout(() => {
+      this.navCtrl.pop();
+    }, 200);
   }
 
   showList(type: number) {

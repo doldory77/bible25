@@ -233,4 +233,13 @@ export class DbProvider {
     
   }
 
+  updateAppInfo(data:{book:number, jang:number, pnumber:string}): Promise<any> {
+    return this.openDb()
+      .then((dbo: SQLiteObject) => {
+        return dbo.executeSql('update app_info set view_bible_book = ?, view_bible_jang = ?, view_hymn_pnum = ?', [data.book, data.jang, data.pnumber])
+      })
+      .then(result => console.log(result))
+      .catch(err => console.log(err));
+  }
+
 }
