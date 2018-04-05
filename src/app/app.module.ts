@@ -12,6 +12,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { File } from '@ionic-native/file';
 import { FileTransfer } from '@ionic-native/file-transfer';
 import { Media } from '@ionic-native/media';
+import { PlayerProvider } from '../providers/player/player';
 
 @NgModule({
   declarations: [
@@ -35,7 +36,8 @@ import { Media } from '@ionic-native/media';
     Media,
     MenuProvider,
     SQLite,
-    DbProvider
+    DbProvider,
+    PlayerProvider
   ]
 })
 export class AppModule {}

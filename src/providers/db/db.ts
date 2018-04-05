@@ -233,13 +233,83 @@ export class DbProvider {
     
   }
 
-  updateAppInfo(data:{book:number, jang:number, pnumber:string}): Promise<any> {
+  updateAppInfo(data:{book:number, jang:number, pnumber?:string}): Promise<any> {
     return this.openDb()
       .then((dbo: SQLiteObject) => {
-        return dbo.executeSql('update app_info set view_bible_book = ?, view_bible_jang = ?, view_hymn_pnum = ?', [data.book, data.jang, data.pnumber])
+        if (data.pnumber)
+          return dbo.executeSql('update app_info set view_bible_book = ?, view_bible_jang = ?, view_hymn_pnum = ?', [data.book, data.jang, data.pnumber]);
+        else
+          return dbo.executeSql('update app_info set view_bible_book = ?, view_bible_jang = ?', [data.book, data.jang]);
       })
       .then(result => console.log(result))
       .catch(err => console.log(err));
+  }
+
+  checkBibleContent(isNext: boolean): Promise<any> {
+    return this.openDb()
+      .then((dbo: SQLiteObject) => {
+        let param = '+ 1';
+        if (!isNext) {
+          param = '- 1';
+        } 
+        return dbo.executeSql(`
+          select count(*) cnt from bible_nkrv
+          where (book, jang) = (select view_bible_book, view_bible_jang ${param} from app_info limit 1)
+        `, [])
+      })
+      .then(rs => {
+        try {
+          let flag = rs.rows.item(0).cnt > 0 ? 'Y' : 'N';
+          return Promise.resolve({result:'success', msg:flag});
+        } catch (err) {
+          return Promise.reject({result:'fail', mag:err});
+        }
+      })
+      .catch(err => {
+        return Promise.reject({result:'fail', msg:err});
+      });
+  }
+
+  getHymnList(reqNumber:number): Promise<any> {
+    return this.openDb()
+      .then((dbo: SQLiteObject) => {
+        let query = "";
+        if (reqNumber == 0) {
+          return query = "select p_num, p_num_old, subject from hymn";
+        } else {
+          let beginNum: string = '';
+          let endNum: string = '';
+          switch (reqNumber) {
+            case 1:
+              beginNum = '001'; endNum = '100';
+              break;
+            case 2:
+              beginNum = '101'; endNum = '200';
+              break;
+            case 3:
+              beginNum = '201'; endNum = '300';
+              break;
+            case 4:
+              beginNum = '301'; endNum = '400';
+              break;
+            case 5:
+              beginNum = '401'; endNum = '500';
+              break;
+            case 6:
+              beginNum = '501'; endNum = '600';
+          }
+          query = `
+            select p_num, p_num_old, subject from hymn
+            where p_num between ? and ?
+            order by p_num
+          `;
+
+          return dbo.executeSql(query, [beginNum, endNum])
+        }
+      })
+      .catch(err => {
+        return Promise.reject(err);
+      })
   }
 
 }

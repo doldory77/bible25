@@ -32,14 +32,50 @@
         <button ion-button clear small>{{currSelectedLanguage}}</button>
       </ion-col>
       <ion-col col-2 text-center>
-        <button ion-button icon-only clear small>
+        <button ion-button clear icon-only small [color]="playerNonVisible ? 'primary' : 'danger'" (click)="togglePlayer()">
           <ion-icon name="volume-up"></ion-icon>
         </button>
       </ion-col>
       <ion-col col-2 text-center>
-          <button ion-button icon-only clear small (click)="test()">
+          <button ion-button clear icon-only small (click)="test()">
             <ion-icon name="star-outline"></ion-icon>
           </button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <ion-grid [hidden]="playerNonVisible">
+    <ion-row>
+      <ion-col>
+        <div class="media-progress-outer">
+          <div class="media-progress-inner" [style.width]="'50%'"></div>
+        </div>
+        <div class="media-time">
+          <div>{{mediaTraker}}</div>  
+          <div>{{mediaRange}}</div>  
+        </div>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col col-3>
+        <button ion-button clear icon-only (click)="prev()">
+          <ion-icon name="skip-backward"></ion-icon>
+        </button>
+      </ion-col>
+      <ion-col col-3>
+        <button ion-button clear icon-only (click)="playOrPause()">
+          <ion-icon name="{{playState}}"></ion-icon>
+        </button>
+      </ion-col>
+      <ion-col col-3>
+        <button ion-button clear icon-only (click)="next()">
+          <ion-icon name="skip-forward"></ion-icon>
+        </button>
+      </ion-col>
+      <ion-col col-3>
+        <button ion-button clear icon-only [color]="isMediaRoop ? 'danger':'primary'" (click)="roopToggle()">
+          <ion-icon name="repeat"></ion-icon>
+        </button>
       </ion-col>
     </ion-row>
   </ion-grid>
@@ -57,11 +93,11 @@
     </ion-item>
   </ion-list>
 
-  <button ion-button small outline class="bible-prev-button" [hidden]="!isBibleMode">
+  <button ion-button small outline class="bible-prev-button" [hidden]="!isBibleMode" (click)="move('prev', false)">
     <ion-icon name="arrow-back"></ion-icon>
   </button>
 
-  <button ion-button small outline class="bible-next-button" [hidden]="!isBibleMode">
+  <button ion-button small outline class="bible-next-button" [hidden]="!isBibleMode" (click)="move('next', false)">
     <ion-icon name="arrow-forward"></ion-icon>
   </button>
 

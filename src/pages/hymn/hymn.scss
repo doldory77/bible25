@@ -1,3 +1,31 @@
 page-hymn {
 
+    .hymn-top-container {
+        padding: 0;
+        .row {
+            border-top: 1px solid #c2c2c2;
+        }
+    }
+    .hymn-top-list-button {
+        text-align: center;
+        height: 2em;
+        line-height: 2em;
+    }
+    .hymn-item {
+        padding: 0;
+        font-size: 0.8em;
+        div:nth-child(1) {
+            display: inline-block;
+        }
+        div:nth-child(2) {
+            display: inline-block;
+        }
+        div:nth-child(3) {
+            font-size: 0.6em;
+            padding-top: 0.3em;
+        }
+    }
+    .top-menu-highlight {
+        background-color: orange;
+    }
 }

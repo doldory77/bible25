@@ -7,23 +7,40 @@
 <ion-header>
 
   <ion-toolbar>
-    <ion-buttons start>
+    <ion-buttons start class="left-ion-buttons">
       <button ion-button icon-only menuToggle>
         <ion-icon name="menu"></ion-icon>
       </button>
     </ion-buttons>
-    <ion-title>hymn</ion-title>
+    <ion-title class="center-ion-title">hymn</ion-title>
     <ion-buttons end>
+      <button ion-button clear icon-only (click)="topSearchBtnFlag = !topSearchBtnFlag">
+        <ion-icon name="search"></ion-icon>
+      </button>
       <button ion-button icon-only navPop>
         <ion-icon name="close"></ion-icon>
       </button>
     </ion-buttons>
   </ion-toolbar>
 
+  <ion-grid class="hymn-top-container">
+    <ion-row>
+      <ion-col *ngFor="let menu of topMenuData; index as idx" [ngClass]="{'top-menu-highlight':menu.selected}">
+        <div class="hymn-top-list-button" (click)="showList(menu.menuIdx)">{{menu.title}}</div>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
 </ion-header>
 
 
 <ion-content padding>
-  <h1>Hymn Page</h1>
-  <player></player>
+  <ion-list>
+    <ion-item class="hymn-item" *ngFor="let item of hymnData">
+      <div>{{item.p_num}}</div>
+      <div>{{item.subject}}</div>
+      <div>통일찬송가 {{item.p_num_old}}장</div>
+    </ion-item>
+    
+  </ion-list>
 </ion-content>

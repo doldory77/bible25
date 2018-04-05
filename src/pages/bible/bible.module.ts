@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { IonicPageModule } from 'ionic-angular';
 import { BiblePage } from './bible';
-// import { LongPressModule } from 'ionic-long-press';
+import { ComponentsModule } from '../../components/components.module'
 
 @NgModule({
   declarations: [
@@ -9,7 +9,7 @@ import { BiblePage } from './bible';
   ],
   imports: [
     IonicPageModule.forChild(BiblePage),
-    // LongPressModule
+    ComponentsModule
   ],
 })
 export class BiblePageModule {}
