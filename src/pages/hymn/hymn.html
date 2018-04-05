@@ -14,7 +14,10 @@
     </ion-buttons>
     <ion-title class="center-ion-title">hymn</ion-title>
     <ion-buttons end>
-      <button ion-button clear icon-only (click)="topSearchBtnFlag = !topSearchBtnFlag">
+      <button ion-button icon-only (click)="showIndex()">
+        <ion-icon name="book"></ion-icon>
+      </button>
+      <button ion-button clear icon-only (click)="isNoneVisibleSearch = !isNoneVisibleSearch">
         <ion-icon name="search"></ion-icon>
       </button>
       <button ion-button icon-only navPop>
@@ -22,6 +25,46 @@
       </button>
     </ion-buttons>
   </ion-toolbar>
+
+  <div class="search-bar" [hidden]="isNoneVisibleSearch">
+    <div>
+      <label>검색조건</label>
+      <select>
+        <option value="0">제목</option>
+        <option value="1">가사</option>
+        <option value="2">장</option>
+      </select>
+    </div>
+    <div>
+      <input type="text" value="" placeholder="제목 또는 가사">
+    </div>
+    <div>
+      <button (click)="execSearch()">
+        <ion-icon name="search" color="light"></ion-icon>
+      </button>
+    </div>
+  </div>
+
+  <!-- <ion-toolbar [hidden]="isNoneVisibleSearch">
+    <ion-select [(ngModel)]="searchType" 
+      [selectOptions]="selectOptions" 
+      okText="선택" 
+      cancelText="취소"
+      interface="popover">
+      <ion-option value="0">검색조건: 제목</ion-option>
+      <ion-option value="1">검색조건: 가사</ion-option>
+      <ion-option value="2">검색조건: 장</ion-option>
+    </ion-select>
+    <ion-searchbar
+      [(ngModel)]="searchKeyWord"
+      [debounce]="500">
+    </ion-searchbar>
+    <ion-buttons end>
+      <button ion-button clear icon-only (click)="execSearch()">
+        <ion-icon name="search"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-toolbar> -->
 
   <ion-grid class="hymn-top-container">
     <ion-row>
