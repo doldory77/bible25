@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angular';
+import { Component, ViewChild } from '@angular/core';
+import { Content } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, AlertController, LoadingController, Loading } from 'ionic-angular';
 import { PlayerComponent } from '../../components/player/player';
 import { DbProvider } from '../../providers/db/db';
 
@@ -17,21 +18,21 @@ import { DbProvider } from '../../providers/db/db';
 })
 export class HymnPage {
 
+  @ViewChild(Content) content: Content;
+
   topMenuData: {title:string, menuIdx:number, selected:boolean}[] = [];
   hymnData: {p_num:string, p_num_old:string, subject:string}[] = [];
+  hymnCategorys: {cate_idx:number, cate_name:string}[] = [];
 
   isNoneVisibleSearch: boolean = true;
-  searchType: string = '0'
-  searchKeyWord: string = '';
-  selectOptions = {
-    title: 'Pizza Toppings',
-  };
+  loading: Loading;
 
 
   constructor(public navCtrl: NavController, 
     public navParams: NavParams,
     public db: DbProvider,
-    public alertCtrl: AlertController) {
+    public alertCtrl: AlertController,
+    public indicator: LoadingController) {
 
       this.topMenuData.push({title:'전체', menuIdx:0, selected:false});
       this.topMenuData.push({title:'100', menuIdx:1, selected:true});
@@ -45,12 +46,40 @@ export class HymnPage {
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad HymnPage');
+    // this.getHymnCategory();
     // this.showList(1);
+    setTimeout(() => { this.navCtrl.push('HymnDetailPage', {p_num:'001'}) }, 500);
   }
 
   private topMenuHighlight(targetMenuIdx:number) {
     this.topMenuData.forEach(menu => menu.selected = false);
     this.topMenuData[targetMenuIdx].selected = true;
+  }
+
+  screenUpdate(){
+    this.content.resize();
+  }
+
+  toggleSearch() {
+    this.isNoneVisibleSearch = !this.isNoneVisibleSearch;
+    this.screenUpdate();
+  }
+
+  getHymnCategory() {
+    this.db.getHymnCategory()
+      .then(rs => {
+        this.hymnCategorys = [];
+        for (let i=0, max=rs.rows.length; i<max; i++) {
+          let item = rs.rows.item(i);
+          this.hymnCategorys.push({
+            cate_idx: item.cate_idx,
+            cate_name: item.cate_name
+          })
+        }
+      })
+      .catch(err => {
+        console.log(err)
+      })
   }
 
   showList(menuIdx: number) {
@@ -74,21 +103,50 @@ export class HymnPage {
       })  
   }
 
-  execSearch() {
-    alert('search do...')
+  showListByCategoryIdx(cateIdx:number) {
+    this.db.getHymnListByCategoryIdx(cateIdx)
+      .then(rs => {
+        this.hymnData = [];
+        for (let i=0, max=rs.rows.length; i<max; i++) {
+          let item = rs.rows.item(i);
+          this.hymnData.push({
+            p_num: item.p_num,
+            p_num_old: item.p_num_old,
+            subject: item.subject
+          })
+        }
+      })
+      .catch(err => {
+        console.log(err);
+      })
+  }
+
+  execSearch(type:string, keyword:string) {
+    console.log(type, keyword);
+    this.db.getHymnListBySearch(type, keyword)
+      .then(rs => {
+        this.hymnData = [];
+        for (let i=0, max=rs.rows.length; i<max; i++) {
+          let item = rs.rows.item(i);
+          this.hymnData.push({
+            p_num: item.p_num,
+            p_num_old: item.p_num_old,
+            subject: item.subject
+          })
+        }
+      })
+      .catch(err => {console.log(err)});
   }
 
   showIndex() {
+    let radioArr: {type:string, label:string, value:any}[] = [];
+    this.hymnCategorys.forEach(category => {
+      radioArr.push({type:'radio', label:category.cate_name, value:category.cate_idx});
+    });
+    
     this.alertCtrl.create({
       title: '분류검색',
-      inputs: [
-        {type:'radio', label:'AAA', value:'1'},
-        {type:'radio', label:'AAA', value:'2'},
-        {type:'radio', label:'AAA', value:'3'},
-        {type:'radio', label:'AAA', value:'4'},
-        {type:'radio', label:'AAA', value:'5'},
-        {type:'radio', label:'AAA', value:'6'},
-      ],
+      inputs: radioArr,
       buttons: [
         {
           text:'취소',
@@ -98,6 +156,7 @@ export class HymnPage {
           text:'검색',
           handler: data => {
             console.log(data);
+            this.showListByCategoryIdx(data);
           }
         }
       ]

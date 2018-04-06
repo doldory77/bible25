@@ -154,13 +154,6 @@ export class BiblePage {
     this.content.resize();
   }
 
-  checkOrDown() {
-    this.player.checkOrDown({
-      book: String(this.db.appInfo.view_bible_book),
-      jang: String(this.db.appInfo.view_bible_jang)
-    });
-  }
-
   canOnlyPaly(): boolean {
     let currentMediaData = this.player.currentBibleAudioData;
 
@@ -233,7 +226,7 @@ export class BiblePage {
         console.log(result);
         if (result.result == 'success' && result.msg == 'Y') {
           let moveStep = direction == 'prev' ? -1 : 1;
-          this.db.updateAppInfo({
+          this.db.updateAppInfo('bible',{
             book:this.db.appInfo.view_bible_book, 
             jang:this.db.appInfo.view_bible_jang + (moveStep)
           })
@@ -260,40 +253,6 @@ export class BiblePage {
       .catch(err => {
         console.log(err);
       });
-  }
-
-  next(withPaly:boolean) {
-    this.db.checkBibleContent(true)
-      .then((result:any) => {
-        console.log(result);
-        if (result.result == 'success' && result.msg == 'Y') {
-          this.db.updateAppInfo({
-            book:this.db.appInfo.view_bible_book, 
-            jang:this.db.appInfo.view_bible_jang
-          })
-          .then(() => {
-            this.getBibleWrap();
-
-            if (withPaly && !this.playerNonVisible) {
-              this.playOrPause();
-            }
-
-          })
-          .catch(err => {
-            console.log(err);
-          })
-          
-        } else {
-          this.toast.create({
-            message: `현재 보고있는 ${this.db.appInfo.book_name}의 마지막장 입니다.`,
-            duration: 3000,
-            position: 'bottom'
-          }).present();
-        }
-      })
-      .catch(err => {
-        console.log(err);
-      })
   }
 
   roopToggle() {

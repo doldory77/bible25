@@ -69,13 +69,12 @@ export class BibleListPage {
 
   selectJang(jang: number) {
     this.db.appInfo.view_bible_jang = jang;
-    let param: {book:number, jang:number, pnumber:string} = {
+    let param: {book:number, jang:number} = {
       book: this.db.appInfo.view_bible_book,
-      jang: this.db.appInfo.view_bible_jang,
-      pnumber: this.db.appInfo.view_hymn_pnum
+      jang: this.db.appInfo.view_bible_jang
     }
     console.log('updat app info ======> ', param);
-    this.db.updateAppInfo(param);
+    this.db.updateAppInfo('bible',param);
     setTimeout(() => {
       this.navCtrl.pop();
     }, 200);

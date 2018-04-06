@@ -233,13 +233,16 @@ export class DbProvider {
     
   }
 
-  updateAppInfo(data:{book:number, jang:number, pnumber?:string}): Promise<any> {
+  updateAppInfo(type:string, data:{book?:number, jang?:number, pnumber?:string}): Promise<any> {
     return this.openDb()
       .then((dbo: SQLiteObject) => {
-        if (data.pnumber)
-          return dbo.executeSql('update app_info set view_bible_book = ?, view_bible_jang = ?, view_hymn_pnum = ?', [data.book, data.jang, data.pnumber]);
-        else
+        if (type == 'bible') {
           return dbo.executeSql('update app_info set view_bible_book = ?, view_bible_jang = ?', [data.book, data.jang]);
+        }
+        else {
+          console.log('===============> app update : ', data.pnumber);
+          return dbo.executeSql('update app_info set view_hymn_pnum = ?', [data.pnumber]);
+        }
       })
       .then(result => console.log(result))
       .catch(err => console.log(err));
@@ -270,12 +273,38 @@ export class DbProvider {
       });
   }
 
+  public pad(num:number, size:number): string {
+    let s = num+"";
+    while (s.length < size) s = "0" + s;
+    return s;
+  }
+
+  checkHymnContent(isNext:boolean): Promise<any> {
+    try {
+      let movePNum: string = '';
+      if (isNext) {
+        movePNum = this.pad(parseInt(this.appInfo.view_hymn_pnum, 10)+1,3);
+      } else {
+        movePNum = this.pad(parseInt(this.appInfo.view_hymn_pnum, 10)-1,3);
+      }
+      if (movePNum == '000' || movePNum == '601') {
+        return Promise.resolve({result:'success', msg:'N'});
+      }
+
+      return Promise.resolve({result:'success', msg:'Y'});
+
+    } catch (err) {
+      return Promise.reject({result:'fail', msg:err});
+    }
+  }
+
   getHymnList(reqNumber:number): Promise<any> {
     return this.openDb()
       .then((dbo: SQLiteObject) => {
         let query = "";
         if (reqNumber == 0) {
-          return query = "select p_num, p_num_old, subject from hymn";
+          query = "select p_num, p_num_old, subject from hymn";
+          return dbo.executeSql(query, []);
         } else {
           let beginNum: string = '';
           let endNum: string = '';
@@ -303,9 +332,64 @@ export class DbProvider {
             where p_num between ? and ?
             order by p_num
           `;
-
-          return dbo.executeSql(query, [beginNum, endNum])
+          return dbo.executeSql(query, [beginNum, endNum]);
         }
+      })
+      .catch(err => {
+        return Promise.reject(err);
+      })
+  }
+
+  getHymnCategory(): Promise<any> {
+    return this.openDb()
+      .then((dbo: SQLiteObject) => {
+        return dbo.executeSql('select cate_idx, cate_name from hymn_category where cate_idx != 0', [])
+      })
+      .catch(err => {
+        return Promise.reject(err);
+      })
+  }
+
+  getHymnListByCategoryIdx(cateIdx:number): Promise<any> {
+    return this.openDb()
+      .then((dbo: SQLiteObject) => {
+        return dbo.executeSql(`
+          select p_num, p_num_old, subject from hymn
+          where cate_idx = ? order by p_num
+        `, [cateIdx]);
+      })
+      .catch(err => {
+        return Promise.reject(err);
+      })
+  }
+
+  getHymnListBySearch(type:string, key:string): Promise<any> {
+    let query: string = 'select p_num, p_num_old, subject from hymn';
+    
+    switch (type) {
+      case "0":
+        query = query.concat(" where subject like '%'||?||'%'");
+        break;
+      case "1":
+        query = query.concat(" where song like '%'||?||'%'");
+        break;
+      case "2":
+        query = query.concat(" where p_num = ?");
+    }
+    return this.openDb()
+      .then((dbo: SQLiteObject) => {
+        
+        return dbo.executeSql(query, [key]);
+      })
+      .catch(err => {
+        return Promise.reject(err);
+      })
+  }
+
+  getHymnDetail(p_num: string): Promise<any> {
+    return this.openDb()
+      .then((dbo: SQLiteObject) => {
+        return dbo.executeSql("select p_num, subject, replace(song,char(13)||char(10),'@') song from hymn where p_num = ?",[p_num]);
       })
       .catch(err => {
         return Promise.reject(err);

@@ -1,0 +1,94 @@
+<!--
+  Generated template for the HymnDetailPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-toolbar>
+    <ion-buttons start class="left-ion-buttons">
+      <button ion-button icon-only menuToggle>
+        <ion-icon name="menu"></ion-icon>
+      </button>
+    </ion-buttons>
+    <ion-title class="center-ion-title">hymn detail</ion-title>
+    <ion-buttons end>
+      <button ion-button icon-only navPop>
+        <ion-icon name="close"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-toolbar>
+
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        <div><span>{{audio.p_num}}. </span>{{audio.subject}}</div>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <div class="media-progress-outer">
+          <div class="media-progress-inner" [style.width]="'50%'"></div>
+        </div>
+        <div class="media-time">
+          <div>{{mediaTraker}}</div>  
+          <div>{{mediaRange}}</div>  
+        </div>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col col-3>
+        <button ion-button clear icon-only (click)="move2('prev',true)">
+          <ion-icon name="skip-backward"></ion-icon>
+        </button>
+      </ion-col>
+      <ion-col col-3>
+        <button ion-button clear icon-only (click)="playOrPause2()">
+          <ion-icon name="{{playState}}"></ion-icon>
+        </button>
+      </ion-col>
+      <ion-col col-3>
+        <button ion-button clear icon-only (click)="move2('next',true)">
+          <ion-icon name="skip-forward"></ion-icon>
+        </button>
+      </ion-col>
+      <ion-col col-3>
+        <button ion-button clear icon-only [color]="isMediaRoop ? 'danger':'primary'" (click)="roopToggle()">
+          <ion-icon name="repeat"></ion-icon>
+        </button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+</ion-header>
+
+<ion-content>
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        <button ion-button small block [outline]="viewType == 0 ? false : true" (click)="viewType = 0">
+          <ion-icon name="home"></ion-icon>
+          <span>가사</span>
+        </button>
+      </ion-col>
+      <ion-col>
+        <button ion-button small block [outline]="viewType == 1 ? false : true" (click)="viewType = 1">
+          <ion-icon name="home"></ion-icon>
+          <span>악보</span>
+        </button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+  
+  <div [hidden]="viewType == 0 ? false : true">
+    <div class="viewType0" [innerHtml]="audio.song"></div>
+  </div>
+  <div [hidden]="viewType == 1 ? false : true">
+    <img src="http://bible25.bible25.com/hymn_jpg.php?p_num={{audio.p_num}}">
+  </div>
+</ion-content>
+
+<ion-footer>
+  <div text-center class="ad-demo-1">광고영역</div>
+</ion-footer>
