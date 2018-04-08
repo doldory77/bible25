@@ -1,8 +1,8 @@
 import { Component, ViewChild } from '@angular/core';
 import { Content } from 'ionic-angular';
-import { IonicPage, NavController, NavParams, AlertController, LoadingController, Loading } from 'ionic-angular';
-import { PlayerComponent } from '../../components/player/player';
+import { IonicPage, NavController, NavParams, AlertController, LoadingController, Loading, PopoverController } from 'ionic-angular';
 import { DbProvider } from '../../providers/db/db';
+import { HymnSearchTypeComponent } from '../../components/hymn-search-type/hymn-search-type';
 
 /**
  * Generated class for the HymnPage page.
@@ -27,12 +27,17 @@ export class HymnPage {
   isNoneVisibleSearch: boolean = true;
   loading: Loading;
 
+  searchType: {code:string, name:string} = {
+    code:'0', name:'제목'
+  }
+
 
   constructor(public navCtrl: NavController, 
     public navParams: NavParams,
     public db: DbProvider,
     public alertCtrl: AlertController,
-    public indicator: LoadingController) {
+    public indicator: LoadingController,
+    private popoverCtrl: PopoverController) {
 
       this.topMenuData.push({title:'전체', menuIdx:0, selected:false});
       this.topMenuData.push({title:'100', menuIdx:1, selected:true});
@@ -48,7 +53,6 @@ export class HymnPage {
     console.log('ionViewDidLoad HymnPage');
     // this.getHymnCategory();
     // this.showList(1);
-    setTimeout(() => { this.navCtrl.push('HymnDetailPage', {p_num:'001'}) }, 500);
   }
 
   private topMenuHighlight(targetMenuIdx:number) {
@@ -63,6 +67,10 @@ export class HymnPage {
   toggleSearch() {
     this.isNoneVisibleSearch = !this.isNoneVisibleSearch;
     this.screenUpdate();
+  }
+
+  showDetail(pnum: string) {
+    this.navCtrl.push('HymnDetailPage', {p_num:pnum});
   }
 
   getHymnCategory() {
@@ -123,19 +131,19 @@ export class HymnPage {
 
   execSearch(type:string, keyword:string) {
     console.log(type, keyword);
-    this.db.getHymnListBySearch(type, keyword)
-      .then(rs => {
-        this.hymnData = [];
-        for (let i=0, max=rs.rows.length; i<max; i++) {
-          let item = rs.rows.item(i);
-          this.hymnData.push({
-            p_num: item.p_num,
-            p_num_old: item.p_num_old,
-            subject: item.subject
-          })
-        }
-      })
-      .catch(err => {console.log(err)});
+    // this.db.getHymnListBySearch(type, keyword)
+    //   .then(rs => {
+    //     this.hymnData = [];
+    //     for (let i=0, max=rs.rows.length; i<max; i++) {
+    //       let item = rs.rows.item(i);
+    //       this.hymnData.push({
+    //         p_num: item.p_num,
+    //         p_num_old: item.p_num_old,
+    //         subject: item.subject
+    //       })
+    //     }
+    //   })
+    //   .catch(err => {console.log(err)});
   }
 
   showIndex() {
@@ -161,6 +169,17 @@ export class HymnPage {
         }
       ]
     }).present();
+  }
+
+  showSearchType(myEvent) {
+    let popover = this.popoverCtrl.create(HymnSearchTypeComponent, {searchType:this.searchType.code});
+    popover.present({
+      ev: myEvent
+    });
+    popover.onDidDismiss(data => {
+      console.log('receive data ===> ', data);
+      this.searchType = data;
+    });
   }
 
 }

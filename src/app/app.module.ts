@@ -13,10 +13,12 @@ import { File } from '@ionic-native/file';
 import { FileTransfer } from '@ionic-native/file-transfer';
 import { Media } from '@ionic-native/media';
 import { PlayerProvider } from '../providers/player/player';
+import { HymnSearchTypeComponent } from '../components/hymn-search-type/hymn-search-type';
 
 @NgModule({
   declarations: [
-    MyApp
+    MyApp,
+    HymnSearchTypeComponent
   ],
   imports: [
     BrowserModule,
@@ -25,7 +27,8 @@ import { PlayerProvider } from '../providers/player/player';
   ],
   bootstrap: [IonicApp],
   entryComponents: [
-    MyApp
+    MyApp,
+    HymnSearchTypeComponent
   ],
   providers: [
     StatusBar,

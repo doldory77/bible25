@@ -27,19 +27,19 @@
   </ion-toolbar>
 
   <div class="search-bar" [hidden]="isNoneVisibleSearch">
-    <div>
-      <label>검색조건</label>
-      <select #searchType>
+    <div (click)="showSearchType($event)">
+      <label>검색조건: {{searchType.name}}</label>
+      <!-- <select #searchType>
         <option value="0">제목</option>
         <option value="1">가사</option>
         <option value="2">장</option>
-      </select>
+      </select> -->
     </div>
     <div>
       <input #searchKeyword type="text" value="" placeholder="제목 또는 가사">
     </div>
     <div>
-      <button (click)="execSearch(searchType.value, searchKeyword.value)">
+      <button (click)="execSearch(searchType.code, searchKeyword.value)">
         <ion-icon name="search" color="light"></ion-icon>
       </button>
     </div>
@@ -58,7 +58,7 @@
 
 <ion-content padding>
   <ion-list>
-    <ion-item class="hymn-item" *ngFor="let item of hymnData">
+    <ion-item class="hymn-item" *ngFor="let item of hymnData" (click)="showDetail(item.p_num)">
       <div>{{item.p_num}}</div>
       <div>{{item.subject}}</div>
       <div>통일찬송가 {{item.p_num_old}}장</div>

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { 
   IonicPage, 
   LoadingController, 
@@ -9,7 +9,8 @@ import {
   ViewController, 
   Loading,
   AlertController,
-  ActionSheetController 
+  ActionSheetController,
+  Content 
 } from 'ionic-angular';
 
 import { Observable, pipe, Subscription } from 'rxjs/Rx'
@@ -32,6 +33,8 @@ export class HomePage {
     public sheetCtrl: ActionSheetController) {
 
   }
+
+  @ViewChild(Content) content: Content;
 
   iframe: any;
   unRegisterBackButton: Function;
@@ -164,6 +167,15 @@ export class HomePage {
         }
       ]
     }).present();
+  }
+
+  toggleSearchBar() {
+    this.topSearchBtnFlag = !this.topSearchBtnFlag;
+    this.screenUpdate();
+  }
+  
+  screenUpdate(){
+    this.content.resize();
   }
 
 }

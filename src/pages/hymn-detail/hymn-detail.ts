@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, LoadingController, Loading, ToastController } from 'ionic-angular';
 import { DbProvider } from '../../providers/db/db';
 import { PlayerProvider } from '../../providers/player/player';
+import { Observable, pipe, Subscription } from 'rxjs/Rx'
+import { map } from 'rxjs/operators'
 
 /**
  * Generated class for the HymnDetailPage page.
@@ -22,6 +24,9 @@ export class HymnDetailPage {
   mediaRange: string = '--:--';
   isMediaRoop: boolean = false;
   loading: Loading
+  currentPnumber: string;
+  trackerSubscription: Subscription;
+  currentTrack: string = '5%';
 
   viewType: number = 0;
 
@@ -48,9 +53,23 @@ export class HymnDetailPage {
       this.db.updateAppInfo('hymn', {pnumber:tmpPNumber})
         .then(result => {
           console.log(result);
-          this.getHymnDetail(this.db.appInfo.view_hymn_pnum);
+          this.getHymnDetail(tmpPNumber);
         })
         .catch(err => {console.log(err)});
+    }
+  }
+
+  ionViewWillEnter() {
+    console.log('===========> ionViewWillEnter');
+    // this.trackerSubscription = this.startPlayBack();    
+  }
+
+  ionViewWillLeave() {
+    console.log('===========> ionViewWillLeave');
+    this.trackerSubscription.unsubscribe();
+    if (this.player.isMediaObjectLive) {
+      this.player.stop();
+      this.player.release();
     }
   }
 
@@ -67,113 +86,96 @@ export class HymnDetailPage {
       })
   }
 
-  canOnlyPaly(): boolean {
-    return false;
-    // const flag = this.player.isMediaObjectLive();
-    // if (flag && this.oldHymnPNumber == String(this.db.appInfo.view_hymn_pnum)) {
-    //   return true;
-    // } else {
-    //   return false;
-    // }
+  startPlayBack(): Subscription {
+    return Observable.interval(500)
+      .pipe(
+        map(() => {
+          this.player.getPosition()
+            .then(data => {
+              let totRangeNum = Math.floor(this.player.getDuration());
+              let curTimeValNum = Math.ceil(data);
+              let percentValNum = curTimeValNum / totRangeNum * 100;
+
+              let minVal = Math.floor(curTimeValNum / 60);
+              let secVal = Math.floor(curTimeValNum % 60);
+
+              this.mediaTraker = minVal > 0 ? (minVal + ':' + this.db.pad(secVal,2)) : (this.db.pad(secVal,2) + '');
+              this.currentTrack = String(percentValNum) + "%";
+              
+              if (curTimeValNum >= totRangeNum) {
+                this.player.stop();
+                this.playState = 'play';
+                this.mediaTraker = "0"
+                this.currentTrack = "1%";
+              }
+
+              // console.log(data);
+            })
+        })
+      ).subscribe()
   }
 
   playOrPause2() {
-    this.player.checkOrDownHymn(this.db.appInfo.view_hymn_pnum)
-      .then(result => {
-        console.log(result);
-        this.playState = 'pause';
+    // 플레이중이면 일시정지
+    if (this.playState == 'pause') {
+      this.player.pause();
+      this.playState = 'play';
+      if (this.trackerSubscription) this.trackerSubscription.unsubscribe();
+      return;
+    }
+    // 동일한 찬송이면 일시정지 풀기
+    if (this.currentPnumber == this.db.appInfo.view_hymn_pnum) {
+      console.log('이전:', this.currentPnumber, '지금:', this.db.appInfo.view_hymn_pnum);
+      this.player.play();
+      this.playState = 'pause';
+      this.trackerSubscription = this.startPlayBack();
+      return;
+    }
+    // 정지상태면 플레이
+    this.db.getAppInfo()
+      .then(() => {
+        this.player.checkOrDownHymn(this.db.appInfo.view_hymn_pnum)
+          .then(result => {
+            
+            setTimeout(() => {
+              console.log('============> duration: ', this.player.getDuration());
+              let durationNum = Math.floor(this.player.getDuration());
+              let minVal = Math.floor(durationNum / 60);
+              let secVal = durationNum % 60;
+              this.mediaRange = minVal > 0 ? (minVal + ':' + this.db.pad(secVal,2)) : (this.db.pad(secVal,2) + '');
+            }, 1000);
+
+            this.playState = 'pause';
+            this.trackerSubscription = this.startPlayBack();
+            this.currentPnumber = this.db.appInfo.view_hymn_pnum;
+          })
       })
   }
 
   move2(direction:string, withPaly:boolean) {
-    this.db.checkHymnContent(direction == 'prev' ? false : true)
+    let isNext = direction == 'next' ? true : false;
+    this.db.checkHymnContent(isNext)
       .then(result => {
         if (result.result == 'success' && result.msg == 'Y') {
-          let movePNum = direction == 'prev' ? this.db.pad(parseInt(this.db.appInfo.view_hymn_pnum, 10)-1,3) : this.db.pad(parseInt(this.db.appInfo.view_hymn_pnum, 10)+1,3);
+          let movePNum = isNext ? this.db.pad(parseInt(this.db.appInfo.view_hymn_pnum, 10)+1,3) : this.db.pad(parseInt(this.db.appInfo.view_hymn_pnum, 10)-1,3);
           console.log('===> movePage : ', movePNum);
           this.getHymnDetail(movePNum);
-          this.db.updateAppInfo('hymn', {pnumber:movePNum})
+          // 이동하게되면 항상 찬송가 페이지번호를 업데이트
+          this.db.updateAppInfo('hymn', {pnumber:movePNum});
+          // 페이지 새로고침
+          this.db.getAppInfo();
+          try {
+            this.player.stop();
+            this.playState = 'play';
+            if (this.trackerSubscription) this.trackerSubscription.unsubscribe();
+          } catch (err) {console.log(err)}
         } 
       })
   }
 
-  playOrPause() {
-    
-    if (this.playState == 'pause') {
-      this.player.pause();
-      this.playState = 'play';
-      console.log('==> current file play');
-      return;
-    }
-
-    if (this.canOnlyPaly()) {
-      
-      this.player.play();
-      this.playState = 'pause';
-    } else {
-      
-      this.loading = this.indicator.create({
-        showBackdrop: false,
-        content: `<div>Loading...</div>`, 
-        spinner: 'circles', 
-        dismissOnPageChange: true,
-      });
-      this.loading.present();
-
-      this.player.checkOrDownHymn(this.db.appInfo.view_hymn_pnum)
-      .then(result => {
-        this.playState = 'pause';
-        console.log(result);
-        if (this.loading) {
-          this.loading.dismiss();
-        }
-      })
-      .catch(err => {
-        console.log(err);
-        if (this.loading) {
-          this.loading.dismiss();
-        }
-      })
-    }
-  }
-
-  move(direction:string, withPaly:boolean) {
-    this.db.checkHymnContent(direction == 'prev' ? false : true)
-      .then(result => {
-        console.log(result);
-        if (result.result == 'success' && result.msg == 'Y') {
-
-          let movePNum = direction == 'prev' ? this.db.pad(parseInt(this.db.appInfo.view_hymn_pnum, 10)-1,3) : this.db.pad(parseInt(this.db.appInfo.view_hymn_pnum, 10)+1,3);
-          this.db.updateAppInfo('hymn',{
-            pnumber: movePNum
-          })
-          .then(() => {
-            this.getHymnDetail(movePNum);
-
-            if (withPaly) {
-              this.playOrPause();
-            }
-
-          })
-          .catch(err => {
-            console.log(err);
-          })
-          
-        } else {
-          this.toast.create({
-            message: `해당 장에서 더이상 읽을 자료가 없습니다.`,
-            duration: 3000,
-            position: 'bottom'
-          }).present();
-        }
-      })
-      .catch(err => {
-        console.log(err);
-      });
-  }
-
   roopToggle() {
     this.isMediaRoop = !this.isMediaRoop;
+    console.log('===========> duration: ', this.player.getDuration());
   }
 
 }

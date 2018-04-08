@@ -240,7 +240,6 @@ export class DbProvider {
           return dbo.executeSql('update app_info set view_bible_book = ?, view_bible_jang = ?', [data.book, data.jang]);
         }
         else {
-          console.log('===============> app update : ', data.pnumber);
           return dbo.executeSql('update app_info set view_hymn_pnum = ?', [data.pnumber]);
         }
       })
@@ -280,22 +279,26 @@ export class DbProvider {
   }
 
   checkHymnContent(isNext:boolean): Promise<any> {
-    try {
-      let movePNum: string = '';
-      if (isNext) {
-        movePNum = this.pad(parseInt(this.appInfo.view_hymn_pnum, 10)+1,3);
-      } else {
-        movePNum = this.pad(parseInt(this.appInfo.view_hymn_pnum, 10)-1,3);
-      }
-      if (movePNum == '000' || movePNum == '601') {
-        return Promise.resolve({result:'success', msg:'N'});
-      }
+    return this.getAppInfo()
+      .then(() => {
+        try {
+          let movePNum: string = '';
+          if (isNext) {
+            movePNum = this.pad(parseInt(this.appInfo.view_hymn_pnum, 10)+1,3);
+          } else {
+            movePNum = this.pad(parseInt(this.appInfo.view_hymn_pnum, 10)-1,3);
+          }
 
-      return Promise.resolve({result:'success', msg:'Y'});
-
-    } catch (err) {
-      return Promise.reject({result:'fail', msg:err});
-    }
+          if (movePNum == '000' || movePNum == '601') {
+            return Promise.resolve({result:'success', msg:'N'});
+          }
+    
+          return Promise.resolve({result:'success', msg:'Y'});
+    
+        } catch (err) {
+          return Promise.reject({result:'fail', msg:err});
+        }
+      })
   }
 
   getHymnList(reqNumber:number): Promise<any> {

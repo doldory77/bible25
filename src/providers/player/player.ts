@@ -115,13 +115,32 @@ export class PlayerProvider {
     }
   }
 
+  release() {
+    if (this.mediaObj) {
+      this.mediaObj.release();
+    }
+  }
+
   isMediaObjectLive(): boolean {
-    console.log('==============> curr mediaObj: ', this.mediaObj);
     if (this.mediaObj) {
       return true;
     } else {
       return false;
     }
+  }
+
+  getDuration(): number {
+    if (this.isMediaObjectLive()) {
+      return this.mediaObj.getDuration();
+    }
+    return 0;
+  }
+
+  getPosition(): Promise<any> {
+    if (this.isMediaObjectLive()) {
+      return this.mediaObj.getCurrentPosition()
+    }
+    return Promise.resolve(0);
   }
 
 }

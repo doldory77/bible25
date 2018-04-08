@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
-import { PlayerComponent } from './player/player';
+import { HymnSearchTypeComponent } from './hymn-search-type/hymn-search-type';
 @NgModule({
-	declarations: [PlayerComponent],
+	declarations: [HymnSearchTypeComponent],
 	imports: [],
-	exports: [PlayerComponent]
+	exports: [HymnSearchTypeComponent]
 })
 export class ComponentsModule {}
