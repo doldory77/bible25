@@ -14,6 +14,7 @@ import { FileTransfer } from '@ionic-native/file-transfer';
 import { Media } from '@ionic-native/media';
 import { PlayerProvider } from '../providers/player/player';
 import { HymnSearchTypeComponent } from '../components/hymn-search-type/hymn-search-type';
+import { RestProvider } from '../providers/rest/rest';
 
 @NgModule({
   declarations: [
@@ -40,7 +41,8 @@ import { HymnSearchTypeComponent } from '../components/hymn-search-type/hymn-sea
     MenuProvider,
     SQLite,
     DbProvider,
-    PlayerProvider
+    PlayerProvider,
+    RestProvider
   ]
 })
 export class AppModule {}

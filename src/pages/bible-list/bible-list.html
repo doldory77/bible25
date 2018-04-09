@@ -60,50 +60,11 @@
   </ion-grid>
 
   <ion-list [hidden]="viewMode == 'type1'">
-    <ion-item text-wrap>
+    <ion-item text-wrap *ngFor="let item of bibleList">
       <div class="bible-item">
-        <div>창세기</div>
+        <div>{{item.name}}</div>
         <ul>
-            <li>1</li>
-            <li>1</li>
-            <li>1</li>
-            <li>1</li>
-            <li>1</li>
-            <li>1</li>
-            <li>1</li>
-            <li>1</li>
-            <li>1</li>
-            <li>1</li>
-            <li>1</li>
-            <li>1</li>
-            <li>1</li>
-        </ul>  
-      </div>
-    </ion-item>
-    <ion-item text-wrap>
-      <div class="bible-item">
-        <div>창세기</div>
-        <ul>
-          <li>1</li>
-          <li>1</li>
-          <li>1</li>
-          <li>1</li>
-          <li>1</li>
-          <li>1</li>
-          <li>1</li>
-          <li>1</li>
-          <li>1</li>
-          <li>1</li>
-          <li>1</li>
-          <li>1</li>
-          <li>1</li>
-          <li>1</li>
-          <li>1</li>
-          <li>1</li>
-          <li>1</li>
-          <li>1</li>
-          <li>1</li>
-          <li>1</li>
+            <li *ngFor="let number of bibleRangeMapByAllBook.get(item.book)" (click)="selectBookAndJang(item.book, number)">{{number}}</li>
         </ul>  
       </div>
     </ion-item>

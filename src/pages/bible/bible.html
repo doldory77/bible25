@@ -48,7 +48,7 @@
     <ion-row>
       <ion-col>
         <div class="media-progress-outer">
-          <div class="media-progress-inner" [style.width]="'50%'"></div>
+          <div class="media-progress-inner" [style.width]="currentTrack"></div>
         </div>
         <div class="media-time">
           <div>{{mediaTraker}}</div>  
@@ -58,7 +58,7 @@
     </ion-row>
     <ion-row>
       <ion-col col-3>
-        <button ion-button clear icon-only (click)="prev()">
+        <button ion-button clear icon-only (click)="move('prev',true)">
           <ion-icon name="skip-backward"></ion-icon>
         </button>
       </ion-col>
@@ -68,7 +68,7 @@
         </button>
       </ion-col>
       <ion-col col-3>
-        <button ion-button clear icon-only (click)="next()">
+        <button ion-button clear icon-only (click)="move('next',true)">
           <ion-icon name="skip-forward"></ion-icon>
         </button>
       </ion-col>

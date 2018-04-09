@@ -6,6 +6,9 @@ import { MenuType } from '../../model/model-type'
 import { MenuProvider } from '../../providers/menu/menu'
 import { Content } from 'ionic-angular';
 import { PlayerProvider } from '../../providers/player/player';
+import { Observable, pipe, Subscription } from 'rxjs/Rx';
+import { map } from 'rxjs/operators';
+import { RestProvider } from '../../providers/rest/rest';
 
 /**
  * Generated class for the BiblePage page.
@@ -41,13 +44,18 @@ export class BiblePage {
   mediaRange: string = '--:--';
   isMediaRoop: boolean = false;
 
+  currentPnumber: string;
+  trackerSubscription: Subscription;
+  currentTrack: string = '5%';
+
   constructor(public navCtrl: NavController, 
     public navParams: NavParams,
     private menu: MenuProvider,
     private db: DbProvider,
     private indicator: LoadingController,
     private player: PlayerProvider,
-    private toast: ToastController) {
+    private toast: ToastController,
+    private rest: RestProvider) {
 
       Array.from(this.menu.MenuData.keys())
         .filter(key => key.startsWith('bible_menu'))
@@ -76,6 +84,15 @@ export class BiblePage {
     console.log(this.db.appInfo);
     this.getBibleWrap()
 
+  }
+
+  ionViewWillLeave() {
+    console.log('===========> ionViewWillLeave');
+    this.trackerSubscription.unsubscribe();
+    if (this.player.isMediaObjectLive) {
+      this.player.stop();
+      this.player.release();
+    }
   }
 
   test() {
@@ -178,14 +195,14 @@ export class BiblePage {
     if (this.playState == 'pause') {
       this.player.pause();
       this.playState = 'play';
-      console.log('=================> now pause');
+      if (this.trackerSubscription) this.trackerSubscription.unsubscribe();
       return;
     }
 
-    console.log('=================> now play');
     if (this.canOnlyPaly()) {
       this.player.play();
       this.playState = 'pause';
+      this.trackerSubscription = this.startPlayBack();
     } else {
       
       this.loading = this.indicator.create({
@@ -201,7 +218,17 @@ export class BiblePage {
         jang: String(this.db.appInfo.view_bible_jang)
       })
       .then(result => {
+
+        setTimeout(() => {
+          console.log('============> duration: ', this.player.getDuration());
+          let durationNum = Math.floor(this.player.getDuration());
+          let minVal = Math.floor(durationNum / 60);
+          let secVal = durationNum % 60;
+          this.mediaRange = minVal > 0 ? (minVal + ':' + this.db.pad(secVal,2)) : (this.db.pad(secVal,2) + '');
+        }, 1000);
+
         this.playState = 'pause';
+        this.trackerSubscription = this.startPlayBack();
         console.log(result);
         if (this.loading) {
           this.loading.dismiss();
@@ -233,9 +260,19 @@ export class BiblePage {
           .then(() => {
             this.getBibleWrap();
 
-            if (withPaly && !this.playerNonVisible) {
-              this.playOrPause();
-            }
+            this.db.getAppInfo();
+            try {
+              this.player.stop();
+              this.playState = 'play';
+              this.mediaTraker = "0"
+              this.currentTrack = "1%";
+              this.mediaRange = '--:--';
+              if (this.trackerSubscription) this.trackerSubscription.unsubscribe();
+            } catch (err) {console.log(err)}
+
+            // if (withPaly && !this.playerNonVisible) {
+            //   this.playOrPause();
+            // }
 
           })
           .catch(err => {
@@ -257,5 +294,41 @@ export class BiblePage {
 
   roopToggle() {
     this.isMediaRoop = !this.isMediaRoop;
+    this.rest.getBibleSupportInfo('1','1','tab1')
+      .then(res => {
+        console.log(res);
+      })
+      .catch(err => {
+        console.log(err);
+      })
+  }
+
+  startPlayBack(): Subscription {
+    return Observable.interval(500)
+      .pipe(
+        map(() => {
+          this.player.getPosition()
+            .then(data => {
+              let totRangeNum = Math.floor(this.player.getDuration());
+              let curTimeValNum = Math.ceil(data);
+              let percentValNum = curTimeValNum / totRangeNum * 100;
+
+              let minVal = Math.floor(curTimeValNum / 60);
+              let secVal = Math.floor(curTimeValNum % 60);
+
+              this.mediaTraker = minVal > 0 ? (minVal + ':' + this.db.pad(secVal,2)) : (this.db.pad(secVal,2) + '');
+              this.currentTrack = String(percentValNum) + "%";
+              
+              if (curTimeValNum >= totRangeNum) {
+                this.player.stop();
+                this.playState = 'play';
+                this.mediaTraker = "0"
+                this.currentTrack = "1%";
+              }
+
+              // console.log(data);
+            })
+        })
+      ).subscribe()
   }
 }

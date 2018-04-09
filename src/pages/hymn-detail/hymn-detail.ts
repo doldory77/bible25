@@ -61,7 +61,6 @@ export class HymnDetailPage {
 
   ionViewWillEnter() {
     console.log('===========> ionViewWillEnter');
-    // this.trackerSubscription = this.startPlayBack();    
   }
 
   ionViewWillLeave() {
@@ -167,6 +166,9 @@ export class HymnDetailPage {
           try {
             this.player.stop();
             this.playState = 'play';
+            this.mediaTraker = "0"
+            this.currentTrack = "1%";
+            this.mediaRange = '--:--';
             if (this.trackerSubscription) this.trackerSubscription.unsubscribe();
           } catch (err) {console.log(err)}
         } 

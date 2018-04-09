@@ -54,10 +54,10 @@ export class BibleListPage {
   changeViewMode() {
     if (this.viewMode === 'type2') {
       this.viewMode = 'type1';
-      this.viewModeIconName = 'menu';
+      this.viewModeIconName = 'list-box';
     } else {
       this.viewMode = 'type2';
-      this.viewModeIconName = 'home';
+      this.viewModeIconName = 'apps';
     }
   }
 
@@ -68,6 +68,20 @@ export class BibleListPage {
   }
 
   selectJang(jang: number) {
+    this.db.appInfo.view_bible_jang = jang;
+    let param: {book:number, jang:number} = {
+      book: this.db.appInfo.view_bible_book,
+      jang: this.db.appInfo.view_bible_jang
+    }
+    console.log('updat app info ======> ', param);
+    this.db.updateAppInfo('bible',param);
+    setTimeout(() => {
+      this.navCtrl.pop();
+    }, 200);
+  }
+
+  selectBookAndJang(book:number, jang:number) {
+    this.db.appInfo.view_bible_book = book;
     this.db.appInfo.view_bible_jang = jang;
     let param: {book:number, jang:number} = {
       book: this.db.appInfo.view_bible_book,

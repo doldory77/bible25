@@ -51,8 +51,8 @@ export class HymnPage {
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad HymnPage');
-    // this.getHymnCategory();
-    // this.showList(1);
+    this.getHymnCategory();
+    this.showList(1);
   }
 
   private topMenuHighlight(targetMenuIdx:number) {
