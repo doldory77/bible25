@@ -157,7 +157,7 @@ export class BiblePage {
       // this.db.appInfo.view_bible_jang = 1;
       this.rest.getBibleSupportInfo(String(this.db.appInfo.view_bible_book), String(this.db.appInfo.view_bible_jang), menu.url)
         .then(rs => {
-          console.log('======> ', rs);
+          // console.log('======> ', rs);
           this.loading.dismiss();
           let tmpArr: any[] = (<any[]>rs);
           if (tmpArr.length > 0) {

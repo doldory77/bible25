@@ -32,10 +32,8 @@ export class RestProvider {
           data.context = data.context.replace(/(\n|\r\n)/g, '<br>');
           return data;
         })
-        .concatMap(data => data)
-        // .do(data => {console.log('==>', data)})
+        .reduce((acc, value) => [...acc, value],[])
         .subscribe(res => {
-          console.log('====> ', res);
           resolve(res)
         }, err => {reject(err)});
     }); 
