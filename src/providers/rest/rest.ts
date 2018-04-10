@@ -25,7 +25,9 @@ export class RestProvider {
         .replace('#tab', tab);
 
       this.http.get(url)
-        .subscribe(res => {resolve(res)}, err => {reject(err)});
+        .subscribe(res => {
+          resolve(res)
+        }, err => {reject(err)});
     }); 
   }
 

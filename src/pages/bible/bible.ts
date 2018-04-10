@@ -29,9 +29,10 @@ export class BiblePage {
   isBibleMode: boolean = true;
   menuData: MenuType[] = [];
   data: any[] = [];
-  iframe: any;
+  // iframe: any;
   loading: Loading;
   bibleContents: {lang:string, book:number, jul:number, content:string, ord:number}[] = [];
+  bibleSupportContents: {title:string, bible:string, context:string, img_name:string}[] = [];
 
   currBookName: string = '';
   currJangNumber: number = 0;
@@ -69,7 +70,7 @@ export class BiblePage {
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad BiblePage');
-    this.iframe = document.getElementById('iframe2')['contentWindow'];
+    // this.iframe = document.getElementById('iframe2')['contentWindow'];
     this.menuData[0].selected = true;
 
     setTimeout(() => {
@@ -151,7 +152,24 @@ export class BiblePage {
         dismissOnPageChange: true, 
       });
       this.loading.present();
-      this.iframe.location.href = menu.url;
+      // this.iframe.location.href = menu.url;
+      this.rest.getBibleSupportInfo(String(this.db.appInfo.view_bible_book), String(this.db.appInfo.view_bible_jang), menu.url)
+        .then(rs => {
+          this.loading.dismiss();
+          let tmpArr: any[] = (<any[]>rs);
+          
+          if (tmpArr.length > 0) {
+            this.bibleSupportContents = [];
+            tmpArr.forEach(item => {
+              this.bibleSupportContents.push(item);
+            })
+          }
+
+        })
+        .catch(err => {
+          this.loading.dismiss();
+          console.log(err);
+        })
     } else {
       this.isBibleMode = true;
       setTimeout(() => {

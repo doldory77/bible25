@@ -128,42 +128,42 @@ export class MenuProvider {
           page: '',
           selected: false,
           menuLevel: 'sub_menu',
-          url: 'http://ch2ho.bible25.com/m/bbs/board2.php?bo_table=bible&t=tab1&key=NKRV&key2=&key3=&book=1&jang=1&tab_title=Study'
+          url: 'tab1'
       })
       .set('bible_menu2', {
           name: '해설',
           page: '',
           selected: false,
           menuLevel: 'sub_menu',
-          url: 'http://ch2ho.bible25.com/m/bbs/board2.php?bo_table=bible&t=tab2&key=NKRV&key2=&key3=&book=1&jang=1&tab_title=해설'
+          url: 'tab2'
       })
       .set('bible_menu3', {
           name: '핵심',
           page: '',
           selected: false,
           menuLevel: 'sub_menu',
-          url: 'http://ch2ho.bible25.com/m/bbs/board2.php?bo_table=bible&t=tab5&key=NKRV&key2=&key3=&book=1&jang=1&tab_title=핵심'
+          url: 'tab5'
       })
       .set('bible_menu4', {
           name: '묵상',
           page: '',
           selected: false,
           menuLevel: 'sub_menu',
-          url: 'http://ch2ho.bible25.com/m/bbs/board2.php?bo_table=bible&t=tab3&key=NKRV&key2=&key3=&book=1&jang=1&tab_title=묵상'
+          url: 'tab3'
       })
       .set('bible_menu5', {
           name: 'Q&A',
           page: '',
           selected: false,
           menuLevel: 'sub_menu',
-          url: 'http://ch2ho.bible25.com/m/bbs/board2.php?bo_table=bible&t=tab4&key=NKRV&key2=&key3=&book=1&jang=1&tab_title=Q&A'
+          url: 'tab4'
       })
       .set('bible_menu6', {
           name: '포토',
           page: '',
           selected: false,
           menuLevel: 'sub_menu',
-          url: 'http://ch2ho.bible25.com/m/bbs/board2.php?bo_table=bible&t=tab6&key=NKRV&key2=&key3=&book=1&jang=1&tab_title=포토'
+          url: 'tab6'
       })
 
   constructor() {

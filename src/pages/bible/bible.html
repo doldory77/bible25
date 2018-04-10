@@ -86,7 +86,15 @@
 
 <ion-content>
 
-  <iframe [hidden]="isBibleMode" id="iframe2" (load)="iframeLoaded()" src="http://ch2ho.bible25.com/m/bbs/board2.php?bo_table=bible&t=tab1&key=NKRV&key2=&key3=&book=1&jang=1&tab_title=Study" width="100%" height="100%" seamless></iframe>
+  <!-- <iframe [hidden]="isBibleMode" id="iframe2" (load)="iframeLoaded()" src="http://ch2ho.bible25.com/m/bbs/board2.php?bo_table=bible&t=tab1&key=NKRV&key2=&key3=&book=1&jang=1&tab_title=Study" width="100%" height="100%" seamless></iframe> -->
+  <ion-list [hidden]="isBibleMode">
+    <ion-item text-wrap *ngFor="let item of bibleSupportContents">
+      <div class="bible-support-title" *ngIf="item.title != ''">{{item.title}}&nbsp;<span *ngIf="item.bible != ''">({{item.bible}})</span></div>
+      <div *ngIf="item.context != ''">{{item.context}}</div>
+      <div *ngIf="item.img_name != ''">{{item.img_name}}</div>
+    </ion-item>
+  </ion-list>
+
   <ion-list [hidden]="!isBibleMode" class="bible-content-list">
     <ion-item *ngFor="let item of bibleContents" text-wrap>
       <span class="bible-jul">{{item.jul}}</span><span class="bible-content">{{item.content}}</span>
