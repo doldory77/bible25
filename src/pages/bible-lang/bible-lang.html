@@ -1,0 +1,35 @@
+<ion-header>
+
+  <ion-toolbar>
+    <ion-buttons start class="left-ion-buttons">
+      <button ion-button clear icon-only menuToggle>
+        <ion-icon name="menu"></ion-icon>
+      </button>
+    </ion-buttons>
+    <ion-title class="center-ion-title">번역본</ion-title>
+    <ion-buttons end>
+      <button ion-button clear icon-only navPop>
+        <ion-icon name="close"></ion-icon>
+      </button> 
+    </ion-buttons>
+  </ion-toolbar>
+
+</ion-header>
+
+<ion-content>
+  <ion-list>
+    <ion-item *ngFor="let item of getValue()">
+      <div class="bible-lang-item">
+        <div>
+          <input type="checkbox" [checked]="item.selected == 'Y'">
+        </div>
+        <div>{{item.eng_name}}</div>
+        <div>{{item.kor_name}}</div>
+        <div *ngIf="item.downloaded == 'Y'" class="download-complete">완료</div>
+        <div *ngIf="item.downloaded == 'N'">
+          <button ion-button small (click)="downloadAndDbInsert('cha')">다운로드</button>
+        </div>
+      </div>
+    </ion-item>
+  </ion-list>
+</ion-content>

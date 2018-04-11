@@ -1,9 +1,3 @@
-<!--
-  Generated template for the BiblePage page.
-
-  See http://ionicframework.com/docs/components/#navigation for more info on
-  Ionic pages and navigation.
--->
 <ion-header>
 
   <ion-toolbar>
@@ -29,7 +23,7 @@
         <button ion-button clear small [navPush]="'BibleListPage'">{{currBookName}}({{currJangNumber}}장)</button>
       </ion-col>
       <ion-col col-4 text-center>
-        <button ion-button clear small>{{currSelectedLanguage}}</button>
+        <button ion-button clear small [navPush]="'BibleLangPage'">{{currSelectedLanguage}}</button>
       </ion-col>
       <ion-col col-2 text-center>
         <button ion-button clear icon-only small [color]="playerNonVisible ? 'primary' : 'danger'" (click)="togglePlayer()">
@@ -91,7 +85,11 @@
     <ion-item text-wrap *ngFor="let item of bibleSupportContents">
       <div class="bible-support-title" *ngIf="item.title != ''">{{item.title}}&nbsp;<span *ngIf="item.bible != ''">({{item.bible}})</span></div>
       <div *ngIf="item.context != ''" [innerHtml]="item.context"></div>
-      <div *ngIf="item.img_name != ''">{{item.img_name}}</div>
+      <div *ngIf="item.img_name != ''">
+        <img [src]="item.img_name">
+        <div *ngIf="item.title != ''">{{item.title}} <span>({{item.jang}} : item.jul)</span></div>
+        <div *ngIf="item.content != ''">{{item.content}}</div>
+      </div>
     </ion-item>
   </ion-list>
 

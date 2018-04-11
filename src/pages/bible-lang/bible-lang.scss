@@ -1,0 +1,15 @@
+page-bible-lang {
+    .bible-lang-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        
+        div {
+            flex-basis: 4em;
+        }
+        .download-complete {
+            text-align: center;
+        }
+
+    }
+}

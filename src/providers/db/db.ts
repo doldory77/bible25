@@ -3,13 +3,8 @@ import { Injectable } from '@angular/core';
 import { Platform } from 'ionic-angular';
 import { SQLite, SQLiteObject } from '@ionic-native/sqlite';
 import { AppInfoType } from '../../model/model-type';
+import { File } from '@ionic-native/file';
 
-/*
-  Generated class for the DbProvider provider.
-
-  See https://angular.io/guide/dependency-injection for more info on providers
-  and Angular DI.
-*/
 @Injectable()
 export class DbProvider {
 
@@ -25,7 +20,8 @@ export class DbProvider {
 
   constructor(public http: HttpClient,
     private platform: Platform,
-    private sqlite: SQLite) {
+    private sqlite: SQLite,
+    private file: File) {
     console.log('Hello DbProvider Provider');
   }
 
@@ -393,6 +389,24 @@ export class DbProvider {
     return this.openDb()
       .then((dbo: SQLiteObject) => {
         return dbo.executeSql("select p_num, subject, replace(song,char(13)||char(10),'@') song from hymn where p_num = ?",[p_num]);
+      })
+      .catch(err => {
+        return Promise.reject(err);
+      })
+  }
+
+  getBibleLangList(): Promise<any> {
+    return this.openDb()
+      .then((dbo: SQLiteObject) => {
+        return dbo.executeSql(`
+          select
+            selected,
+            eng_name,
+            case kor_name when '' then eng_name else kor_name end kor_name,
+            downloaded
+          from bible_db_name
+          order by seq
+        `, [])
       })
       .catch(err => {
         return Promise.reject(err);

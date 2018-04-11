@@ -10,13 +10,6 @@ import { Observable, pipe, Subscription } from 'rxjs/Rx';
 import { map } from 'rxjs/operators';
 import { RestProvider } from '../../providers/rest/rest';
 
-/**
- * Generated class for the BiblePage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
-
 @IonicPage()
 @Component({
   selector: 'page-bible',
@@ -61,34 +54,25 @@ export class BiblePage {
       Array.from(this.menu.MenuData.keys())
         .filter(key => key.startsWith('bible_menu'))
         .forEach(key => {
-          console.log(key);
           this.menuData.push(this.menu.MenuData.get(key));
         });
 
-        // console.log(this.menuData);
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad BiblePage');
-    // this.iframe = document.getElementById('iframe2')['contentWindow'];
     this.menuData[0].selected = true;
 
     setTimeout(() => {
-      // this.navCtrl.push('BibleListPage');
       console.log('TODO: 사용자가 최종 본 성경이 없으면 리스트 페이지 표시 후 되돌아오기')
     }, 2000);
     
   }
 
   ionViewWillEnter() {
-    console.log('bible will enter=========>');
-    console.log(this.db.appInfo);
     this.getBibleWrap()
-
   }
 
   ionViewWillLeave() {
-    console.log('===========> ionViewWillLeave');
     if (this.trackerSubscription) {
       this.trackerSubscription.unsubscribe();
     }
@@ -107,8 +91,7 @@ export class BiblePage {
 
     this.db.getAppInfo()
     .then(result => {
-      // console.log(result);
-      // console.log(this.db.appInfo);
+      
       let params = {
         book: this.db.appInfo.view_bible_book,
         jang: this.db.appInfo.view_bible_jang,
@@ -125,13 +108,13 @@ export class BiblePage {
         this.currSelectedLanguage = this.db.appInfo.selected_first_name;
         this.isChange = true;
       }
+      
       console.log('===========> isChange: ', this.isChange);
+
       if (this.isChange) {
         this.db.getBibleContent(this.bibleContents, params)
           .then(result => {
-            // console.log(result);
-            // console.log("===================================>");
-            // console.log(this.bibleContents);
+            
           })
           .catch(err => console.log(err));
       }
@@ -156,15 +139,9 @@ export class BiblePage {
         dismissOnPageChange: true, 
       });
       this.loading.present();
-<<<<<<< HEAD
-=======
-      // this.iframe.location.href = menu.url;
-      // this.db.appInfo.view_bible_book = 1;
-      // this.db.appInfo.view_bible_jang = 1;
->>>>>>> ee890f520fa11ccfec100d293b12d8a307e7ac8c
+      
       this.rest.getBibleSupportInfo(String(this.db.appInfo.view_bible_book), String(this.db.appInfo.view_bible_jang), menu.url)
         .then(rs => {
-          // console.log('======> ', rs);
           this.loading.dismiss();
           let tmpArr: any[] = (<any[]>rs);
           if (tmpArr.length > 0) {
@@ -353,7 +330,6 @@ export class BiblePage {
                 this.currentTrack = "1%";
               }
 
-              // console.log(data);
             })
         })
       ).subscribe()
