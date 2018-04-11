@@ -1,5 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs/Observable'
+// import { map } from 'rxjs/operators';
 
 /*
   Generated class for the RestProvider provider.
@@ -25,6 +27,12 @@ export class RestProvider {
         .replace('#tab', tab);
 
       this.http.get(url)
+        .flatMap(data => {return Observable.from(<any[]>data)})
+        .map(data => {
+          data.context = data.context.replace(/(\n|\r\n)/g, '<br>');
+          return data;
+        })
+        .reduce((acc, value) => [...acc, value],[])
         .subscribe(res => {
           resolve(res)
         }, err => {reject(err)});

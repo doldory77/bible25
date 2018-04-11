@@ -90,7 +90,7 @@
   <ion-list [hidden]="isBibleMode">
     <ion-item text-wrap *ngFor="let item of bibleSupportContents">
       <div class="bible-support-title" *ngIf="item.title != ''">{{item.title}}&nbsp;<span *ngIf="item.bible != ''">({{item.bible}})</span></div>
-      <div *ngIf="item.context != ''">{{item.context}}</div>
+      <div *ngIf="item.context != ''" [innerHtml]="item.context"></div>
       <div *ngIf="item.img_name != ''">{{item.img_name}}</div>
     </ion-item>
   </ion-list>
