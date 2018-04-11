@@ -78,8 +78,9 @@ export class BibleLangPage {
             }
             return [`insert into bible_${lang} (_id, book, jang, jul, content, bname, bibletype) values (?,?,?,?,?,?,?)`, tmp];
           })
-          .reduce((acc, value) => [...acc, value],[])
-          // .take(10)
+          
+          .take(10)
+          .flatMap(value => Observable.of(value))
           .subscribe(
             result => console.log(result),
             err => console.log(err),
