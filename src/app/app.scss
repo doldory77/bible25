@@ -82,3 +82,10 @@
     padding-top: 0.3em;
     font-size: 0.6em;
 }
+
+ion-loading.only-loading-icon {
+    .loading-wrapper {
+        background: transparent;
+        box-shadow: none;
+    }
+}

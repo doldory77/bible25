@@ -89,7 +89,9 @@ export class BiblePage {
 
   ionViewWillLeave() {
     console.log('===========> ionViewWillLeave');
-    this.trackerSubscription.unsubscribe();
+    if (this.trackerSubscription) {
+      this.trackerSubscription.unsubscribe();
+    }
     if (this.player.isMediaObjectLive) {
       this.player.stop();
       this.player.release();
@@ -142,17 +144,18 @@ export class BiblePage {
     this.menuData.forEach(menu => menu.selected = false);
     const menu = this.menuData[menuNum];
     menu.selected = true;
+    
+    this.screenUpdate();
 
     if (menuNum > 0) {
       this.isBibleMode = false;
       this.loading = this.indicator.create({
         showBackdrop: false,
-        content: `<div>Loading...</div>`, 
-        spinner: 'circles', 
+        spinner: 'circles',
+        cssClass: 'only-loading-icon', 
         dismissOnPageChange: true, 
       });
       this.loading.present();
-      // this.iframe.location.href = menu.url;
       this.rest.getBibleSupportInfo(String(this.db.appInfo.view_bible_book), String(this.db.appInfo.view_bible_jang), menu.url)
         .then(rs => {
           this.loading.dismiss();
