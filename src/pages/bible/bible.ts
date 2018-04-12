@@ -30,6 +30,7 @@ export class BiblePage {
   currBookName: string = '';
   currJangNumber: number = 0;
   currSelectedLanguage: string = '';
+  selectedLanguages: string = '';
   isChange: boolean = false;
 
   playerNonVisible = true;
@@ -98,12 +99,14 @@ export class BiblePage {
         multiLang: this.db.appInfo.selected_eng_names.split(',')
       }
 
-      if (this.currBookName == this.db.appInfo.book_name 
+      if (this.currBookName == this.db.appInfo.book_name
+          && this.selectedLanguages == this.db.appInfo.selected_eng_names
           && this.currJangNumber == this.db.appInfo.view_bible_jang
           && this.currSelectedLanguage == this.db.appInfo.selected_first_name) {
         this.isChange = false;
       } else {
         this.currBookName = this.db.appInfo.book_name;
+        this.selectedLanguages = this.db.appInfo.selected_eng_names;
         this.currJangNumber = this.db.appInfo.view_bible_jang;
         this.currSelectedLanguage = this.db.appInfo.selected_first_name;
         this.isChange = true;

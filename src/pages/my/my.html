@@ -1,0 +1,68 @@
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>my</ion-title>
+  </ion-navbar>
+
+  <div class="my-tab-menu">
+    <div class="menu-item" [ngClass]="{highlight:menu.selected}" *ngFor="let menu of getMenu(); let i = index" (click)="toggleTabMenu(i)">
+      {{menu.title}}
+    </div>
+  </div>
+
+</ion-header>
+
+
+<ion-content>
+  <div *ngIf="currViewMode == 0">
+    <div class="bookmark-list-header">
+      <div>성경</div>
+      <div (click)="isBibleShow = !isBibleShow">
+        <ion-icon [name]="isBibleShow ? 'arrow-down' : 'arrow-forward'"></ion-icon>
+      </div>
+    </div>
+    <ion-list *ngIf="isBibleShow">
+      <ion-item *ngFor="let item of [1,2,3,4,5,6]">
+        <div class="bookmark-item">
+          <div>구약성경 > 창세기 > {{item}}장</div>
+          <div (click)="removeBookMark(item)">
+            <ion-icon name="trash"></ion-icon>
+          </div>
+        </div>
+      </ion-item>
+    </ion-list>
+
+    <div class="bookmark-list-header">
+      <div>찬송</div>
+      <div (click)="isHymnShow = !isHymnShow">
+        <ion-icon [name]="isHymnShow ? 'arrow-down' : 'arrow-forward'"></ion-icon>
+      </div>
+    </div>
+    <ion-list *ngIf="isHymnShow">
+      <ion-item *ngFor="let item of [1,2,3,4,5,6]">
+        <div class="bookmark-item">
+          <div>
+            <div>001. 만복의 근원 하나님</div>
+            <div class="hymn-sub-title">통일찬송가 006장</div>
+          </div>
+          <div (click)="removeBookMark(item)">
+            <ion-icon name="trash"></ion-icon>
+          </div>
+        </div>
+      </ion-item>
+    </ion-list>
+  </div>
+
+  <ion-list *ngIf="currViewMode == 1">
+    <ion-item>
+      성경읽기
+    </ion-item>
+  </ion-list>
+  
+  <ion-list *ngIf="currViewMode == 2">
+    <ion-item>
+      개인정보수정
+    </ion-item>
+  </ion-list>
+
+</ion-content>

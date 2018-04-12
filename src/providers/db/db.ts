@@ -413,4 +413,27 @@ export class DbProvider {
       })
   }
 
+  bulkInsertBible(bibleArray:any[], lang:string): Promise<any> {
+    return this.openDb()
+      .then((dbo: SQLiteObject) => {
+        return dbo.sqlBatch(
+          [`create table if not exists bible_${lang} ( _id INTEGER PRIMARY KEY AUTOINCREMENT , book INTEGER, jang INTEGER, jul INTEGER, bibletype INTEGER, content TEXT, bname TEXT)`
+            ,`update bible_db_name set downloaded = 'Y' where eng_name = upper('${lang}')`
+          ].concat(bibleArray))
+      })
+  }
+
+  updateSelectedBibleLang(selectedArray:any[]): Promise<any> {
+    return this.openDb()
+      .then((dbo: SQLiteObject) => {  
+        let sql = `update bible_db_name set selected = ? where eng_name = ?`;
+        let sqlArr = [];
+        selectedArray.forEach(item => {
+          sqlArr.push([sql, item]);
+        });
+        console.log(sqlArr);
+        return dbo.sqlBatch(sqlArr);
+      })
+  }
+
 }

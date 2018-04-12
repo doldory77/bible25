@@ -18,18 +18,24 @@
 
 <ion-content>
   <ion-list>
-    <ion-item *ngFor="let item of getValue()">
+    <ion-item *ngFor="let item of bibleLangList">
       <div class="bible-lang-item">
         <div>
-          <input type="checkbox" [checked]="item.selected == 'Y'">
+          <input type="checkbox" #checkBox [checked]="item.selected == 'Y'" (click)="toggleChecked(checkBox.checked, item)">
         </div>
         <div>{{item.eng_name}}</div>
         <div>{{item.kor_name}}</div>
         <div *ngIf="item.downloaded == 'Y'" class="download-complete">완료</div>
         <div *ngIf="item.downloaded == 'N'">
-          <button ion-button small (click)="downloadAndDbInsert('cha')">다운로드</button>
+          <button ion-button small (click)="downloadAndDbInsert(item.eng_name)">다운로드</button>
         </div>
       </div>
     </ion-item>
   </ion-list>
 </ion-content>
+
+<ion-footer>
+  <div class="bible-lang-footer">
+    <button ion-button small color="primary" (click)="saveShowBibleList()">저장</button>
+  </div>
+</ion-footer>
