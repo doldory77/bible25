@@ -9,6 +9,7 @@ import { PlayerProvider } from '../../providers/player/player';
 import { Observable, pipe, Subscription } from 'rxjs/Rx';
 import { map } from 'rxjs/operators';
 import { RestProvider } from '../../providers/rest/rest';
+import { UtilProvider } from '../../providers/util/util'
 
 @IonicPage()
 @Component({
@@ -43,6 +44,8 @@ export class BiblePage {
   trackerSubscription: Subscription;
   currentTrack: string = '5%';
 
+  isBookMarked: boolean = false;
+
   constructor(public navCtrl: NavController, 
     public navParams: NavParams,
     private menu: MenuProvider,
@@ -50,7 +53,8 @@ export class BiblePage {
     private indicator: LoadingController,
     private player: PlayerProvider,
     private toast: ToastController,
-    private rest: RestProvider) {
+    private rest: RestProvider,
+    private util: UtilProvider) {
 
       Array.from(this.menu.MenuData.keys())
         .filter(key => key.startsWith('bible_menu'))
@@ -83,9 +87,28 @@ export class BiblePage {
     }
   }
 
-  test() {
-    this.db.getAppInfo();
-    console.log(this.db.appInfo);
+  saveBookMark() {
+    if (this.isBookMarked) return;
+    let bookMark = {
+      bibletype: this.util.getBibleType(this.db.appInfo.view_bible_book),
+      book: this.db.appInfo.view_bible_book,
+      jang: this.db.appInfo.view_bible_jang,
+      set_time: this.util.getToday()
+    }
+    this.db.insertBookMarkForBible(bookMark)
+      .then(result => {
+        this.toast.create({
+          message: '즐겨찾기에 추가되었습니다.',
+          duration: 2000
+        }).present();
+        this.isBookMarked = true;
+      })
+      .catch(err => {
+        this.toast.create({
+          message: '즐겨찾기에 실패하였습니다.',
+          duration: 2000
+        }).present();
+      })
   }
 
   getBibleWrap() {
@@ -115,11 +138,25 @@ export class BiblePage {
       console.log('===========> isChange: ', this.isChange);
 
       if (this.isChange) {
+
         this.db.getBibleContent(this.bibleContents, params)
           .then(result => {
-            
+            this.db.isBookMarkForBible(params.book, params.jang)
+              .then(result => {
+                if (result == true) {
+                  this.isBookMarked = true;
+                } else {
+                  this.isBookMarked = false;
+                }
+              })
           })
           .catch(err => console.log(err));
+        
+        
+        this.db.insertLearnBible(this.db.appInfo.view_bible_book, this.db.appInfo.view_bible_jang)
+          .then(result => {console.log('=================>', result)})
+          .catch(err => {console.log(err)});  
+
       }
     })
     .catch(err => console.log(err));

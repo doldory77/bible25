@@ -436,4 +436,161 @@ export class DbProvider {
       })
   }
 
+  insertBookMarkForBible(bookmark:{bibletype:number, book:number, jang:number, set_time:string}): Promise<any> {
+    return this.openDb()
+      .then((dbo: SQLiteObject) => {
+        return dbo.executeSql(`
+            insert into new_book_mark (bookmark_type, bibletype, book, jang, set_time)
+            values (?,?,?,?,?)
+          `, [0, bookmark.bibletype, bookmark.book, bookmark.jang, bookmark.set_time]);
+      })
+  }
+
+  insertBookMarkHymn(bookmark:{p_num:string, set_time:string}): Promise<any> {
+    return this.openDb()
+      .then((dbo: SQLiteObject) => {
+        return dbo.executeSql(`
+            insert into new_book_mark (bookmark_type, p_num, set_time)
+            values (?,?,?)
+          `, [1, bookmark.p_num, bookmark.set_time]);
+      })
+  }
+
+  getBookMarkForBible(): Promise<any> {
+    return this.openDb()
+      .then((dbo: SQLiteObject) => {
+        return dbo.executeSql(`
+          select
+            case a.bibletype when 0 then '구약성경' else '신약성셩' end bibletype,
+            b.name,
+            a.book,
+            a.jang,
+            a.set_time
+          from new_book_mark a
+          join bible_list_kr b on (a.book = b.book)
+          where a.bookmark_type = 0
+        `,[]);
+      })
+  }
+
+  getBookMarkForHymn(): Promise<any> {
+    return this.openDb()
+      .then((dbo: SQLiteObject) => {
+        return dbo.executeSql(`
+          select
+            a.p_num,
+            b.p_num_old,
+            b.subject,
+            a.set_time
+          from new_book_mark a
+          join hymn b on (a.p_num = b.p_num)
+          where a.bookmark_type = 1 
+        `,[]);
+      })
+  }
+
+  isBookMarkForBible(book:number, jang:number): Promise<boolean> {
+    return this.openDb()
+      .then((dbo: SQLiteObject) => {
+        return dbo.executeSql(`
+          select count(*) cnt from new_book_mark
+          where bookmark_type = 0
+          and book = ?
+          and jang = ?
+        `, [book, jang])
+        .then(rs => {
+          if (rs.rows.item(0).cnt == 0) {
+            return Promise.resolve(false);
+          } else {
+            return Promise.resolve(true);
+          }
+        })
+      });
+  }
+
+  isBookMarkForHymn(p_num:string): Promise<any> {
+    return this.openDb()
+      .then((dbo: SQLiteObject) => {
+        return dbo.executeSql(`
+          select count(*) cnt from new_book_mark
+          where bookmark_type = 1
+          and p_num = ?
+        `,[p_num])
+        .then(rs => {
+          if (rs.rows.item(0).cnt == 0) {
+            return Promise.resolve(false);
+          } else {
+            return Promise.resolve(true);
+          }
+        })
+      });
+  }
+
+  deleteBookMarkForBible(book:number, jang:number): Promise<any> {
+    return this.openDb()
+      .then((dbo: SQLiteObject) => {
+        return dbo.executeSql('delete from new_book_mark where book = ? and jang = ?', [book, jang]);
+      })
+  }
+
+  deleteBookMarkForHymn(p_num:string): Promise<any> {
+    return this.openDb()
+      .then((dbo: SQLiteObject) => {
+        return dbo.executeSql('delete from new_book_mark where p_num = ?', [p_num]);
+      })
+  }
+
+  getLearningInfo(): Promise<any> {
+    return this.openDb()
+      .then((dbo: SQLiteObject) => {
+        return dbo.executeSql(`
+          select
+            learn_yn,
+            learn_start_dt,
+            learn_end_dt,
+            learn_target_amount
+          from app_info
+        `, [])
+      })
+  }
+
+  updateLearnInfo(param:{isReset:boolean, learn_yn?:string, learn_start_dt?:string, learn_end_dt?:string, learn_target_amount?:number}): Promise<any> {
+    if (param.isReset) {
+      return this.openDb()
+        .then((dbo: SQLiteObject) => {
+          return dbo.executeSql('delete from learn_bible',[]);
+        })
+    } else {
+      return this.openDb()
+        .then((dbo: SQLiteObject) => {
+          return dbo.executeSql(`
+            update app_info set learn_yn = ?,
+              learn_start_dt = ?,
+              learn_end_dt = ?,
+              learn_target_amount = ?          
+          `, [param.learn_yn, param.learn_start_dt, param.learn_end_dt, param.learn_target_amount])
+        })
+    }
+  }
+
+  insertLearnBible(book:number, jang:number): Promise<any> {
+    return this.openDb()
+      .then((dbo: SQLiteObject) => {
+        dbo.executeSql(`
+          select 
+            count(*) cnt,
+            ifnull((select learn_yn from app_info),'N') learn_yn 
+          from learn_bible 
+          where book = ? and jang = ?
+        `,[book, jang])
+          .then(rs => {
+            if (rs.rows.item(0).cnt == 0 && rs.rows.item(0).learn_yn == 'Y') {
+              return this.dbo.executeSql('insert into learn_bible (book, jang) values (?, ?)', [book, jang]);
+            } else {
+              return Promise.resolve({result:'faile', msg:rs.rows.item(0).cnt + '/' + rs.rows.item(0).learn_yn})
+            }
+          })
+      })
+  }
+
 }

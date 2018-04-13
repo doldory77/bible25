@@ -31,8 +31,8 @@
         </button>
       </ion-col>
       <ion-col col-2 text-center>
-          <button ion-button clear icon-only small (click)="test()">
-            <ion-icon name="star-outline"></ion-icon>
+          <button ion-button clear icon-only small (click)="saveBookMark()">
+            <ion-icon [name]="isBookMarked ? 'star' : 'star-outline'"></ion-icon>
           </button>
       </ion-col>
     </ion-row>

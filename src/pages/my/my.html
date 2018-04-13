@@ -22,10 +22,10 @@
       </div>
     </div>
     <ion-list *ngIf="isBibleShow">
-      <ion-item *ngFor="let item of [1,2,3,4,5,6]">
+      <ion-item *ngFor="let item of bibleBookMarkData">
         <div class="bookmark-item">
-          <div>구약성경 > 창세기 > {{item}}장</div>
-          <div (click)="removeBookMark(item)">
+          <div>{{item.bibletype}} >{{item.name}} > {{item.jang}}장</div>
+          <div (click)="removeBibleBookMark(item)">
             <ion-icon name="trash"></ion-icon>
           </div>
         </div>
@@ -39,13 +39,13 @@
       </div>
     </div>
     <ion-list *ngIf="isHymnShow">
-      <ion-item *ngFor="let item of [1,2,3,4,5,6]">
+      <ion-item *ngFor="let item of hymnBookMarkData">
         <div class="bookmark-item">
           <div>
-            <div>001. 만복의 근원 하나님</div>
-            <div class="hymn-sub-title">통일찬송가 006장</div>
+            <div>{{item.p_num}}. {{item.subject}}</div>
+            <div class="hymn-sub-title">통일찬송가 {{item.p_num_old}}장</div>
           </div>
-          <div (click)="removeBookMark(item)">
+          <div (click)="removeHymnBookMark(item)">
             <ion-icon name="trash"></ion-icon>
           </div>
         </div>
@@ -55,7 +55,59 @@
 
   <ion-list *ngIf="currViewMode == 1">
     <ion-item>
-      성경읽기
+      <ion-label>성경읽기여부</ion-label>
+      <ion-toggle [(ngModel)]="isReadingSchedul"></ion-toggle>
+    </ion-item>
+    <ion-item>
+      <ion-label>시작한 날짜:</ion-label>
+      <ion-datetime displayFormat="YYYY-MM-DD" [(ngModel)]="startReadingDate"></ion-datetime>
+    </ion-item>
+    <ion-item>
+      <ion-label>목표한 날짜:</ion-label>
+      <ion-datetime displayFormat="YYYY-MM-DD" [(ngModel)]="endReadingDate"></ion-datetime>
+    </ion-item>
+    <ion-item>
+      <ion-label>목표량:</ion-label>
+      <ion-select (ionChange)="setReadingAmount($event)" [(ngModel)]="targetAmount" interface="popover">
+        <ion-option value="1">1독</ion-option>
+        <ion-option value="2">2독</ion-option>
+        <ion-option value="3">3독</ion-option>
+        <ion-option value="4">4독</ion-option>
+      </ion-select>
+      <!-- <button ion-button item-end (click)="showTargetAmoundDialog()">{{targetAmountName}}</button> -->
+    </ion-item>
+    <ion-item>
+      <div>경과일수:</div>
+      <div item-end class="bible-range">
+        <div class="bible-range-outer">
+          <div class="bible-range-inner"></div>
+        </div>
+        <div class="bible-range-display">
+          <div>53/365</div>
+          <div>27%</div>
+        </div>
+      </div>
+    </ion-item>
+    <ion-item>
+      <div>읽은장수:</div>
+      <div item-end class="bible-range">
+        <div class="bible-range-outer">
+          <div class="bible-range-inner"></div>
+        </div>
+        <div class="bible-range-display">
+          <div>210/1365</div>
+          <div>12%</div>
+        </div>
+      </div>
+    </ion-item>
+    <ion-item>
+      <div>현재까지는 매일 평균 5~6장씩 읽으셨습니다.</div>
+      <div>앞으로 매일 7~8장씩 읽으시면 됩니다.</div>
+      <div class="bible-range-button-box">
+        <button ion-button (click)="resetLearnBible()">설정초기화</button>
+        <button ion-button (click)="saveLearnConfig()">설정저장</button>
+        <button ion-button>진도현황</button>
+      </div>
     </ion-item>
   </ion-list>
   

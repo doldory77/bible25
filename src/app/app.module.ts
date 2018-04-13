@@ -15,6 +15,7 @@ import { Media } from '@ionic-native/media';
 import { PlayerProvider } from '../providers/player/player';
 import { HymnSearchTypeComponent } from '../components/hymn-search-type/hymn-search-type';
 import { RestProvider } from '../providers/rest/rest';
+import { UtilProvider } from '../providers/util/util';
 
 @NgModule({
   declarations: [
@@ -42,7 +43,8 @@ import { RestProvider } from '../providers/rest/rest';
     SQLite,
     DbProvider,
     PlayerProvider,
-    RestProvider
+    RestProvider,
+    UtilProvider
   ]
 })
 export class AppModule {}

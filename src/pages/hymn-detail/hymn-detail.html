@@ -22,8 +22,13 @@
 
   <ion-grid>
     <ion-row>
-      <ion-col>
+      <ion-col col-10>
         <div><span>{{audio.p_num}}. </span>{{audio.subject}}</div>
+      </ion-col>
+      <ion-col col-2>
+        <div class="hymn-book-mark" (click)="saveBookMark()">
+          <ion-icon [name]="isBookMarked ? 'star' : 'star-outline'"></ion-icon>
+        </div>
       </ion-col>
     </ion-row>
     <ion-row>

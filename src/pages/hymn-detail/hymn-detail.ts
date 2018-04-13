@@ -3,7 +3,8 @@ import { IonicPage, NavController, NavParams, LoadingController, Loading, ToastC
 import { DbProvider } from '../../providers/db/db';
 import { PlayerProvider } from '../../providers/player/player';
 import { Observable, pipe, Subscription } from 'rxjs/Rx'
-import { map } from 'rxjs/operators'
+import { map } from 'rxjs/operators';
+import { UtilProvider } from '../../providers/util/util';
 
 /**
  * Generated class for the HymnDetailPage page.
@@ -28,6 +29,8 @@ export class HymnDetailPage {
   trackerSubscription: Subscription;
   currentTrack: string = '5%';
 
+  isBookMarked: boolean = false;
+
   viewType: number = 0;
 
   audio: {p_num:string, subject:string, song:string} = {
@@ -41,13 +44,13 @@ export class HymnDetailPage {
     private db: DbProvider,
     private player: PlayerProvider,
     private indicator: LoadingController,
-    private toast: ToastController) {
+    private toast: ToastController,
+    private util: UtilProvider) {
       
   }
 
   ionViewDidLoad() {
 
-    console.log('ionViewDidLoad HymnDetailPage');
     let tmpPNumber = this.navParams.get('p_num');
     if (tmpPNumber) {
       this.db.updateAppInfo('hymn', {pnumber:tmpPNumber})
@@ -78,7 +81,18 @@ export class HymnDetailPage {
         this.audio.subject = rs.rows.item(0).subject;
         this.audio.p_num = rs.rows.item(0).p_num;
         this.audio.song = rs.rows.item(0).song.replace(/@/g, '<br/><br/>');
-        console.log(this.audio);
+        this.db.isBookMarkForHymn(p_num)
+          .then(result => {
+
+            console.log('=================> is hymn bookMark: ', result);
+            
+            if (result == true) {
+              this.isBookMarked = true;
+            } else {
+              this.isBookMarked = false;
+            }
+          })
+        // console.log(this.audio);
       })
       .catch(err => {
         console.log(err);
@@ -178,6 +192,33 @@ export class HymnDetailPage {
   roopToggle() {
     this.isMediaRoop = !this.isMediaRoop;
     console.log('===========> duration: ', this.player.getDuration());
+  }
+
+  saveBookMark() {
+    this.db.getAppInfo()
+      .then(() => {
+
+        if (this.isBookMarked) return;
+        let bookMark = {
+          p_num: this.db.appInfo.view_hymn_pnum,
+          set_time: this.util.getToday()
+        }
+        this.db.insertBookMarkHymn(bookMark)
+          .then(result => {
+            this.toast.create({
+              message: '즐겨찾기에 추가되었습니다.',
+              duration: 2000
+            }).present();
+            this.isBookMarked = true;
+          })
+          .catch(err => {
+            this.toast.create({
+              message: '즐겨찾기에 실패하였습니다.',
+              duration: 2000
+            }).present();
+          })
+
+      })
   }
 
 }
