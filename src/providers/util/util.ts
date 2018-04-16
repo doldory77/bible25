@@ -37,6 +37,13 @@ export class UtilProvider {
       + this.pad(today.getDate(), 2);
   }
 
+  getNextMonthYYYYMMDD(): string {
+    let today = new Date();
+    return today.getFullYear() + '-' 
+      + this.pad(today.getMonth() + 2, 2) + '-'
+      + this.pad(today.getDate(), 2);
+  }
+
   getBibleType(book:number): number {
     if (book <= 39) {
       return 0

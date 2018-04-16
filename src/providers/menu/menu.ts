@@ -165,6 +165,13 @@ export class MenuProvider {
           menuLevel: 'sub_menu',
           url: 'tab6'
       })
+      .set('gyodok', {
+          name: '교독문',
+          page: 'GyodokPage',
+          selected: false,
+          menuLevel: 'top_menu',
+          url: ''
+      })
 
   constructor() {
 

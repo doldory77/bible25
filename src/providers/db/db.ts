@@ -4,6 +4,8 @@ import { Platform } from 'ionic-angular';
 import { SQLite, SQLiteObject } from '@ionic-native/sqlite';
 import { AppInfoType } from '../../model/model-type';
 import { File } from '@ionic-native/file';
+import { BibleLearnStateType } from '../../model/model-type';
+import { UtilProvider } from '../util/util';
 
 @Injectable()
 export class DbProvider {
@@ -21,7 +23,8 @@ export class DbProvider {
   constructor(public http: HttpClient,
     private platform: Platform,
     private sqlite: SQLite,
-    private file: File) {
+    private file: File,
+    private util: UtilProvider) {
     console.log('Hello DbProvider Provider');
   }
 
@@ -558,7 +561,12 @@ export class DbProvider {
     if (param.isReset) {
       return this.openDb()
         .then((dbo: SQLiteObject) => {
-          return dbo.executeSql('delete from learn_bible',[]);
+          return dbo.executeSql('delete from learn_bible',[])
+            .then(() => {
+              return this.dbo.executeSql(`
+                update app_info set learn_start_dt = ?, learn_end_dt = ?
+              `,[this.util.getYYYYMMDD(), this.util.getYYYYMMDD()]);
+            })
         })
     } else {
       return this.openDb()
@@ -591,6 +599,129 @@ export class DbProvider {
             }
           })
       })
+  }
+
+  getLearnStateInfo(): Promise<BibleLearnStateType> {
+    return new Promise((resolve, reject) => {
+
+      let result: BibleLearnStateType = new BibleLearnStateType();
+      result.isLearn = false;
+      result.result = false;
+      result.errMsg = "";
+      result.learn_start_dt = this.util.getYYYYMMDD();
+      result.learn_end_dt = this.util.getYYYYMMDD();
+      result.today_dt = this.util.getYYYYMMDD();
+      result.currDayCount = 0;
+      result.totalDurationDayCount = 0;
+      result.untilCurrDayPercent = "0";
+      result.untilCurrDayPercentByCeil = "0%"; 
+      result.currDayLearnJangCount = 0;
+      result.totalLearnJangCount = 0;
+      result.untilCurrLearnJangPercent = "0";
+      result.untilCurrLearnJangPercentByCeil = "0%";
+
+      this.openDb()
+        .then((dbo: SQLiteObject) => {
+          dbo.executeSql(`
+            select
+              learn_yn,
+              learn_start_dt,
+              learn_end_dt,
+              case learn_target_amount when 0 then (select sum(total_jang) from bible_list_kr) else learn_target_amount end learn_target_amount,
+              (select count(jang) from learn_bible) learn_curr_amount
+            from app_info
+          `, [])
+          .then(rs => {
+            if (rs.rows.item(0).learn_yn) {
+              if (rs.rows.item(0).learn_yn == 'Y') {
+                try {
+                  let startDt = new Date(rs.rows.item(0).learn_start_dt);
+                  let endDt = new Date(rs.rows.item(0).learn_end_dt);
+                  let todayDt = new Date(this.util.getYYYYMMDD());
+                  
+                  let currDayCount = (todayDt.getTime() - startDt.getTime()) / (1000 * 60 * 60 * 24);
+                  let totalDurationDayCount = (endDt.getTime() - startDt.getTime()) / (1000 * 60 * 60 * 24);
+                  
+                  let untilCurrDayPercent = "0";
+                  if (totalDurationDayCount > 0) {
+                    if (currDayCount == 0) {
+                      // 시작날짜가 현재날짜와 같을때(경과일수가 0일때 버그 수정)
+                      currDayCount = 1;
+                    }
+                    untilCurrDayPercent = (currDayCount / totalDurationDayCount * 100).toFixed(2);
+                  }
+                  let currDayLearnJangCount = rs.rows.item(0).learn_curr_amount;
+                  let totalLearnJangCount = rs.rows.item(0).learn_target_amount;
+                  let untilCurrLearnJangPercent = "0";
+                  let untilCurrAvgJangCnt = "0";
+                  let remainExpectationAvgJangCnt = "0";
+                  if (currDayLearnJangCount > 0) {
+                    untilCurrAvgJangCnt =  (currDayLearnJangCount / currDayCount).toFixed(2);
+                    remainExpectationAvgJangCnt = ((totalLearnJangCount - currDayLearnJangCount) / (totalDurationDayCount - currDayCount)).toFixed(2);
+                    untilCurrLearnJangPercent = (currDayLearnJangCount / totalLearnJangCount * 100).toFixed(2);
+                  }
+
+                  result.isLearn = true;
+                  result.result = true;
+                  result.errMsg = "";
+                  result.learn_start_dt = rs.rows.item(0).learn_start_dt;
+                  result.learn_end_dt = rs.rows.item(0).learn_end_dt;
+                  result.today_dt = this.util.getYYYYMMDD();
+                  result.currDayCount = currDayCount;
+                  result.totalDurationDayCount = totalDurationDayCount;
+                  result.untilCurrDayPercent = untilCurrDayPercent;
+                  result.untilCurrDayPercentByCeil = Math.ceil(Number(untilCurrDayPercent)) + "%";
+                  result.currDayLearnJangCount = currDayLearnJangCount;
+                  result.totalLearnJangCount = totalLearnJangCount;
+                  result.untilCurrLearnJangPercent = untilCurrLearnJangPercent;
+                  result.untilCurrLearnJangPercentByCeil = Math.ceil(Number(untilCurrLearnJangPercent)) + "%";
+
+                  if (/[.]/.test(untilCurrAvgJangCnt)) {
+                    if (untilCurrAvgJangCnt.split(".")[1].startsWith("00")) {
+                      result.untilCurrAvgJangCnt = Math.floor(Number(untilCurrAvgJangCnt)) + "";
+                    } else {
+                      result.untilCurrAvgJangCnt = Math.floor(Number(untilCurrAvgJangCnt)) + " ~ " + Math.ceil(Number(untilCurrAvgJangCnt));
+                    }
+                  } else {
+                    result.untilCurrAvgJangCnt = untilCurrAvgJangCnt;
+                  }
+                  if (/[.]/.test(remainExpectationAvgJangCnt)) {
+                    if (remainExpectationAvgJangCnt.split(".")[1].startsWith("00")) {
+                      result.remainExpectationAvgJangCnt = Math.floor(Number(remainExpectationAvgJangCnt)) + ""
+                    } else {
+                      result.remainExpectationAvgJangCnt = Math.floor(Number(remainExpectationAvgJangCnt)) + " ~ " + Math.ceil(Number(remainExpectationAvgJangCnt));
+                    }
+                  } else {
+                    result.remainExpectationAvgJangCnt = remainExpectationAvgJangCnt
+                  }
+
+                  return resolve(result);
+
+                } catch (err) {
+                  result.errMsg = err;
+                  return resolve(result);  
+                }
+              } else {
+                result.errMsg = 'bible learning is not set';  
+                return resolve(result);
+              }
+            } else {
+              result.errMsg = 'bible learn info is empty';
+              return resolve(result);
+            }
+          })
+          .catch(err => {
+            result.errMsg = err;
+            return reject(result);
+          })
+        })
+        .catch(err => {
+          result.errMsg = err;
+          return reject(result);
+        })
+
+    })
+        
   }
 
 }

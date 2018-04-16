@@ -1,0 +1,18 @@
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>gyodok</ion-title>
+  </ion-navbar>
+
+  <div class="gyodok-tab-menu">
+    <div class="menu-item" [ngClass]="{highlight:menu.selected}" *ngFor="let menu of getMenu(); let i = index" (click)="toggleTabMenu(i)">
+      {{menu.title}}
+    </div>
+  </div>
+
+</ion-header>
+
+
+<ion-content padding>
+
+</ion-content>

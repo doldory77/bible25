@@ -15,6 +15,25 @@ interface AppInfoType {
     selected_eng_names: string
 }
 
+class BibleLearnStateType {
+    isLearn: boolean;
+    result:boolean;
+    errMsg: any;
+    learn_start_dt: string;
+    learn_end_dt: string;
+    today_dt: string;
+    currDayCount: number;
+    totalDurationDayCount: number;
+    untilCurrDayPercent: string;
+    untilCurrDayPercentByCeil: string;
+    currDayLearnJangCount: number;
+    totalLearnJangCount: number;
+    untilCurrLearnJangPercent: string;
+    untilCurrLearnJangPercentByCeil: string;
+    untilCurrAvgJangCnt: string;
+    remainExpectationAvgJangCnt: string;
+}
+
 export {
-    MenuType, AppInfoType
+    MenuType, AppInfoType, BibleLearnStateType
 }

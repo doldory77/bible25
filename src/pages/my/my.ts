@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { DbProvider } from '../../providers/db/db';
 import { UtilProvider } from '../../providers/util/util';
+import { BibleLearnStateType } from '../../model/model-type';
 
 @IonicPage()
 @Component({
@@ -32,30 +33,76 @@ export class MyPage {
   isReadingSchedul: boolean = false;
   startReadingDate: string = '';
   endReadingDate: string = '';
-  targetAmount: string = '1';
+  currDayCount: number = 0;
+  totalDurationDayCount: number = 0;
+  untilCurrDayPercent: string = "0%";
+  untilCurrDayPercentByCeil: string = "0%";
+  currDayLearnJangCount: number = 0;
+  totalLearnJangCount: number = 0;
+  untilCurrLearnJangPercent: string = "0%";
+  untilCurrLearnJangPercentByCeil: string = "0%";
+  untilCurrAvgJangCnt: string = "0";
+  remainExpectationAvgJangCnt: string = "0";
+
+
+  targetAmount: string = '1189';
 
   targetAmountName: string = '목표량 설정';
 
   ionViewDidLoad() {
     this.getLearnInfo();
+    
   }
 
   getLearnInfo() {
-    this.db.getLearningInfo()
-      .then(rs => {
-        if (rs.rows.item(0).learn_yn) {
-          this.isReadingSchedul = rs.rows.item(0).learn_yn == 'Y' ? true : false;
-          this.startReadingDate = rs.rows.item(0).learn_start_dt;
-          this.endReadingDate = rs.rows.item(0).learn_end_dt;
-          this.targetAmount = rs.rows.item(0).learn_target_amount;
-        } else {
-          this.isReadingSchedul = false;
-          this.startReadingDate = this.util.getYYYYMMDD();
-          this.endReadingDate = this.util.getYYYYMMDD();
-          this.targetAmount = '1';
-        }
+    // this.db.getLearningInfo()
+    //   .then(rs => {
+    //     if (rs.rows.item(0).learn_yn) {
+    //       this.isReadingSchedul = rs.rows.item(0).learn_yn == 'Y' ? true : false;
+    //       this.startReadingDate = rs.rows.item(0).learn_start_dt;
+    //       this.endReadingDate = rs.rows.item(0).learn_end_dt;
+    //       this.targetAmount = rs.rows.item(0).learn_target_amount;
+    //     } else {
+    //       this.isReadingSchedul = false;
+    //       this.startReadingDate = this.util.getYYYYMMDD();
+    //       this.endReadingDate = this.util.getYYYYMMDD();
+    //       this.targetAmount = '1';
+    //     }
+    //   })
+    //   .catch(err => {console.log(err)})
+    this.db.getLearnStateInfo()
+      .then((result:BibleLearnStateType) => {
+        console.log(result);
+        this.isReadingSchedul = result.isLearn;
+        this.startReadingDate = result.learn_start_dt;
+        this.endReadingDate = result.learn_end_dt;
+        this.currDayCount = result.currDayCount;
+        this.totalDurationDayCount = result.totalDurationDayCount;
+        this.untilCurrDayPercent = result.untilCurrDayPercent;
+        this.untilCurrDayPercentByCeil = result.untilCurrDayPercentByCeil;
+        this.currDayLearnJangCount = result.currDayLearnJangCount;
+        this.totalLearnJangCount = result.totalLearnJangCount;
+        this.untilCurrLearnJangPercent = result.untilCurrLearnJangPercent;
+        this.untilCurrLearnJangPercentByCeil = result.untilCurrLearnJangPercentByCeil;
+        this.untilCurrAvgJangCnt = result.untilCurrAvgJangCnt;
+        this.remainExpectationAvgJangCnt = result.remainExpectationAvgJangCnt;
       })
-      .catch(err => {console.log(err)})
+      .catch(err => {
+        console.log(err);
+        this.isReadingSchedul = false;
+        this.startReadingDate = this.util.getYYYYMMDD();
+        this.endReadingDate = this.util.getYYYYMMDD();
+        this.currDayCount = 0;
+        this.totalDurationDayCount = 0;
+        this.untilCurrDayPercent = "0%";
+        this.untilCurrDayPercentByCeil = "0%";
+        this.currDayLearnJangCount = 0;
+        this.totalLearnJangCount = 0;
+        this.untilCurrLearnJangPercent = "0%";
+        this.untilCurrLearnJangPercentByCeil = "0%";
+        this.untilCurrAvgJangCnt = "0";
+        this.remainExpectationAvgJangCnt = "0";
+      });
   }
 
   ionViewWillEnter() {
@@ -144,6 +191,7 @@ export class MyPage {
     this.db.updateLearnInfo({isReset:true})
       .then(result => {
         this.util.showToast('초기화되었습니다.', 2000);
+        this.getLearnInfo()
       })
   }
 

@@ -66,7 +66,7 @@
       <ion-label>목표한 날짜:</ion-label>
       <ion-datetime displayFormat="YYYY-MM-DD" [(ngModel)]="endReadingDate"></ion-datetime>
     </ion-item>
-    <ion-item>
+    <!-- <ion-item>
       <ion-label>목표량:</ion-label>
       <ion-select (ionChange)="setReadingAmount($event)" [(ngModel)]="targetAmount" interface="popover">
         <ion-option value="1">1독</ion-option>
@@ -74,17 +74,16 @@
         <ion-option value="3">3독</ion-option>
         <ion-option value="4">4독</ion-option>
       </ion-select>
-      <!-- <button ion-button item-end (click)="showTargetAmoundDialog()">{{targetAmountName}}</button> -->
-    </ion-item>
+    </ion-item> -->
     <ion-item>
       <div>경과일수:</div>
       <div item-end class="bible-range">
         <div class="bible-range-outer">
-          <div class="bible-range-inner"></div>
+          <div class="bible-range-inner" [style.width]="untilCurrDayPercentByCeil"></div>
         </div>
         <div class="bible-range-display">
-          <div>53/365</div>
-          <div>27%</div>
+          <div>{{currDayCount}}/{{totalDurationDayCount}}</div>
+          <div>{{untilCurrDayPercent}}%</div>
         </div>
       </div>
     </ion-item>
@@ -92,17 +91,19 @@
       <div>읽은장수:</div>
       <div item-end class="bible-range">
         <div class="bible-range-outer">
-          <div class="bible-range-inner"></div>
+          <div class="bible-range-inner" [style.width]="untilCurrLearnJangPercentByCeil"></div>
         </div>
         <div class="bible-range-display">
-          <div>210/1365</div>
-          <div>12%</div>
+          <div>{{currDayLearnJangCount}}/{{totalLearnJangCount}}</div>
+          <div>{{untilCurrLearnJangPercent}}%</div>
         </div>
       </div>
     </ion-item>
+    <ion-item *ngIf="isReadingSchedul && currDayLearnJangCount > 0">
+      <div>현재까지는 매일 평균 {{untilCurrAvgJangCnt}}장씩 읽으셨습니다.</div>
+      <div>앞으로 매일 {{remainExpectationAvgJangCnt}}장씩 읽으시면 됩니다.</div>
+    </ion-item>
     <ion-item>
-      <div>현재까지는 매일 평균 5~6장씩 읽으셨습니다.</div>
-      <div>앞으로 매일 7~8장씩 읽으시면 됩니다.</div>
       <div class="bible-range-button-box">
         <button ion-button (click)="resetLearnBible()">설정초기화</button>
         <button ion-button (click)="saveLearnConfig()">설정저장</button>
