@@ -179,10 +179,14 @@ export class DbProvider {
       .catch(err => {return Promise.reject({result:'fail', msg:err})});
   }
 
-  getBibleContent(ref:{lang:string, book:number, jul:number, content:string, ord:number}[], 
+  getBibleContent(ref:{lang:string, book:number, jul:number, content:string, ord:number, isBookMarked:boolean, selected:boolean}[], 
     param:{book:number, jang:number, multiLang:string[]}): Promise<any> {
     
-    let tmp: string = "select '#lang' lang, book, jul, content, #number ord from bible_#lang where book = #bk and jang = #jg";
+    let tmp: string = `select '#lang' lang, a.book, a.jul, a.content, #number ord,
+      case when b.bibletype is null then 'N' else 'Y' end book_mark_yn
+      from bible_#lang a
+      left join bible_book_mark b on (a.book = b.book and a.jang = b.jang and a.jul = b.jul)
+      where a.book = #bk and a.jang = #jg`;
     tmp = tmp.replace('#bk', String(param.book)).replace('#jg', String(param.jang));
     let query: string = '';
 
@@ -220,7 +224,9 @@ export class DbProvider {
               book: item.book,
               jul: item.jul,
               content: item.content,
-              ord: item.ord
+              ord: item.ord,
+              isBookMarked: item.book_mark_yn == 'Y' ? true : false,
+              selected: false
             });
           }
           return Promise.resolve({result:'ok', msg:''});
@@ -439,13 +445,20 @@ export class DbProvider {
       })
   }
 
-  insertBookMarkForBible(bookmark:{bibletype:number, book:number, jang:number, set_time:string}): Promise<any> {
+  insertBookMarkForBible(bookmark:{bibletype:number, book:number, jang:number, set_time:string, julArr:number[]}): Promise<any> {
     return this.openDb()
       .then((dbo: SQLiteObject) => {
-        return dbo.executeSql(`
-            insert into new_book_mark (bookmark_type, bibletype, book, jang, set_time)
-            values (?,?,?,?,?)
-          `, [0, bookmark.bibletype, bookmark.book, bookmark.jang, bookmark.set_time]);
+        let sql = "insert into bible_book_mark (bibletype, book, jang, jul, set_time) values (?,?,?,?,?)"
+        let sqlArr: any[] = [];
+        bookmark.julArr.forEach(jul => {
+          sqlArr.push([sql, [bookmark.bibletype, bookmark.book, bookmark.jang, jul, bookmark.set_time]]);
+        })
+        return dbo.sqlBatch(sqlArr);
+
+        // return dbo.executeSql(`
+        //     insert into bible_book_mark (bibletype, book, jang, set_time)
+        //     values (?,?,?,?,?)
+        //   `, [0, bookmark.bibletype, bookmark.book, bookmark.jang, bookmark.set_time]);
       })
   }
 
@@ -453,26 +466,39 @@ export class DbProvider {
     return this.openDb()
       .then((dbo: SQLiteObject) => {
         return dbo.executeSql(`
-            insert into new_book_mark (bookmark_type, p_num, set_time)
-            values (?,?,?)
-          `, [1, bookmark.p_num, bookmark.set_time]);
+            insert into hymn_book_mark (p_num, set_time)
+            values (?,?)
+          `, [bookmark.p_num, bookmark.set_time]);
       })
   }
 
   getBookMarkForBible(): Promise<any> {
     return this.openDb()
       .then((dbo: SQLiteObject) => {
+        // return dbo.executeSql(`
+        //   select
+        //     case a.bibletype when 0 then '구약성경' else '신약성셩' end bibletype,
+        //     b.name,
+        //     a.book,
+        //     a.jang,
+        //     a.set_time
+        //   from new_book_mark a
+        //   join bible_list_kr b on (a.book = b.book)
+        //   where a.bookmark_type = 0
+        // `,[]);
         return dbo.executeSql(`
           select
-            case a.bibletype when 0 then '구약성경' else '신약성셩' end bibletype,
+            case when a.bibletype = 0 then '구약성경' else '신약성경' end bibletype,
             b.name,
             a.book,
             a.jang,
+            group_concat(a.jul, ', ') jul,
             a.set_time
-          from new_book_mark a
+          from bible_book_mark a
           join bible_list_kr b on (a.book = b.book)
-          where a.bookmark_type = 0
-        `,[]);
+          group by a.set_time
+          order by a.set_time desc
+        `,[])
       })
   }
 
@@ -485,39 +511,38 @@ export class DbProvider {
             b.p_num_old,
             b.subject,
             a.set_time
-          from new_book_mark a
+          from hymn_book_mark a
           join hymn b on (a.p_num = b.p_num)
-          where a.bookmark_type = 1 
+          order by a.set_time desc 
         `,[]);
       })
   }
 
-  isBookMarkForBible(book:number, jang:number): Promise<boolean> {
-    return this.openDb()
-      .then((dbo: SQLiteObject) => {
-        return dbo.executeSql(`
-          select count(*) cnt from new_book_mark
-          where bookmark_type = 0
-          and book = ?
-          and jang = ?
-        `, [book, jang])
-        .then(rs => {
-          if (rs.rows.item(0).cnt == 0) {
-            return Promise.resolve(false);
-          } else {
-            return Promise.resolve(true);
-          }
-        })
-      });
-  }
+  // isBookMarkForBible(book:number, jang:number): Promise<boolean> {
+  //   return this.openDb()
+  //     .then((dbo: SQLiteObject) => {
+  //       return dbo.executeSql(`
+  //         select count(*) cnt from new_book_mark
+  //         where bookmark_type = 0
+  //         and book = ?
+  //         and jang = ?
+  //       `, [book, jang])
+  //       .then(rs => {
+  //         if (rs.rows.item(0).cnt == 0) {
+  //           return Promise.resolve(false);
+  //         } else {
+  //           return Promise.resolve(true);
+  //         }
+  //       })
+  //     });
+  // }
 
   isBookMarkForHymn(p_num:string): Promise<any> {
     return this.openDb()
       .then((dbo: SQLiteObject) => {
         return dbo.executeSql(`
-          select count(*) cnt from new_book_mark
-          where bookmark_type = 1
-          and p_num = ?
+          select count(*) cnt from hymn_book_mark
+          where p_num = ?
         `,[p_num])
         .then(rs => {
           if (rs.rows.item(0).cnt == 0) {
@@ -529,17 +554,18 @@ export class DbProvider {
       });
   }
 
-  deleteBookMarkForBible(book:number, jang:number): Promise<any> {
+  deleteBookMarkForBible(set_time:string): Promise<any> {
     return this.openDb()
       .then((dbo: SQLiteObject) => {
-        return dbo.executeSql('delete from new_book_mark where book = ? and jang = ?', [book, jang]);
+        // return dbo.executeSql('delete from new_book_mark where book = ? and jang = ?', [book, jang]);
+        return dbo.executeSql('delete from bible_book_mark where set_time = ?', [set_time]);
       })
   }
 
   deleteBookMarkForHymn(p_num:string): Promise<any> {
     return this.openDb()
       .then((dbo: SQLiteObject) => {
-        return dbo.executeSql('delete from new_book_mark where p_num = ?', [p_num]);
+        return dbo.executeSql('delete from hymn_book_mark where p_num = ?', [p_num]);
       })
   }
 
@@ -639,15 +665,11 @@ export class DbProvider {
                   let endDt = new Date(rs.rows.item(0).learn_end_dt);
                   let todayDt = new Date(this.util.getYYYYMMDD());
                   
-                  let currDayCount = (todayDt.getTime() - startDt.getTime()) / (1000 * 60 * 60 * 24);
-                  let totalDurationDayCount = (endDt.getTime() - startDt.getTime()) / (1000 * 60 * 60 * 24);
+                  let currDayCount = (todayDt.getTime() - startDt.getTime()) / (1000 * 60 * 60 * 24) + 1;
+                  let totalDurationDayCount = (endDt.getTime() - startDt.getTime()) / (1000 * 60 * 60 * 24) + 1;
                   
                   let untilCurrDayPercent = "0";
-                  if (totalDurationDayCount > 0) {
-                    if (currDayCount == 0) {
-                      // 시작날짜가 현재날짜와 같을때(경과일수가 0일때 버그 수정)
-                      currDayCount = 1;
-                    }
+                  if (totalDurationDayCount > currDayCount) {
                     untilCurrDayPercent = (currDayCount / totalDurationDayCount * 100).toFixed(2);
                   }
                   let currDayLearnJangCount = rs.rows.item(0).learn_curr_amount;
@@ -657,7 +679,11 @@ export class DbProvider {
                   let remainExpectationAvgJangCnt = "0";
                   if (currDayLearnJangCount > 0) {
                     untilCurrAvgJangCnt =  (currDayLearnJangCount / currDayCount).toFixed(2);
-                    remainExpectationAvgJangCnt = ((totalLearnJangCount - currDayLearnJangCount) / (totalDurationDayCount - currDayCount)).toFixed(2);
+                    if (totalDurationDayCount > currDayCount) {
+                      remainExpectationAvgJangCnt = ((totalLearnJangCount - currDayLearnJangCount) / (totalDurationDayCount - currDayCount)).toFixed(2);
+                    } else {
+                      remainExpectationAvgJangCnt = (totalLearnJangCount - currDayLearnJangCount) + "";
+                    }
                     untilCurrLearnJangPercent = (currDayLearnJangCount / totalLearnJangCount * 100).toFixed(2);
                   }
 

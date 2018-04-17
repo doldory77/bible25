@@ -68,7 +68,9 @@ export class HymnDetailPage {
 
   ionViewWillLeave() {
     console.log('===========> ionViewWillLeave');
-    this.trackerSubscription.unsubscribe();
+    if (this.trackerSubscription) {
+      this.trackerSubscription.unsubscribe();
+    }
     if (this.player.isMediaObjectLive) {
       this.player.stop();
       this.player.release();
@@ -85,7 +87,7 @@ export class HymnDetailPage {
           .then(result => {
 
             console.log('=================> is hymn bookMark: ', result);
-            
+
             if (result == true) {
               this.isBookMarked = true;
             } else {
@@ -212,6 +214,7 @@ export class HymnDetailPage {
             this.isBookMarked = true;
           })
           .catch(err => {
+            console.log(err);
             this.toast.create({
               message: '즐겨찾기에 실패하였습니다.',
               duration: 2000

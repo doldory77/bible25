@@ -24,7 +24,7 @@
     <ion-list *ngIf="isBibleShow">
       <ion-item *ngFor="let item of bibleBookMarkData">
         <div class="bookmark-item">
-          <div>{{item.bibletype}} >{{item.name}} > {{item.jang}}장</div>
+          <div (click)="goBibleContent(item.book, item.jang)">{{item.bibletype}} >{{item.name}} > {{item.jang}}장 <span class="bookmark-item-jul">({{item.jul}})절</span></div>
           <div (click)="removeBibleBookMark(item)">
             <ion-icon name="trash"></ion-icon>
           </div>
@@ -42,7 +42,7 @@
       <ion-item *ngFor="let item of hymnBookMarkData">
         <div class="bookmark-item">
           <div>
-            <div>{{item.p_num}}. {{item.subject}}</div>
+            <div (click)="goHymnContent(item.p_num)">{{item.p_num}}. {{item.subject}}</div>
             <div class="hymn-sub-title">통일찬송가 {{item.p_num_old}}장</div>
           </div>
           <div (click)="removeHymnBookMark(item)">
@@ -107,7 +107,7 @@
       <div class="bible-range-button-box">
         <button ion-button (click)="resetLearnBible()">설정초기화</button>
         <button ion-button (click)="saveLearnConfig()">설정저장</button>
-        <button ion-button>진도현황</button>
+        <button ion-button [navPush]="'LearnBiblePage'">진도현황</button>
       </div>
     </ion-item>
   </ion-list>

@@ -25,7 +25,7 @@ export class BiblePage {
   data: any[] = [];
   // iframe: any;
   loading: Loading;
-  bibleContents: {lang:string, book:number, jul:number, content:string, ord:number}[] = [];
+  bibleContents: {lang:string, book:number, jul:number, content:string, ord:number, isBookMarked:boolean, selected:boolean}[] = [];
   bibleSupportContents: {title:string, bible:string, context:string, img_name:string}[] = [];
 
   currBookName: string = '';
@@ -45,6 +45,7 @@ export class BiblePage {
   currentTrack: string = '5%';
 
   isBookMarked: boolean = false;
+  isBookMarkExists: boolean = false;
 
   constructor(public navCtrl: NavController, 
     public navParams: NavParams,
@@ -88,12 +89,24 @@ export class BiblePage {
   }
 
   saveBookMark() {
-    if (this.isBookMarked) return;
+    // if (this.isBookMarked) return;
+    let selectedJuls = this.bibleContents.filter(item => item.selected);
+    if (selectedJuls.length == 0) {
+      this.util.showAlert('즐겨찾기', '선택한 절이 없습니다.');
+      return;
+    }
+
+    let julArr: number[] = [];
+    selectedJuls.forEach(item => {
+      julArr.push(item.jul);
+    })
+    
     let bookMark = {
       bibletype: this.util.getBibleType(this.db.appInfo.view_bible_book),
       book: this.db.appInfo.view_bible_book,
       jang: this.db.appInfo.view_bible_jang,
-      set_time: this.util.getToday()
+      set_time: this.util.getToday(),
+      julArr: julArr
     }
     this.db.insertBookMarkForBible(bookMark)
       .then(result => {
@@ -101,9 +114,12 @@ export class BiblePage {
           message: '즐겨찾기에 추가되었습니다.',
           duration: 2000
         }).present();
-        this.isBookMarked = true;
+
+        this.refleshBibl();
+        
       })
       .catch(err => {
+        console.log(err);
         this.toast.create({
           message: '즐겨찾기에 실패하였습니다.',
           duration: 2000
@@ -140,27 +156,31 @@ export class BiblePage {
       if (this.isChange) {
 
         this.db.getBibleContent(this.bibleContents, params)
-          .then(result => {
-            this.db.isBookMarkForBible(params.book, params.jang)
-              .then(result => {
-                if (result == true) {
-                  this.isBookMarked = true;
-                } else {
-                  this.isBookMarked = false;
-                }
-              })
-          })
+          .then(result => {})
           .catch(err => console.log(err));
         
         
-        this.db.insertLearnBible(this.db.appInfo.view_bible_book, this.db.appInfo.view_bible_jang)
-          .then(result => {console.log('=================>', result)})
-          .catch(err => {console.log(err)});  
+        // this.db.insertLearnBible(this.db.appInfo.view_bible_book, this.db.appInfo.view_bible_jang)
+        //   .then(result => {})
+        //   .catch(err => {console.log(err)});  
 
       }
     })
     .catch(err => console.log(err));
 
+  }
+
+  refleshBibl() {
+    this.isBookMarkExists = false;
+    let params = {
+      book: this.db.appInfo.view_bible_book,
+      jang: this.db.appInfo.view_bible_jang,
+      multiLang: this.db.appInfo.selected_eng_names.split(',')
+    }
+
+    this.db.getBibleContent(this.bibleContents, params)
+        .then(result => {})
+        .catch(err => console.log(err));
   }
   
   onSubPage(menuNum: number) {
@@ -373,5 +393,14 @@ export class BiblePage {
             })
         })
       ).subscribe()
+  }
+
+  itemSelect(item:any) {
+    item.selected = !item.selected;
+    if (this.bibleContents.filter(item => item.selected).length > 0) {
+      this.isBookMarkExists = true;
+    } else {
+      this.isBookMarkExists = false;
+    }
   }
 }

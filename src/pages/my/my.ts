@@ -27,7 +27,7 @@ export class MyPage {
   isBibleShow: boolean = true;
   isHymnShow: boolean = true;
 
-  bibleBookMarkData:{bibletype:string, name:string, book:number, jang:number, set_time:string}[] =[];
+  bibleBookMarkData:{bibletype:string, name:string, book:number, jang:number, jul:string, set_time:string}[] =[];
   hymnBookMarkData:{p_num:string, p_num_old:string, subject:string, set_time:string}[] =[];
 
   isReadingSchedul: boolean = false;
@@ -55,21 +55,6 @@ export class MyPage {
   }
 
   getLearnInfo() {
-    // this.db.getLearningInfo()
-    //   .then(rs => {
-    //     if (rs.rows.item(0).learn_yn) {
-    //       this.isReadingSchedul = rs.rows.item(0).learn_yn == 'Y' ? true : false;
-    //       this.startReadingDate = rs.rows.item(0).learn_start_dt;
-    //       this.endReadingDate = rs.rows.item(0).learn_end_dt;
-    //       this.targetAmount = rs.rows.item(0).learn_target_amount;
-    //     } else {
-    //       this.isReadingSchedul = false;
-    //       this.startReadingDate = this.util.getYYYYMMDD();
-    //       this.endReadingDate = this.util.getYYYYMMDD();
-    //       this.targetAmount = '1';
-    //     }
-    //   })
-    //   .catch(err => {console.log(err)})
     this.db.getLearnStateInfo()
       .then((result:BibleLearnStateType) => {
         console.log(result);
@@ -121,6 +106,7 @@ export class MyPage {
             name: item.name,
             book: item.book,
             jang: item.jang,
+            jul: item.jul,
             set_time: item.set_time
           })
         }
@@ -161,14 +147,18 @@ export class MyPage {
   }
 
   removeBibleBookMark(item:{bibletype:string, name:string, book:number, jang:number, set_time:string}) {
-    this.db.deleteBookMarkForBible(item.book, item.jang)
-      .then(result => {
-        this.util.showToast('즐겨찾기에서 삭제되었습니다.', 2000);
-        this.getBookMarkForBible();
-      })
-      .catch(err => {
-        console.log(err);
-      })
+    this.util.showConformAlert('즐겨찾기삭제', '해당 북마크를 삭제하시겠습니까?', () => {
+
+      this.db.deleteBookMarkForBible(item.set_time)
+        .then(result => {
+          this.util.showToast('즐겨찾기에서 삭제되었습니다.', 2000);
+          this.getBookMarkForBible();
+        })
+        .catch(err => {
+          console.log(err);
+        });
+
+    })
   }
 
   removeHymnBookMark(item:{p_num:string, p_num_old:string, subject:string, set_time:string}) {
@@ -188,14 +178,24 @@ export class MyPage {
   }
 
   resetLearnBible() {
-    this.db.updateLearnInfo({isReset:true})
-      .then(result => {
-        this.util.showToast('초기화되었습니다.', 2000);
-        this.getLearnInfo()
-      })
+    this.util.showConformAlert(
+      '설정초기화', 
+      '이전까지 학습한 정보가 초기화 됩니다.\n초기화 하기겠습니까?',
+      () => {
+        this.db.updateLearnInfo({isReset:true})
+          .then(result => {
+            this.util.showToast('초기화되었습니다.', 2000);
+            this.getLearnInfo()
+          })
+      }
+   );
   }
 
   saveLearnConfig() {
+    if (new Date(this.startReadingDate).getTime() > new Date(this.endReadingDate).getTime()) {
+      this.util.showToast('시작날짜가 목표날짜보다 클 수 없습니다.', 2000);
+      return;
+    }
     let params = {
       isReset: false,
       learn_yn: this.isReadingSchedul ? 'Y' : 'N',
@@ -211,8 +211,15 @@ export class MyPage {
       .catch(err => {console.log(err)})
   }
 
-  showTargetAmoundDialog() {
-    console.log('TODO 목표량 설정')
+  goBibleContent(book:number, jang:number) {
+    this.db.updateAppInfo('bibl',{book:book, jang:jang})
+      .then(() => {
+        this.navCtrl.push('BiblePage');
+      })
+  }
+
+  goHymnContent(p_num:string) {
+    this.navCtrl.push('HymnDetailPage', {p_num: p_num});
   }
 
 }

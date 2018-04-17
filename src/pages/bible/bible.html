@@ -32,7 +32,7 @@
       </ion-col>
       <ion-col col-2 text-center>
           <button ion-button clear icon-only small (click)="saveBookMark()">
-            <ion-icon [name]="isBookMarked ? 'star' : 'star-outline'"></ion-icon>
+            <ion-icon name="bookmark" [color]="isBookMarkExists ? 'danger' : 'primary'"></ion-icon>
           </button>
       </ion-col>
     </ion-row>
@@ -95,7 +95,10 @@
 
   <ion-list [hidden]="!isBibleMode" class="bible-content-list">
     <ion-item *ngFor="let item of bibleContents" text-wrap>
-      <span class="bible-jul">{{item.jul}}</span><span class="bible-content">{{item.content}}</span>
+      <span class="bible-jul">{{item.jul}}</span><span class="bible-content" (click)="itemSelect(item)" [style.color]="item.selected ? 'red' : 'black'">{{item.content}}
+          <ion-icon *ngIf="item.isBookMarked" name="bookmark" color="danger"></ion-icon>
+      </span>
+      
     </ion-item>
   </ion-list>
 

@@ -1,10 +1,12 @@
 import { Injectable } from '@angular/core';
-import { ToastController } from 'ionic-angular';
+import { ToastController, AlertController } from 'ionic-angular';
 
 @Injectable()
 export class UtilProvider {
 
-  constructor(private toast: ToastController) {
+  constructor(private toast: ToastController,
+    private alert: AlertController) {
+
   }
 
   showToast(message:string, duration:number) {
@@ -50,6 +52,35 @@ export class UtilProvider {
     } else {
       return 1
     }
+  }
+
+  showConformAlert(title:string, message:string, okHandler:(() => void)) {
+    this.alert.create({
+      title: title,
+      message: message,
+      buttons: [
+        {
+          text: '취소',
+          handler: () => {}
+        },
+        {
+          text: '확인',
+          handler: okHandler
+        }
+      ]
+    }).present();
+  }
+
+  showAlert(title:string, message:string) {
+    this.alert.create({
+      title: title,
+      message: message,
+      buttons: [
+        {
+          text: '확인'
+        }
+      ]
+    }).present()
   }
 
 }
