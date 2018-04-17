@@ -3,10 +3,19 @@ page-learn-bible {
         .learn-bible-item {
             display: inline-block;
             padding: 0.3em;
-            width: 2em;
+            width: 2.5em;
+            font-size: 0.8em;
             background-color: navajowhite;
             border: 1px solid gray;
             margin: 0.1em;
+            text-align: center;
+        }
+        ion-row {
+            border-bottom: 1px solid #c2c2c2;
+        }
+    }
+    ion-header {
+        ion-col {
             text-align: center;
         }
     }

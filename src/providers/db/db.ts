@@ -750,4 +750,28 @@ export class DbProvider {
         
   }
 
+  getLearnBibleData(): Promise<any> {
+    return this.openDb()
+      .then((dbo: SQLiteObject) => {
+        return dbo.executeSql(`
+          select
+            a.book,
+            a.jang,
+            b.name,
+            case when c.learn_type is null then 'N' else 'Y' end reading_learn_yn,
+            case when d.learn_type is null then 'N' else 'Y' end listening_learn_yn
+          from (
+            select
+              book,
+              jang
+            from bible_nkrv
+            group by book, jang
+          ) a
+          left join bible_list_kr b on (a.book = b.book)
+          left join learn_bible c on (a.book = c.book and a.jang = c.jang and c.learn_type = 0)
+          left join learn_bible d on (a.book = d.book and a.jang = d.jang and d.learn_type = 1)
+        `,[])
+      })
+  }
+
 }
