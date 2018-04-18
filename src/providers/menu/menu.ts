@@ -167,7 +167,7 @@ export class MenuProvider {
       })
       .set('gyodok', {
           name: '교독문',
-          page: 'GyodokPage',
+          page: 'LearnBibleDetailPage',
           selected: false,
           menuLevel: 'top_menu',
           url: ''

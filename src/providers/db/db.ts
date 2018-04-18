@@ -774,4 +774,31 @@ export class DbProvider {
       })
   }
 
+  getLearnBibleContent(book:number, jang:number): Promise<any> {
+    return this.openDb()
+      .then((dbo: SQLiteObject) => {
+        return dbo.executeSql(`
+          select
+            a.book,
+            a.jang,
+            a.jul,
+            a.content,
+            case when b.learn_type is null then 'N' else 'Y' end read_learn_yn,
+            case when c.learn_type is null then 'N' else 'Y' end listen_learn_yn
+          from bible_nkrv a
+          left join learn_bible b on (a.book = b.book and a.jang = b.jang and b.learn_type = 0)
+          left join learn_bible c on (a.book = c.book and a.jang = c.jang and c.learn_type = 1)
+          where a.book = ? and a.jang = ?
+        `, [book, jang])
+      })
+  }
+
+  getLearnBibleContentTitle(book:number, jang:number): Promise<any> {
+    return this.openDb()
+      .then((dbo: SQLiteObject) => {
+        let sql = "select case bibletype when 0 then '구약' else '신약' end bibletype, name, book, #jang jang from bible_list_kr where book = ?";
+        return dbo.executeSql(sql.replace('#jang', String(jang)),[book])
+      })
+  }
+
 }

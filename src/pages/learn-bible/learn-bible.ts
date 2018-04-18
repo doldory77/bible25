@@ -73,4 +73,8 @@ export class LearnBiblePage {
     }
   }
 
+  goContent(book:number, jang:number) {
+    this.navCtrl.push('LearnBibleDetailPage', {book:book, jang:jang});
+  }
+
 }
