@@ -89,3 +89,7 @@ ion-loading.only-loading-icon {
         box-shadow: none;
     }
 }
+
+ion-content.disable-scrolling .scroll-content {
+    overflow-y: hidden;
+}

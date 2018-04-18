@@ -16,6 +16,7 @@ import { PlayerProvider } from '../providers/player/player';
 import { HymnSearchTypeComponent } from '../components/hymn-search-type/hymn-search-type';
 import { RestProvider } from '../providers/rest/rest';
 import { UtilProvider } from '../providers/util/util';
+// import { DirectivesModule } from '../directives/directives.module';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,8 @@ import { UtilProvider } from '../providers/util/util';
   imports: [
     BrowserModule,
     IonicModule.forRoot(MyApp),
-    HttpClientModule
+    HttpClientModule,
+    // DirectivesModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [

@@ -1,19 +1,26 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>{{bibleTitle}}</ion-title>
+    <ion-title>{{bibleTitle}}/{{fontSize}}</ion-title>
   </ion-navbar>
 
 </ion-header>
 
 
-<ion-content>
-    <ion-grid>
-      <ion-row *ngFor="let item of bibleContents">
-        <ion-col col-1>{{item.jul}}</ion-col>
-        <ion-col col-11>{{item.content}}</ion-col>
-      </ion-row>
-    </ion-grid>
+<ion-content [class.disable-scrolling]='isScaling' [style.fontSize]="fontSize">
+    <div pinch
+        (pinchstart)="onPinchStart($event)"
+        (pinchend)="onPinchEnd($event)"
+        (pinchmove)="onPinchMove($event)">
+
+      <ion-grid>
+        <ion-row *ngFor="let item of bibleContents">
+          <ion-col col-1>{{item.jul}}</ion-col>
+          <ion-col col-11>{{item.content}}</ion-col>
+        </ion-row>
+      </ion-grid>
+
+    </div>
     <ion-fab top right edge [hidden]="isShow == false">
       <button ion-fab mini>
         <ion-icon name="checkmark"></ion-icon>
