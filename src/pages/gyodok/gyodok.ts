@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { RestProvider } from '../../providers/rest/rest';
+import { UtilProvider } from '../../providers/util/util';
 
 @IonicPage()
 @Component({
@@ -9,7 +11,9 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 export class GyodokPage {
 
   constructor(public navCtrl: NavController, 
-    public navParams: NavParams) {
+    public navParams: NavParams,
+    private rest: RestProvider,
+    private util: UtilProvider) {
       this.tabMenu = new Map();
       this.tabMenu
         .set(0, {title:'교독문', selected: true})
@@ -17,7 +21,7 @@ export class GyodokPage {
         .set(2, {title:'사도긴경', selected: false});
   }
 
-  gyodokApiUrl = "http://gyodok.bible25.co.kr/gyodok/gyodokContent?gyodok_id=213";
+  
   
   tabMenu: Map<number, {title:string, selected:boolean}>;
   currViewMode: number = 0;
@@ -27,6 +31,9 @@ export class GyodokPage {
 
   gyodokModeNumbersO = Array(136).fill(0).map((x,i) => i+1);
   gyodokModeNumbers1 = Array(76).fill(0).map((x,i) => i+138);
+
+  gyodokItem: {CONTENT:string, ID:number, NO:number, TITLE:string};
+  gyodokContent: string;
 
   ionViewDidLoad() {
     
@@ -45,10 +52,40 @@ export class GyodokPage {
     menu.selected = true;
 
     this.currViewMode = i;
+    if (i == 0) this.gyodokMode = 0;
   }
 
-  togglePlayerMode(i) {
+  gyodokView(num:number) {
+    this.rest.getGyodokContent(num)
+      .then(rs => {
+        // console.log(rs);
+        this.gyodokMode = 2;
+        this.gyodokItem = rs;
+        this.gyodokContent = this.gyodokItem.CONTENT;
+      })
+      .catch(err => {
+        console.log(err);
+      })
+  }
 
+  gyodokPrev() {
+    if (this.gyodokItem.ID - 1 <= 0) {
+      this.util.showToast('교독문의 처음입니다.', 2000);
+      return;
+    } else {
+      let num = this.gyodokItem.ID - 1;
+      this.gyodokView(num);
+    }
+  }
+
+  gyodokNext() {
+    if (this.gyodokItem.ID + 1 > 213) {
+      this.util.showToast('교독문의 끝입니다.', 2000);
+      return;
+    } else {
+      let num = this.gyodokItem.ID + 1;
+      this.gyodokView(num);
+    }
   }
 
 }

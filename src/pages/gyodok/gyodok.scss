@@ -16,4 +16,35 @@ page-gyodok {
     .highlight {
         background-color: dodgerblue;
     }
+    .gydok-box {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        flex-wrap: wrap;
+        padding-top: 0.5em;
+        .gydok-item {
+            padding: 0.3em;
+            margin: 0.2em;  
+            border: 1px solid #c2c2c2;
+            padding: 0.3em;
+            width: 2.5em;
+            height: 2.5em;
+            line-height: 2em;
+            text-align: center;
+        }
+    }
+    .gyodok-content-box {
+        padding: 1em;
+    }
+    .buttom-button-1 {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .buttom-button-2 {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        padding: 0.3em;
+    }
 }

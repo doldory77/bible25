@@ -18,6 +18,7 @@ export class RestProvider {
   
   bible_support_info_url = "http://ch2ho.bible25.com/m/bbs/board99.php?book=#book&jang=#jang&t=#tab";
   bible_support_img_prefix_url = "http://chweb.biblesmartphone.co.kr/_bible_img/";
+  gyodok_content_url = "http://gyodok.bible25.co.kr/gyodok/gyodokContent?gyodok_id=#num";
 
   getBibleSupportInfo(book:string, jang:string, tab:string) {
     return new Promise((resolve, reject) => {
@@ -41,6 +42,16 @@ export class RestProvider {
           resolve(res)
         }, err => {reject(err)});
     }); 
+  }
+
+  getGyodokContent(num:number): Promise<any> {
+    return new Promise((resolve, reject) => {
+      let url = this.gyodok_content_url.replace('#num', String(num));
+      this.http.get(url)
+        .subscribe(res => {
+          resolve(res)
+        }, err => {reject(err)});
+    })
   }
 
 }
