@@ -1,0 +1,35 @@
+<ion-grid [hidden]="playerNonVisible">
+  <ion-row>
+    <ion-col>
+      <div class="media-progress-outer">
+        <div class="media-progress-inner" [style.width]="currentTrack"></div>
+      </div>
+      <div class="media-time">
+        <div>{{mediaTraker}}</div>  
+        <div>{{mediaRange}}</div>  
+      </div>
+    </ion-col>
+  </ion-row>
+  <ion-row>
+    <ion-col col-3>
+      <button ion-button clear icon-only (click)="backward()">
+        <ion-icon name="skip-backward"></ion-icon>
+      </button>
+    </ion-col>
+    <ion-col col-3>
+      <button ion-button clear icon-only (click)="command()">
+        <ion-icon [name]="getPlayStateName()"></ion-icon>
+      </button>
+    </ion-col>
+    <ion-col col-3>
+      <button ion-button clear icon-only (click)="forward()">
+        <ion-icon name="skip-forward"></ion-icon>
+      </button>
+    </ion-col>
+    <ion-col col-3>
+      <button ion-button clear icon-only [color]="isMediaRoop ? 'danger':'primary'" (click)="isMediaRoop = !isMediaRoop">
+        <ion-icon name="repeat"></ion-icon>
+      </button>
+    </ion-col>
+  </ion-row>
+</ion-grid>

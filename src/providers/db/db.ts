@@ -801,4 +801,11 @@ export class DbProvider {
       })
   }
 
+  getLastJangByBibleBook(book:number): Promise<any> {
+    return this.openDb()
+      .then((dbo: SQLiteObject) => {
+        return dbo.executeSql("select total_jang from bible_list_kr where book = ?", [book]);
+      })
+  }
+
 }

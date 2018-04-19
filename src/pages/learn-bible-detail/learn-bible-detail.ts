@@ -29,7 +29,7 @@ export class LearnBibleDetailPage extends Pinchable implements OnScrollDetect {
 
   @ViewChild(Content) content: Content;
 
-  learnMode:number = 0
+  learnMode:number = 1
   bibleTitle:string = '성경통독'
   bibleBook:number = 1;
   bibleJang:number = 1;
@@ -41,10 +41,10 @@ export class LearnBibleDetailPage extends Pinchable implements OnScrollDetect {
   
 
   ionViewDidLoad() {
-    this.getBibleContent(this.bibleBook, this.bibleJang);
-    this.getBibleContentTitle(this.bibleBook, this.bibleJang);
+    // this.getBibleContent(this.bibleBook, this.bibleJang);
+    // this.getBibleContentTitle(this.bibleBook, this.bibleJang);
     this.scrollDetector = new ScrollDetectable();
-    this.onScrollBottomDetect(this.content);
+    // this.onScrollBottomDetect(this.content);
   }
 
   ionViewWillEnter() {
@@ -53,7 +53,7 @@ export class LearnBibleDetailPage extends Pinchable implements OnScrollDetect {
 
   ionViewWillLeave() {
   
-    this.destroyScrollDetectObject(this.scrollDetector);
+    this.destroyScrollDetector(this.scrollDetector);
   }
 
   onScrollBottomDetect(content:Content) {
@@ -72,8 +72,8 @@ export class LearnBibleDetailPage extends Pinchable implements OnScrollDetect {
     )
   }
 
-  destroyScrollDetectObject(scrollDetectObject: ScrollDetectable) {
-    scrollDetectObject.destroy();
+  destroyScrollDetector(scrollDetector: ScrollDetectable) {
+    scrollDetector.destroy();
   }
 
   getBibleContentTitle(book:number, jang:number) {

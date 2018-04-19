@@ -16,23 +16,21 @@ import { PlayerProvider } from '../providers/player/player';
 import { HymnSearchTypeComponent } from '../components/hymn-search-type/hymn-search-type';
 import { RestProvider } from '../providers/rest/rest';
 import { UtilProvider } from '../providers/util/util';
-// import { DirectivesModule } from '../directives/directives.module';
 
 @NgModule({
   declarations: [
     MyApp,
-    HymnSearchTypeComponent
+    HymnSearchTypeComponent,
   ],
   imports: [
     BrowserModule,
     IonicModule.forRoot(MyApp),
     HttpClientModule,
-    // DirectivesModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [
     MyApp,
-    HymnSearchTypeComponent
+    HymnSearchTypeComponent,
   ],
   providers: [
     StatusBar,

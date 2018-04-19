@@ -1,0 +1,24 @@
+player-ui {
+    .media-progress-outer {
+        width: 100%;
+        padding: 0.5em;
+        background-color: #f4f4f4;
+        border: 1px solid #dcdcdc;
+        color: #fff;
+        border-radius: 0.1em;
+    }
+    .media-progress-inner {
+        min-width: 5%;
+        white-space: nowrap;
+        overflow: hidden;
+        padding:0.1em;
+        border-radius: 0.1em;
+        background-color: map-get($colors, primary);
+    }
+    .media-time {
+        display: flex;
+        justify-content: space-between;
+        padding-top: 0.3em;
+        font-size: 0.6em;
+    }
+}

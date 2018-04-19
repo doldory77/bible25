@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
-import { ToastController, AlertController } from 'ionic-angular';
+import { ToastController, AlertController, LoadingController, Loading } from 'ionic-angular';
 
 @Injectable()
 export class UtilProvider {
 
   constructor(private toast: ToastController,
-    private alert: AlertController) {
+    private alert: AlertController,
+    private loading: LoadingController) {
 
   }
 
@@ -81,6 +82,19 @@ export class UtilProvider {
         }
       ]
     }).present()
+  }
+
+  showSimpleLoading(spinner?:string): Loading {
+    let _spinner: string = 'circles';
+    if (spinner) {
+      _spinner = spinner;
+    }
+    return this.loading.create({
+        showBackdrop: false,
+        spinner: _spinner,
+        cssClass: 'only-loading-icon', 
+        dismissOnPageChange: true, 
+      });
   }
 
 }

@@ -8,6 +8,6 @@ import { LearnBiblePage } from './learn-bible';
   ],
   imports: [
     IonicPageModule.forChild(LearnBiblePage),
-  ],
+  ]
 })
 export class LearnBiblePageModule {}

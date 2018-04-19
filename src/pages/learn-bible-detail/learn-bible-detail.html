@@ -3,7 +3,8 @@
   <ion-navbar>
     <ion-title>{{bibleTitle}}/{{fontSize}}</ion-title>
   </ion-navbar>
-
+  <player-ui [playerNonVisible]="learnMode == 0 ? true : false"
+    [playKind]="0"></player-ui>
 </ion-header>
 
 

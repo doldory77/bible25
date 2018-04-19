@@ -6,7 +6,7 @@ import { ContentDimensions } from 'ionic-angular/components/content/content';
 interface OnScrollDetect {
     scrollDetector: ScrollDetectable;
     onScrollBottomDetect(content:Content);
-    destroyScrollDetectObject(scrollDetectObject?: ScrollDetectable);
+    destroyScrollDetector(scrollDetector?: ScrollDetectable);
 }
 
 class ScrollDetectable {
