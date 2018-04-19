@@ -7,7 +7,7 @@
 </ion-header>
 
 
-<ion-content [class.disable-scrolling]='isScaling' [style.fontSize]="fontSize">
+<ion-content [class.disable-scrolling]='isScaling'>
     <div pinch
         (pinchstart)="onPinchStart($event)"
         (pinchend)="onPinchEnd($event)"
@@ -16,7 +16,7 @@
       <ion-grid>
         <ion-row *ngFor="let item of bibleContents">
           <ion-col col-1>{{item.jul}}</ion-col>
-          <ion-col col-11>{{item.content}}</ion-col>
+          <ion-col col-11 [style.fontSize]="fontSize">{{item.content}}</ion-col>
         </ion-row>
       </ion-grid>
 
