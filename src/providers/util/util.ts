@@ -84,17 +84,24 @@ export class UtilProvider {
     }).present()
   }
 
-  showSimpleLoading(spinner?:string): Loading {
+  showSimpleLoading(spinner?:string, duration?:number): Loading {
     let _spinner: string = 'circles';
+    let _duration: number = 5000;
     if (spinner) {
       _spinner = spinner;
     }
-    return this.loading.create({
+    if (duration && duration != 0) {
+      _duration = duration;
+    }
+    let indicator = this.loading.create({
         showBackdrop: false,
         spinner: _spinner,
         cssClass: 'only-loading-icon', 
-        dismissOnPageChange: true, 
-      });
+        dismissOnPageChange: true,
+        duration: _duration 
+    });
+    indicator.present();
+    return indicator;
   }
 
 }

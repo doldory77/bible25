@@ -17,8 +17,16 @@ export class GyodokPage {
         .set(2, {title:'사도긴경', selected: false});
   }
 
+  gyodokApiUrl = "http://gyodok.bible25.co.kr/gyodok/gyodokContent?gyodok_id=213";
+  
   tabMenu: Map<number, {title:string, selected:boolean}>;
   currViewMode: number = 0;
+  gyodokMode: number = 0;
+  playerMode: number = 0;
+  creedMode: number = 0;
+
+  gyodokModeNumbersO = Array(136).fill(0).map((x,i) => i+1);
+  gyodokModeNumbers1 = Array(76).fill(0).map((x,i) => i+138);
 
   ionViewDidLoad() {
     
@@ -37,6 +45,10 @@ export class GyodokPage {
     menu.selected = true;
 
     this.currViewMode = i;
+  }
+
+  togglePlayerMode(i) {
+
   }
 
 }
