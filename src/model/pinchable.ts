@@ -1,15 +1,13 @@
-
-
 export class Pinchable {
     
-    public MAX_SCALE = 2.1;
-    // public MIN_SCALE = 0.9;
-    public MIN_SCALE = 1.1;
-    public BASE_SCALE = 1.5;
+    static MAX_SCALE = 2.1;
+    // static MIN_SCALE = 0.9;
+    static MIN_SCALE = 1.1;
+    static BASE_SCALE = 1.5;
 
-    public fontSize = `${this.BASE_SCALE}rem`;
-    public scale = this.BASE_SCALE;
-    public alreadyScaled = this.BASE_SCALE;
+    public fontSize = `${Pinchable.BASE_SCALE}rem`;
+    public scale = Pinchable.BASE_SCALE;
+    public alreadyScaled = Pinchable.BASE_SCALE;
     public isScaling = false;
 
     public onPinchStart(e) {
@@ -39,19 +37,19 @@ export class Pinchable {
         let totalScaled = this.alreadyScaled * e.scale;
     
         // did we hit the max scale (pinch out)
-        if (totalScaled >= this.MAX_SCALE) {
+        if (totalScaled >= Pinchable.MAX_SCALE) {
     
           // fix the scale by calculating it, don't use the e.scale
           // scenario: an insane quick pinch out will offset the this.scale
-          this.scale = this.MAX_SCALE / this.alreadyScaled;
-          totalScaled = this.MAX_SCALE;
+          this.scale = Pinchable.MAX_SCALE / this.alreadyScaled;
+          totalScaled = Pinchable.MAX_SCALE;
     
           // did we hit the min scale (pinch in)
-        } else if (totalScaled <= this.MIN_SCALE) {
+        } else if (totalScaled <= Pinchable.MIN_SCALE) {
     
           // fix the scale
-          this.scale = this.MIN_SCALE / this.alreadyScaled;
-          totalScaled = this.MIN_SCALE;
+          this.scale = Pinchable.MIN_SCALE / this.alreadyScaled;
+          totalScaled = Pinchable.MIN_SCALE;
     
         }
     
