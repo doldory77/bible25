@@ -2,18 +2,20 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { RestProvider } from '../../providers/rest/rest';
 import { UtilProvider } from '../../providers/util/util';
+import { Pinchable } from '../../model/pinchable'
 
 @IonicPage()
 @Component({
   selector: 'page-gyodok',
   templateUrl: 'gyodok.html',
 })
-export class GyodokPage {
+export class GyodokPage extends Pinchable {
 
   constructor(public navCtrl: NavController, 
     public navParams: NavParams,
     private rest: RestProvider,
     private util: UtilProvider) {
+      super();
       this.tabMenu = new Map();
       this.tabMenu
         .set(0, {title:'교독문', selected: true})

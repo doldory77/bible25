@@ -24,12 +24,13 @@ export class LearnBibleDetailPage extends Pinchable implements OnScrollDetect {
       super();
       if (navParams.get('book')) this.bibleBook = navParams.get('book');
       if (navParams.get('jang')) this.bibleJang = navParams.get('jang');
+      if (navParams.get('viewMode')) this.learnMode = navParams.get('viewMode');
   }
 
 
   @ViewChild(Content) content: Content;
 
-  learnMode:number = 1
+  learnMode:number = 0
   bibleTitle:string = '성경통독'
   bibleBook:number = 1;
   bibleJang:number = 1;
@@ -39,12 +40,18 @@ export class LearnBibleDetailPage extends Pinchable implements OnScrollDetect {
   isChecked: boolean = false;
   isShow: boolean = false;
   
+  loadBible(book?:number, jang?:number) {
+    if (book && book > 0) this.bibleBook = book;
+    if (jang && jang > 0) this.bibleJang = jang;
+
+    this.getBibleContent(this.bibleBook, this.bibleJang);
+    this.getBibleContentTitle(this.bibleBook, this.bibleJang);
+  }
 
   ionViewDidLoad() {
-    // this.getBibleContent(this.bibleBook, this.bibleJang);
-    // this.getBibleContentTitle(this.bibleBook, this.bibleJang);
+    this.loadBible();
     this.scrollDetector = new ScrollDetectable();
-    // this.onScrollBottomDetect(this.content);
+    this.onScrollBottomDetect(this.content);
   }
 
   ionViewWillEnter() {
@@ -57,12 +64,13 @@ export class LearnBibleDetailPage extends Pinchable implements OnScrollDetect {
   }
 
   onScrollBottomDetect(content:Content) {
+    if (this.learnMode == 1) return;
     this.scrollDetector.onScrollBottomDetect(
       this.content,
       1000,
       data => {
-        console.log(data);
-        if (data.scrollTop >= data.contentHeight) {
+        // console.log(data);
+        if (data.scrollTop >= Math.floor(data.contentHeight * 0.4)) {
           this.isShow = true;
         } else {
           this.isShow = false;
@@ -102,16 +110,97 @@ export class LearnBibleDetailPage extends Pinchable implements OnScrollDetect {
             isListenYn: item.listen_learn_yn == 'Y' ? true : false
           })
         }
+        
+        this.content.scrollToTop();
+
         if (this.bibleContents.length > 0) {
           this.isChecked = this.bibleContents[0].isListenYn || this.bibleContents[0].isReadYn;
-          if (this.isChecked == false) {
-            // this.checkScrollEnd();
-          }
+          // if (this.isChecked == false) {
+          // }
         }
       })
       .catch(err => {
         console.log(err);
       })
+  }
+
+  forward() {
+    this.db.getLastJangByBibleBook(this.bibleBook)
+      .then(rs => {
+        if (this.bibleJang + 1 > rs.rows.item(0).total_jang) {
+          if (this.bibleBook + 1 <= 66) {
+            this.loadBible(this.bibleBook + 1, this.bibleJang + 1);
+          }
+        } else {
+          this.loadBible(this.bibleBook, this.bibleJang + 1);
+        }
+      })
+      .catch(err => {
+        console.log(err);
+      })
+  }
+
+  backword() {
+    console.log('backword');
+    if (this.bibleJang - 1 <= 0) {
+      if (this.bibleBook - 1 > 0) {
+        this.loadBible(this.bibleBook - 1, 1);
+      }
+    } else {
+      this.loadBible(this.bibleBook, this.bibleJang - 1);
+    }
+  }
+
+  check() {
+    // if (this.isChecked == false) {
+    //   this.db.insertLearnBible(this.learnMode, this.bibleBook, this.bibleJang)
+    //     .then(result => {
+    //       this.db.getLastJangByBibleBook(this.bibleBook)
+    //         .then(rs => {
+    //           if (this.bibleJang + 1 > rs.rows.item(0).total_jang) {
+    //             if (this.bibleBook + 1 <= 66) {
+    //               this.loadBible(this.bibleBook + 1, this.bibleJang + 1);
+    //             }
+    //           } else {
+    //             this.loadBible(this.bibleBook, this.bibleJang + 1);
+    //           } 
+    //         })
+    //     })
+    //     .catch(err => {
+    //       console.log(err);
+    //     })
+    // } else {
+    //   this.db.getLastJangByBibleBook(this.bibleBook)
+    //     .then(rs => {
+    //       if (this.bibleJang + 1 > rs.rows.item(0).total_jang) {
+    //         if (this.bibleBook + 1 <= 66) {
+    //           this.loadBible(this.bibleBook + 1, this.bibleJang + 1);
+    //         }
+    //       } else {
+    //         this.loadBible(this.bibleBook, this.bibleJang + 1);
+    //       } 
+    //     })
+    // }
+    this.db.insertLearnBible(this.learnMode, this.bibleBook, this.bibleJang)
+      .then(() => {
+        this.forward();
+      })
+  }
+
+  onComplete(event) {
+    if (this.isChecked == false) {
+      this.db.insertLearnBible(this.learnMode, this.bibleBook, this.bibleJang)
+        .then(result => {
+          console.log(result);
+        })
+        .catch(err => {
+          console.log(err);
+        })
+    }
+  }
+
+  onForward(event) {
+    this.forward();
   }
 
 }

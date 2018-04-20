@@ -13,7 +13,12 @@
 </ion-header>
 
 
-<ion-content>
+<ion-content [class.disable-scrolling]='isScaling'>
+  <div pinch
+    (pinchstart)="onPinchStart($event)"
+    (pinchend)="onPinchEnd($event)"
+    (pinchmove)="onPinchMove($event)">
+
   <div *ngIf="currViewMode == 0">
     <div *ngIf="gyodokMode == 0">
       <div class="gydok-box">
@@ -35,8 +40,11 @@
         <div><button ion-button small (click)="gyodokMode = 0">개역개정</button></div>
       </div>   
     </div>
+    
+    
+
     <div *ngIf="gyodokMode == 2" class="gyodok-content-box">
-      <p class="gyodok-content" [innerHtml]="gyodokContent"></p>
+      <p class="gyodok-content" [innerHtml]="gyodokContent" [style.fontSize]="fontSize"></p>
       <div class="buttom-button-1">
         <div>
           <button ion-button small (click)="gyodokPrev()">이전글</button>
@@ -45,11 +53,13 @@
         <div><button ion-button small (click)="toggleTabMenu(0)">목록보기</button></div>
       </div>
     </div>
+
+
   </div>
 
   <div *ngIf="currViewMode == 1">
     <div *ngIf="playerMode == 0">
-      <p class="player">
+      <p class="player" [style.fontSize]="fontSize">
           하늘에 계신 우리 아버지,<br>
           아버지의 이름을 거룩하게 하시며<br>
           아버지의 나라가 오게 하시며,<br>
@@ -67,7 +77,7 @@
       </div>
     </div>
     <div *ngIf="playerMode == 1">
-      <p class="player">
+      <p class="player" [style.fontSize]="fontSize">
           하늘에 계신 우리 아버지여,<br>
           이름이 거룩히 여김을 받으시오며,<br>
           나라이 임하옵시며,<br>
@@ -92,7 +102,7 @@
 
   <div *ngIf="currViewMode == 2">
     <div *ngIf="creedMode == 0">
-      <p class="player">
+      <p class="player" [style.fontSize]="fontSize">
           나는 전능하신 아버지 하나님, 천지의 창조주를 믿습니다.<br> 
           나는 그의 유일하신 아들, 우리 주 예수 그리스도를 믿습니다.<br> 
           그는 성령으로 잉태되어 동정녀 마리아에게서 나시고,<br> 
@@ -109,7 +119,7 @@
       </div>
     </div>
     <div *ngIf="creedMode == 1">
-      <p class="player">
+      <p class="player" [style.fontSize]="fontSize">
           전능하사 천지를 만드신<br>
           하나님 아버지를 내가 믿사오며,<br>
           그 외아들 우리 주 예수 그리스도를 믿사오니,<br>
@@ -130,6 +140,8 @@
         <button ion-button small (click)="creedMode = 0">개역개정</button>
       </div>
     </div>
+  </div>
+
   </div>
 </ion-content>
 

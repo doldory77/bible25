@@ -39,7 +39,7 @@ export class HymnPage {
     public indicator: LoadingController,
     private popoverCtrl: PopoverController) {
 
-      this.topMenuData.push({title:'전체', menuIdx:0, selected:false});
+      this.topMenuData.push({title:'교독문', menuIdx:0, selected:false});
       this.topMenuData.push({title:'100', menuIdx:1, selected:true});
       this.topMenuData.push({title:'200', menuIdx:2, selected:false});
       this.topMenuData.push({title:'300', menuIdx:3, selected:false});
@@ -93,6 +93,11 @@ export class HymnPage {
   showList(menuIdx: number) {
 
     this.topMenuHighlight(menuIdx);
+
+    if (menuIdx == 0) {
+      this.navCtrl.push('GyodokPage');
+      return;
+    }
 
     this.db.getHymnList(menuIdx)
       .then(rs => {

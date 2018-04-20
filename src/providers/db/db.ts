@@ -607,7 +607,7 @@ export class DbProvider {
     }
   }
 
-  insertLearnBible(book:number, jang:number): Promise<any> {
+  insertLearnBible(learn_type:number, book:number, jang:number): Promise<any> {
     return this.openDb()
       .then((dbo: SQLiteObject) => {
         dbo.executeSql(`
@@ -615,11 +615,11 @@ export class DbProvider {
             count(*) cnt,
             ifnull((select learn_yn from app_info),'N') learn_yn 
           from learn_bible 
-          where book = ? and jang = ?
-        `,[book, jang])
+          where learn_type = ? and book = ? and jang = ?
+        `,[learn_type, book, jang])
           .then(rs => {
             if (rs.rows.item(0).cnt == 0 && rs.rows.item(0).learn_yn == 'Y') {
-              return this.dbo.executeSql('insert into learn_bible (book, jang) values (?, ?)', [book, jang]);
+              return this.dbo.executeSql('insert into learn_bible (learn_type, book, jang) values (?, ?, ?)', [learn_type, book, jang]);
             } else {
               return Promise.resolve({result:'faile', msg:rs.rows.item(0).cnt + '/' + rs.rows.item(0).learn_yn})
             }
@@ -654,7 +654,7 @@ export class DbProvider {
               learn_start_dt,
               learn_end_dt,
               case learn_target_amount when 0 then (select sum(total_jang) from bible_list_kr) else learn_target_amount end learn_target_amount,
-              (select count(jang) from learn_bible) learn_curr_amount
+              (select count(*) from (select count(*) from learn_bible group by book, jang)) learn_curr_amount
             from app_info
           `, [])
           .then(rs => {
@@ -805,6 +805,18 @@ export class DbProvider {
     return this.openDb()
       .then((dbo: SQLiteObject) => {
         return dbo.executeSql("select total_jang from bible_list_kr where book = ?", [book]);
+      })
+  }
+
+  getOnlyBibleLearnCount() {
+    return this.openDb()
+      .then((dbo: SQLiteObject) => {
+        return dbo.executeSql(`
+          select
+            (select count(*) from learn_bible where learn_type = 0) read_count,
+            (select count(*) from learn_bible where learn_type = 1) listen_count,
+            (select count(*) from (select count(*) from learn_bible group by book, jang)) total_learn_count
+        `, [])
       })
   }
 

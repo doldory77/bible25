@@ -1,4 +1,4 @@
-import { Component, Input, Output, OnInit, OnDestroy } from '@angular/core';
+import { Component, Input, Output, OnInit, OnDestroy, EventEmitter } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
 import { Observable } from 'rxjs/Observable';
 import { map } from 'rxjs/operators';
@@ -36,6 +36,10 @@ class PlayerUiComponent implements OnInit, OnDestroy {
   @Input() book:number = 1;
   @Input() jang:number = 1;
   @Input() p_num:string = '001';
+
+  @Output() onPlayComplete: EventEmitter<any> = new EventEmitter();
+  @Output() onForward: EventEmitter<any> = new EventEmitter();
+
   loadingBar: Loading;
 
   playState: PlayState = PlayState.STOP;
@@ -45,6 +49,7 @@ class PlayerUiComponent implements OnInit, OnDestroy {
   
   trackerSubscription: Subscription;
   isMediaRoop: boolean = false;
+  isAutoPlay: boolean = false;
 
 
   ngOnInit() {
@@ -203,9 +208,17 @@ class PlayerUiComponent implements OnInit, OnDestroy {
               this.mediaRange = totMinVal > 0 ? (totMinVal + ':' + this.db.pad(totSecVal,2)) : (this.db.pad(totSecVal,2) + '');
               
               if (curTimeValNum >= totRangeNum) {
+                
+                this.onPlayComplete.emit({isAutoPlay:this.isAutoPlay, book:this.book, jang:this.jang, p_num:this.p_num});
+                
                 if (this.isMediaRoop) {
                   this.play();
                 } else {
+                  if (this.isAutoPlay) {
+                    this.forward();
+                    this.onForward.emit({isAutoPlay:this.isAutoPlay, book:this.book, jang:this.jang, p_num:this.p_num});
+                    return;
+                  }
                   this.stop();
                 }
               }

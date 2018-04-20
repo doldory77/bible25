@@ -1,27 +1,22 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>learn-bible</ion-title>
+    <ion-title>{{title}}<span class="sub-title">{{learn_title}}</span></ion-title>
   </ion-navbar>
-  <ion-grid>
-    <ion-row>
-      <ion-col (click)="viewMode = '0'"><div>읽기표</div></ion-col>
-      <ion-col (click)="viewMode = '1'"><div>듣기표</div></ion-col>
-    </ion-row>
-  </ion-grid>
+  <div class="learn-tab-menu">
+      <div class="menu-item" (click)="viewMode = 0" [ngClass]="{highlight:viewMode == 0}">읽기표</div>
+      <div class="menu-item" (click)="viewMode = 1" [ngClass]="{highlight:viewMode == 1}">듣기표</div>
+  </div>
 </ion-header>
 
 
 <ion-content>
   <ion-grid class="learn-bible-box">
     <ion-row align-items-center *ngFor="let item of getBibleBookTitle()">
-    <!-- <ion-row align-items-center *ngFor="let item of [1,2,3,4,5]"> -->
       <ion-col col-4><div>{{item.name}}</div></ion-col>
       <ion-col col-8>
-        <div (click)="goContent(data.book, data.jang)" [hidden]="viewMode == '1'" [style.background-color]="data.isRead ? 'orange' : 'yellow'" class="learn-bible-item" *ngFor="let data of getBibleJangByBook(item.book)">{{data.jang}}</div>
-        <div (click)="goContent(data.book, data.jang)" [hidden]="viewMode == '0'" [style.background-color]="data.isListen ? 'orange' : 'yellow'" class="learn-bible-item" *ngFor="let data of getBibleJangByBook(item.book)">{{data.jang}}</div>
-        <!-- <div [hidden]="viewMode == 1" class="learn-bible-item" *ngFor="let data of [1,2,3,4,5,6,7,8,9,10,11]">{{data}}</div>
-        <div [hidden]="viewMode == 0" class="learn-bible-item" *ngFor="let data of [1,2,3,4,5]">{{data}}</div> -->
+        <div (click)="goContent(data.book, data.jang)" [hidden]="viewMode == 1" [style.background-color]="data.isRead ? 'orange' : 'yellow'" class="learn-bible-item" *ngFor="let data of getBibleJangByBook(item.book)">{{data.jang}}</div>
+        <div (click)="goContent(data.book, data.jang)" [hidden]="viewMode == 0" [style.background-color]="data.isListen ? 'orange' : 'yellow'" class="learn-bible-item" *ngFor="let data of getBibleJangByBook(item.book)">{{data.jang}}</div>
       </ion-col>
     </ion-row>
   </ion-grid>

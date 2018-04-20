@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, Loading } from 'ionic-angular';
 import { DbProvider } from '../../providers/db/db';
 import { Observable } from 'rxjs/Observable';
+import { UtilProvider } from '../../providers/util/util';
 
 @IonicPage()
 @Component({
@@ -12,23 +13,35 @@ export class LearnBiblePage {
 
   constructor(public navCtrl: NavController, 
     public navParams: NavParams,
-    private db: DbProvider) {
+    private db: DbProvider,
+    private util: UtilProvider) {
   }
 
-  viewMode:string = '0';
+  viewMode:number = 0;
 
   learnBibleBook:Map<number, {name:string, book:number}> = new Map();
   learnBibleData:{name:string, book:number, jang:number, isRead:boolean, isListen:boolean}[] = [];
-  // learnBibleReadingData:{name:string, book:number, jang:{jang:number, isRead:boolean, isListen:boolean}[]}[] = [];
-  // learnBibleListeningData:{name:string, book:number, jang:{jang:number, isRead:boolean, isListen:boolean}[]}[] = [];
+  // loading: Loading;
+  readCount: number = 0;
+  listenCount: number = 0;
+  totalLearnCount: number = 0;
+  title: string = '성경통독';
+  learn_title: string = '';
 
   ionViewDidLoad() {
+    
+  }
+
+  ionViewWillEnter() {
     this.getLearnBibleData();
+    this.getBibleLearnCount();
   }
 
   getLearnBibleData() {
+    this.util.showSimpleLoading(2000);
     this.db.getLearnBibleData()
       .then(rs => {
+        
         this.learnBibleData = [];
         for(let i=0, max=rs.rows.length; i<max; i++) {
           let item = rs.rows.item(i);
@@ -43,7 +56,23 @@ export class LearnBiblePage {
         this.learnBibleData.forEach(item => {
           this.learnBibleBook.set(item.book, {name:item.name, book:item.book});
         })
-        console.log(this.learnBibleData);
+        // if (this.loading) this.loading.dismiss();
+        // console.log(this.learnBibleData);
+      })
+      .catch(err => {
+        console.log(err);
+        // if (this.loading) this.loading.dismiss();
+      })
+  }
+
+  getBibleLearnCount() {
+    this.db.getOnlyBibleLearnCount()
+      .then(rs => {
+        let item = rs.rows.item(0);
+        this.readCount = item.read_count;
+        this.listenCount = item.listen_count;
+        this.totalLearnCount = item.total_learn_count;
+        this.learn_title = `(읽기:${this.readCount}, 듣기:${this.listenCount})`;
       })
       .catch(err => {
         console.log(err);
@@ -58,23 +87,8 @@ export class LearnBiblePage {
     return this.learnBibleData.filter(item => item.book == book)
   }
 
-  setColor(item:{name:string, book:number, jang:number, isRead:boolean, isListen:boolean}) {
-    if (this.viewMode == '0') {
-      if (item.isRead)
-        return 'orange';
-      else
-        return 'yellow';
-    }
-    if (this.viewMode == '1') {
-      if (item.isListen)
-        return 'orange'
-      else
-        return 'yellow';
-    }
-  }
-
   goContent(book:number, jang:number) {
-    this.navCtrl.push('LearnBibleDetailPage', {book:book, jang:jang});
+    this.navCtrl.push('LearnBibleDetailPage', {viewMode:this.viewMode, book:book, jang:jang});
   }
 
 }

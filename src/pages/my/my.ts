@@ -18,7 +18,7 @@ export class MyPage {
       this.tabMenu = new Map();
       this.tabMenu
         .set(0, {title:'즐겨찾기', selected:true})
-        .set(1, {title:'성경읽기', selected:false})
+        .set(1, {title:'성경통독', selected:false})
         .set(2, {title:'개인정보수정', selected:false});
   }
 
@@ -50,7 +50,6 @@ export class MyPage {
   targetAmountName: string = '목표량 설정';
 
   ionViewDidLoad() {
-    this.getLearnInfo();
     
   }
 
@@ -93,6 +92,7 @@ export class MyPage {
   ionViewWillEnter() {
     this.getBookMarkForBible();
     this.getBookMarkForHymn();
+    this.getLearnInfo();
   }
 
   getBookMarkForBible() {

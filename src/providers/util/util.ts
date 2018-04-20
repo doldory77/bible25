@@ -84,22 +84,24 @@ export class UtilProvider {
     }).present()
   }
 
-  showSimpleLoading(spinner?:string, duration?:number): Loading {
+  showSimpleLoading(duration?:number, spinner?:string): Loading {
     let _spinner: string = 'circles';
     let _duration: number = 5000;
     if (spinner) {
       _spinner = spinner;
     }
-    if (duration && duration != 0) {
+    if (duration) {
       _duration = duration;
     }
+    
     let indicator = this.loading.create({
         showBackdrop: false,
         spinner: _spinner,
         cssClass: 'only-loading-icon', 
         dismissOnPageChange: true,
-        duration: _duration 
+        duration: _duration
     });
+
     indicator.present();
     return indicator;
   }

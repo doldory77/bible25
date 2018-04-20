@@ -19,4 +19,25 @@ page-learn-bible {
             text-align: center;
         }
     }
+    .highlight {
+        background-color: dodgerblue;
+    }
+    .sub-title {
+        padding-left: 0.5em;
+        font-size: 0.6em;
+    }
+    .learn-tab-menu {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1px;
+        
+        .menu-item {
+            flex-basis: 4em;
+            flex-grow: 1;
+            line-height: 2em;
+            border: 1px solid gray;
+            text-align: center;
+        }
+    }
 }
