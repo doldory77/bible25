@@ -36,7 +36,7 @@
       </div>   
     </div>
     <div *ngIf="gyodokMode == 2" class="gyodok-content-box">
-      <p [innerHtml]="gyodokContent"></p>
+      <p class="gyodok-content" [innerHtml]="gyodokContent"></p>
       <div class="buttom-button-1">
         <div>
           <button ion-button small (click)="gyodokPrev()">이전글</button>
@@ -49,7 +49,7 @@
 
   <div *ngIf="currViewMode == 1">
     <div *ngIf="playerMode == 0">
-      <p>
+      <p class="player">
           하늘에 계신 우리 아버지,<br>
           아버지의 이름을 거룩하게 하시며<br>
           아버지의 나라가 오게 하시며,<br>
@@ -62,10 +62,12 @@
           나라와 권능과 영광이 영원히 아버지의 것입니다.<br>
           - 아멘 -
       </p>
-      <div><button>개역한글</button></div>
+      <div class="buttom-button-2">
+        <button ion-button small (click)="playerMode = 1">개역한글</button>
+      </div>
     </div>
     <div *ngIf="playerMode == 1">
-      <p>
+      <p class="player">
           하늘에 계신 우리 아버지여,<br>
           이름이 거룩히 여김을 받으시오며,<br>
           나라이 임하옵시며,<br>
@@ -82,13 +84,15 @@
           영원히 있사옵 나이다.<br>
           - 아멘 - 
       </p>
-      <div><button>개역개정</button></div>
+      <div class="buttom-button-2">
+        <button ion-button small (click)="playerMode = 0">개역개정</button>
+      </div>
     </div>
   </div>
 
   <div *ngIf="currViewMode == 2">
     <div *ngIf="creedMode == 0">
-      <p>
+      <p class="player">
           나는 전능하신 아버지 하나님, 천지의 창조주를 믿습니다.<br> 
           나는 그의 유일하신 아들, 우리 주 예수 그리스도를 믿습니다.<br> 
           그는 성령으로 잉태되어 동정녀 마리아에게서 나시고,<br> 
@@ -100,10 +104,12 @@
           거룩한 공교회와 성도의 교제와 죄를 용서 받는 것과 몸의 부활과 영생을 믿습니다.<br> 
           아멘.
       </p>
-      <div><button>개역한글</button></div>
+      <div class="buttom-button-2">
+        <button ion-button small (click)="creedMode = 1">개역한글</button>
+      </div>
     </div>
     <div *ngIf="creedMode == 1">
-      <p>
+      <p class="player">
           전능하사 천지를 만드신<br>
           하나님 아버지를 내가 믿사오며,<br>
           그 외아들 우리 주 예수 그리스도를 믿사오니,<br>
@@ -120,7 +126,9 @@
           영원히 사는 것을 믿사옵나이다.<br>
           아멘.<br>
       </p>
-      <div><button>개역개정</button></div>
+      <div class="buttom-button-2">
+        <button ion-button small (click)="creedMode = 0">개역개정</button>
+      </div>
     </div>
   </div>
 </ion-content>

@@ -48,6 +48,14 @@ export class RestProvider {
     return new Promise((resolve, reject) => {
       let url = this.gyodok_content_url.replace('#num', String(num));
       this.http.get(url)
+        .map((data:any) => {
+          let contentArr:Array<string> = data.CONTENT.split('<br />');
+          contentArr.forEach((value, idx, arr) => {
+            arr[idx] = "<span>".concat(value).concat("</span>");
+          })
+          let result = {ID:data.ID, NO:data.NO, TITLE:data.TITLE, CONTENT:contentArr.join(''), CONTENT_ARR:contentArr}
+          return result;
+        })
         .subscribe(res => {
           resolve(res)
         }, err => {reject(err)});
