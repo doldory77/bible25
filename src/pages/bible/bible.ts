@@ -9,32 +9,40 @@ import { PlayerProvider } from '../../providers/player/player';
 import { Observable, pipe, Subscription } from 'rxjs/Rx';
 import { map } from 'rxjs/operators';
 import { RestProvider } from '../../providers/rest/rest';
-import { UtilProvider } from '../../providers/util/util'
+import { UtilProvider } from '../../providers/util/util';
+
+import { Pinchable } from '../../model/pinchable';
+import { OnScrollDetect, ScrollDetectable } from '../../model/onscroll-detect';
 
 @IonicPage()
 @Component({
   selector: 'page-bible',
   templateUrl: 'bible.html',
 })
-export class BiblePage {
+export class BiblePage extends Pinchable implements OnScrollDetect {
 
-  @ViewChild(Content) content: Content;
-
+  scrollDetector: ScrollDetectable;
+  isShow: boolean = false;
   isBibleMode: boolean = true;
   menuData: MenuType[] = [];
-  data: any[] = [];
-  // iframe: any;
+  bibleBook: number = 1;
+  bibleJang: number = 1;
+  playerNonVisible = true;
   loading: Loading;
   bibleContents: {lang:string, book:number, jul:number, content:string, ord:number, isBookMarked:boolean, selected:boolean}[] = [];
   bibleSupportContents: {title:string, bible:string, context:string, img_name:string}[] = [];
 
-  currBookName: string = '';
+  bookName: string = '';
+  selectedLanguage: string = '';
+  
+  @ViewChild(Content) content: Content;
+
+  data: any[] = [];
+
   currJangNumber: number = 0;
-  currSelectedLanguage: string = '';
   selectedLanguages: string = '';
   isChange: boolean = false;
 
-  playerNonVisible = true;
   playState: string = 'play';
   mediaTraker: string = '0:0';
   mediaRange: string = '--:--';
@@ -57,6 +65,11 @@ export class BiblePage {
     private rest: RestProvider,
     private util: UtilProvider) {
 
+      super();
+      
+      if (this.navParams.get('book')) this.bibleBook = this.navParams.get('book');
+      if (this.navParams.get('jang')) this.bibleJang = this.navParams.get('jang');
+
       Array.from(this.menu.MenuData.keys())
         .filter(key => key.startsWith('bible_menu'))
         .forEach(key => {
@@ -67,25 +80,23 @@ export class BiblePage {
 
   ionViewDidLoad() {
     this.menuData[0].selected = true;
-
-    setTimeout(() => {
-      console.log('TODO: 사용자가 최종 본 성경이 없으면 리스트 페이지 표시 후 되돌아오기')
-    }, 2000);
-    
   }
 
   ionViewWillEnter() {
-    this.getBibleWrap()
+    // this.getBibleWrap();
+    this.loadBible()
   }
 
   ionViewWillLeave() {
-    if (this.trackerSubscription) {
-      this.trackerSubscription.unsubscribe();
-    }
-    if (this.player.isMediaObjectLive) {
-      this.player.stop();
-      this.player.release();
-    }
+    // if (this.trackerSubscription) {
+    //   this.trackerSubscription.unsubscribe();
+    // }
+    // if (this.player.isMediaObjectLive) {
+    //   this.player.stop();
+    //   this.player.release();
+    // }
+
+    this.destroyScrollDetector(this.scrollDetector);
   }
 
   saveBookMark() {
@@ -127,48 +138,79 @@ export class BiblePage {
       })
   }
 
-  getBibleWrap() {
-
+  loadBible(book?:number, jang?:number) {
     this.db.getAppInfo()
-    .then(result => {
-      
-      let params = {
-        book: this.db.appInfo.view_bible_book,
-        jang: this.db.appInfo.view_bible_jang,
-        multiLang: this.db.appInfo.selected_eng_names.split(',')
-      }
+      .then(info => {
+        if (!this.util.isEmptyNumber(book)) {
+          this.bibleBook = book;
+        } else {
+          this.bibleBook = this.util.isDefaultNumber(this.db.appInfo.view_bible_book, 1);
+        }
+        if (!this.util.isEmptyNumber(jang)) {
+          this.bibleJang = jang;
+        } else {
+          this.bibleJang = this.util.isDefaultNumber(this.db.appInfo.view_bible_jang, 1);
+        }
 
-      if (this.currBookName == this.db.appInfo.book_name
-          && this.selectedLanguages == this.db.appInfo.selected_eng_names
-          && this.currJangNumber == this.db.appInfo.view_bible_jang
-          && this.currSelectedLanguage == this.db.appInfo.selected_first_name) {
-        this.isChange = false;
-      } else {
-        this.currBookName = this.db.appInfo.book_name;
-        this.selectedLanguages = this.db.appInfo.selected_eng_names;
-        this.currJangNumber = this.db.appInfo.view_bible_jang;
-        this.currSelectedLanguage = this.db.appInfo.selected_first_name;
-        this.isChange = true;
-      }
-      
-      console.log('===========> isChange: ', this.isChange);
-
-      if (this.isChange) {
+        this.bookName = this.db.appInfo.book_name;
+        this.selectedLanguage = this.db.appInfo.selected_first_name;
+        
+        let params = {
+          book: this.bibleBook,
+          jang: this.bibleJang,
+          multiLang: this.db.appInfo.selected_eng_names.split(',')
+        }
 
         this.db.getBibleContent(this.bibleContents, params)
-          .then(result => {})
-          .catch(err => console.log(err));
-        
-        
-        // this.db.insertLearnBible(this.db.appInfo.view_bible_book, this.db.appInfo.view_bible_jang)
-        //   .then(result => {})
-        //   .catch(err => {console.log(err)});  
-
-      }
-    })
-    .catch(err => console.log(err));
-
+          .then(() => {})
+          .catch(err => {
+            console.log(err);
+          })
+      })
   }
+
+  // getBibleWrap() {
+
+  //   this.db.getAppInfo()
+  //   .then(result => {
+      
+  //     let params = {
+  //       book: this.db.appInfo.view_bible_book,
+  //       jang: this.db.appInfo.view_bible_jang,
+  //       multiLang: this.db.appInfo.selected_eng_names.split(',')
+  //     }
+
+  //     if (this.currBookName == this.db.appInfo.book_name
+  //         && this.selectedLanguages == this.db.appInfo.selected_eng_names
+  //         && this.currJangNumber == this.db.appInfo.view_bible_jang
+  //         && this.currSelectedLanguage == this.db.appInfo.selected_first_name) {
+  //       this.isChange = false;
+  //     } else {
+  //       this.currBookName = this.db.appInfo.book_name;
+  //       this.selectedLanguages = this.db.appInfo.selected_eng_names;
+  //       this.currJangNumber = this.db.appInfo.view_bible_jang;
+  //       this.currSelectedLanguage = this.db.appInfo.selected_first_name;
+  //       this.isChange = true;
+  //     }
+      
+  //     console.log('===========> isChange: ', this.isChange);
+
+  //     if (this.isChange) {
+
+  //       this.db.getBibleContent(this.bibleContents, params)
+  //         .then(result => {})
+  //         .catch(err => console.log(err));
+        
+        
+  //       // this.db.insertLearnBible(this.db.appInfo.view_bible_book, this.db.appInfo.view_bible_jang)
+  //       //   .then(result => {})
+  //       //   .catch(err => {console.log(err)});  
+
+  //     }
+  //   })
+  //   .catch(err => console.log(err));
+
+  // }
 
   refleshBibl() {
     this.isBookMarkExists = false;
@@ -311,50 +353,50 @@ export class BiblePage {
     this.player.stop();
   }
 
-  move(direction:string, withPaly:boolean) {
-    this.db.checkBibleContent(direction == 'prev' ? false : true)
-      .then(result => {
-        console.log(result);
-        if (result.result == 'success' && result.msg == 'Y') {
-          let moveStep = direction == 'prev' ? -1 : 1;
-          this.db.updateAppInfo('bible',{
-            book:this.db.appInfo.view_bible_book, 
-            jang:this.db.appInfo.view_bible_jang + (moveStep)
-          })
-          .then(() => {
-            this.getBibleWrap();
+  // move(direction:string, withPaly:boolean) {
+  //   this.db.checkBibleContent(direction == 'prev' ? false : true)
+  //     .then(result => {
+  //       console.log(result);
+  //       if (result.result == 'success' && result.msg == 'Y') {
+  //         let moveStep = direction == 'prev' ? -1 : 1;
+  //         this.db.updateAppInfo('bible',{
+  //           book:this.db.appInfo.view_bible_book, 
+  //           jang:this.db.appInfo.view_bible_jang + (moveStep)
+  //         })
+  //         .then(() => {
+  //           this.getBibleWrap();
 
-            this.db.getAppInfo();
-            try {
-              this.player.stop();
-              this.playState = 'play';
-              this.mediaTraker = "0"
-              this.currentTrack = "1%";
-              this.mediaRange = '--:--';
-              if (this.trackerSubscription) this.trackerSubscription.unsubscribe();
-            } catch (err) {console.log(err)}
+  //           this.db.getAppInfo();
+  //           try {
+  //             this.player.stop();
+  //             this.playState = 'play';
+  //             this.mediaTraker = "0"
+  //             this.currentTrack = "1%";
+  //             this.mediaRange = '--:--';
+  //             if (this.trackerSubscription) this.trackerSubscription.unsubscribe();
+  //           } catch (err) {console.log(err)}
 
-            // if (withPaly && !this.playerNonVisible) {
-            //   this.playOrPause();
-            // }
+  //           // if (withPaly && !this.playerNonVisible) {
+  //           //   this.playOrPause();
+  //           // }
 
-          })
-          .catch(err => {
-            console.log(err);
-          })
+  //         })
+  //         .catch(err => {
+  //           console.log(err);
+  //         })
           
-        } else {
-          this.toast.create({
-            message: `해당 장에서 더이상 읽을 자료가 없습니다.`,
-            duration: 3000,
-            position: 'bottom'
-          }).present();
-        }
-      })
-      .catch(err => {
-        console.log(err);
-      });
-  }
+  //       } else {
+  //         this.toast.create({
+  //           message: `해당 장에서 더이상 읽을 자료가 없습니다.`,
+  //           duration: 3000,
+  //           position: 'bottom'
+  //         }).present();
+  //       }
+  //     })
+  //     .catch(err => {
+  //       console.log(err);
+  //     });
+  // }
 
   roopToggle() {
     this.isMediaRoop = !this.isMediaRoop;
@@ -402,5 +444,65 @@ export class BiblePage {
     } else {
       this.isBookMarkExists = false;
     }
+  }
+
+  onScrollBottomDetect(content:Content) {
+    this.scrollDetector.onScrollBottomDetect(
+      this.content,
+      1000,
+      data => {
+        // console.log(data);
+        if (data.scrollTop >= Math.floor(data.contentHeight * 0.4)) {
+          this.isShow = true;
+        } else {
+          this.isShow = false;
+        }
+      },
+      err => {console.log(err)},
+    )
+  }
+
+  destroyScrollDetector(scrollDetector: ScrollDetectable) {
+    scrollDetector.destroy();
+  }
+
+  forward() {
+    this.db.getLastJangByBibleBook(this.bibleBook)
+      .then(rs => {
+        if (this.bibleJang + 1 > rs.rows.item(0).total_jang) {
+          if (this.bibleBook + 1 <= 66) {
+            this.loadBible(this.bibleBook + 1, this.bibleJang + 1);
+          }
+        } else {
+          this.loadBible(this.bibleBook, this.bibleJang + 1);
+        }
+      })
+      .catch(err => {
+        console.log(err);
+      })
+  }
+
+  backward() {
+    if (this.bibleJang - 1 <= 0) {
+      if (this.bibleBook - 1 > 0) {
+        this.loadBible(this.bibleBook - 1, 1);
+      }
+    } else {
+      this.loadBible(this.bibleBook, this.bibleJang - 1);
+    }
+  }
+
+  onPlayComplete(event) {
+    console.log(event);
+  }
+
+  onForward(event) {
+    // console.log(event)
+    this.forward();
+  }
+
+  onBackward(event) {
+    // console.log(event)
+    this.backward();
   }
 }

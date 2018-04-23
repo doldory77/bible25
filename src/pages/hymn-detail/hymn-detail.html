@@ -63,7 +63,7 @@
     <div [hidden]="viewType == 1 ? false : true">
       <img #music src="http://bible25.bible25.com/hymn_jpg.php?p_num={{p_num}}">
       <div class="size-expand-box">
-        <button ion-button icon-only (click)="presentImage(music)">
+        <button ion-button icon-only outline (click)="presentImage(music)">
           <ion-icon name="expand"></ion-icon>
         </button>
       </div>

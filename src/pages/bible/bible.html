@@ -20,10 +20,10 @@
   <ion-grid [hidden]="!isBibleMode">
     <ion-row>
       <ion-col col-4 text-center>
-        <button ion-button clear small [navPush]="'BibleListPage'">{{currBookName}}({{currJangNumber}}장)</button>
+        <button ion-button clear small [navPush]="'BibleListPage'">{{bookName}}({{bibleJang}}장)</button>
       </ion-col>
       <ion-col col-4 text-center>
-        <button ion-button clear small [navPush]="'BibleLangPage'">{{currSelectedLanguage}}</button>
+        <button ion-button clear small [navPush]="'BibleLangPage'">{{selectedLanguage}}</button>
       </ion-col>
       <ion-col col-2 text-center>
         <button ion-button clear icon-only small [color]="playerNonVisible ? 'primary' : 'danger'" (click)="togglePlayer()">
@@ -38,7 +38,16 @@
     </ion-row>
   </ion-grid>
 
-  <ion-grid [hidden]="playerNonVisible">
+  <player-ui [playerNonVisible]="playerNonVisible"
+    [playKind]="0"
+    [book]="bibleBook"
+    [jang]="bibleJang"
+    (onPlayComplete)="onPlayComplete($event)"
+    (onForward)="onForward($event)"
+    (onBackward)="onBackward($event)"
+  ></player-ui>
+
+  <!-- <ion-grid [hidden]="playerNonVisible">
     <ion-row>
       <ion-col>
         <div class="media-progress-outer">
@@ -72,7 +81,7 @@
         </button>
       </ion-col>
     </ion-row>
-  </ion-grid>
+  </ion-grid> -->
 
 </ion-header>
 

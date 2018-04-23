@@ -106,4 +106,19 @@ export class UtilProvider {
     return indicator;
   }
 
+  isDefaultNumber(src: number, defaultValue: number): number {
+    if (!src || src < 0) {
+      return defaultValue;
+    } else {
+      return src;
+    }
+  }
+
+  isEmptyNumber(src: number) {
+    if (!src || src <= 0 ) {
+      return true
+    }
+    return false;
+  }
+
 }
