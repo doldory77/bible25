@@ -2,19 +2,18 @@ import { NgModule } from '@angular/core';
 import { IonicPageModule } from 'ionic-angular';
 import { LearnBibleDetailPage } from './learn-bible-detail';
 import { DirectivesModule } from '../../directives/directives.module'
-import { PlayerUiComponent } from '../../components/player-ui/player-ui';
+import { ComponentsModule } from '../../components/components.module';
 
 @NgModule({
   declarations: [
     LearnBibleDetailPage,
-    PlayerUiComponent
   ],
   imports: [
     IonicPageModule.forChild(LearnBibleDetailPage),
-    DirectivesModule
+    DirectivesModule,
+    ComponentsModule
   ],
   entryComponents: [
-    PlayerUiComponent
   ]
 })
 export class LearnBibleDetailPageModule {}

@@ -1,20 +1,19 @@
 import { NgModule } from '@angular/core';
 import { IonicPageModule } from 'ionic-angular';
 import { HymnDetailPage } from './hymn-detail';
-import { DirectivesModule } from '../../directives/directives.module'
-import { PlayerUiComponent } from '../../components/player-ui/player-ui';
+import { DirectivesModule } from '../../directives/directives.module';
+import { ComponentsModule } from '../../components/components.module';
 
 @NgModule({
   declarations: [
     HymnDetailPage,
-    PlayerUiComponent
   ],
   imports: [
     IonicPageModule.forChild(HymnDetailPage),
-    DirectivesModule
+    DirectivesModule,
+    ComponentsModule
   ],
   entryComponents: [
-    PlayerUiComponent
   ]
 })
 export class HymnDetailPageModule {}
