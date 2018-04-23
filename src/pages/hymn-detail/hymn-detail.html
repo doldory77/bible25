@@ -61,7 +61,12 @@
       <div [style.fontSize]="fontSize" class="viewType0" [innerHtml]="song"></div>
     </div>
     <div [hidden]="viewType == 1 ? false : true">
-      <img src="http://bible25.bible25.com/hymn_jpg.php?p_num={{p_num}}">
+      <img #music src="http://bible25.bible25.com/hymn_jpg.php?p_num={{p_num}}">
+      <div class="size-expand-box">
+        <button ion-button icon-only (click)="presentImage(music)">
+          <ion-icon name="expand"></ion-icon>
+        </button>
+      </div>
     </div>
 
   </div>

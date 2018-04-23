@@ -6,6 +6,7 @@ import { Observable, pipe, Subscription } from 'rxjs/Rx'
 import { map } from 'rxjs/operators';
 import { UtilProvider } from '../../providers/util/util';
 import { Pinchable } from '../../model/pinchable';
+import { ImageViewerController } from 'ionic-img-viewer';
 
 @IonicPage()
 @Component({
@@ -26,7 +27,8 @@ export class HymnDetailPage extends Pinchable {
     private db: DbProvider,
     private player: PlayerProvider,
     private toast: ToastController,
-    private util: UtilProvider) {
+    private util: UtilProvider,
+    private imageViewerCtrl: ImageViewerController) {
       super();
       if (this.navParams.get('p_num')) this.p_num = this.navParams.get('p_num');
   }
@@ -108,6 +110,11 @@ export class HymnDetailPage extends Pinchable {
 
   onBackward(event) {
     this.backward();
+  }
+
+  presentImage(musicElement) {
+    const imageViewer = this.imageViewerCtrl.create(musicElement);
+    imageViewer.present();
   }
 
 }

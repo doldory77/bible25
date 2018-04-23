@@ -16,6 +16,7 @@ import { PlayerProvider } from '../providers/player/player';
 import { HymnSearchTypeComponent } from '../components/hymn-search-type/hymn-search-type';
 import { RestProvider } from '../providers/rest/rest';
 import { UtilProvider } from '../providers/util/util';
+import { IonicImageViewerModule } from 'ionic-img-viewer';
 
 @NgModule({
   declarations: [
@@ -26,6 +27,7 @@ import { UtilProvider } from '../providers/util/util';
     BrowserModule,
     IonicModule.forRoot(MyApp),
     HttpClientModule,
+    IonicImageViewerModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [
