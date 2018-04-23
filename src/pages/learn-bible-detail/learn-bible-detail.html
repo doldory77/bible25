@@ -5,11 +5,13 @@
   </ion-navbar>
   <player-ui [playerNonVisible]="learnMode == 0 ? true : false"
     [playKind]="0"
-    (onPlayComplete)="onComplete($event)"
+    [book]="bibleBook"
+    [jang]="bibleJang"
+    (onPlayComplete)="onPlayComplete($event)"
     (onForward)="onForward($event)"
-    ></player-ui>
+    (onBackward)="onBackward($event)"
+  ></player-ui>
 </ion-header>
-
 
 <ion-content [class.disable-scrolling]='isScaling'>
   <div pinch
@@ -32,20 +34,23 @@
       </button>
     </ion-fab>
 
-    <ion-fab top center *ngIf="isChecked == true" [hidden]="isShow == false">
+    <ion-fab bottom right *ngIf="isChecked == true" [style.opacity]="0.6" [hidden]="isShow == false">
       <button ion-fab mini>
-        <ion-icon name="arrow-dropdown-circle"></ion-icon>
+        <ion-icon name="move"></ion-icon>
       </button>
-      <ion-fab-list side="left">
-          <button ion-fab (click)="backword()">
+      <ion-fab-list side="top">
+          <button ion-fab (click)="backward()">
             <ion-icon name="arrow-round-back"></ion-icon>
           </button>
-      </ion-fab-list>
-      <ion-fab-list side="right">
           <button ion-fab (click)="forward()">
             <ion-icon name="arrow-round-forward"></ion-icon>
           </button>
       </ion-fab-list>
+      <!-- <ion-fab-list side="right">
+          <button ion-fab (click)="forward()">
+            <ion-icon name="arrow-round-forward"></ion-icon>
+          </button>
+      </ion-fab-list> -->
     </ion-fab>
     
 </ion-content>

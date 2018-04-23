@@ -114,7 +114,13 @@ export class LearnBibleDetailPage extends Pinchable implements OnScrollDetect {
         this.content.scrollToTop();
 
         if (this.bibleContents.length > 0) {
-          this.isChecked = this.bibleContents[0].isListenYn || this.bibleContents[0].isReadYn;
+          if (this.learnMode == 0) {
+            this.isChecked = this.bibleContents[0].isReadYn;
+          } else {
+            this.isChecked = this.bibleContents[0].isListenYn;
+          }
+          
+          // this.isChecked = this.bibleContents[0].isListenYn || this.bibleContents[0].isReadYn;
           // if (this.isChecked == false) {
           // }
         }
@@ -140,8 +146,7 @@ export class LearnBibleDetailPage extends Pinchable implements OnScrollDetect {
       })
   }
 
-  backword() {
-    console.log('backword');
+  backward() {
     if (this.bibleJang - 1 <= 0) {
       if (this.bibleBook - 1 > 0) {
         this.loadBible(this.bibleBook - 1, 1);
@@ -152,46 +157,19 @@ export class LearnBibleDetailPage extends Pinchable implements OnScrollDetect {
   }
 
   check() {
-    // if (this.isChecked == false) {
-    //   this.db.insertLearnBible(this.learnMode, this.bibleBook, this.bibleJang)
-    //     .then(result => {
-    //       this.db.getLastJangByBibleBook(this.bibleBook)
-    //         .then(rs => {
-    //           if (this.bibleJang + 1 > rs.rows.item(0).total_jang) {
-    //             if (this.bibleBook + 1 <= 66) {
-    //               this.loadBible(this.bibleBook + 1, this.bibleJang + 1);
-    //             }
-    //           } else {
-    //             this.loadBible(this.bibleBook, this.bibleJang + 1);
-    //           } 
-    //         })
-    //     })
-    //     .catch(err => {
-    //       console.log(err);
-    //     })
-    // } else {
-    //   this.db.getLastJangByBibleBook(this.bibleBook)
-    //     .then(rs => {
-    //       if (this.bibleJang + 1 > rs.rows.item(0).total_jang) {
-    //         if (this.bibleBook + 1 <= 66) {
-    //           this.loadBible(this.bibleBook + 1, this.bibleJang + 1);
-    //         }
-    //       } else {
-    //         this.loadBible(this.bibleBook, this.bibleJang + 1);
-    //       } 
-    //     })
-    // }
+    
     this.db.insertLearnBible(this.learnMode, this.bibleBook, this.bibleJang)
       .then(() => {
         this.forward();
       })
   }
 
-  onComplete(event) {
+  onPlayComplete(event) {
+    console.log(this.isChecked, event);
     if (this.isChecked == false) {
       this.db.insertLearnBible(this.learnMode, this.bibleBook, this.bibleJang)
         .then(result => {
-          console.log(result);
+          // console.log(result);
         })
         .catch(err => {
           console.log(err);
@@ -200,7 +178,13 @@ export class LearnBibleDetailPage extends Pinchable implements OnScrollDetect {
   }
 
   onForward(event) {
+    // console.log(event)
     this.forward();
+  }
+
+  onBackward(event) {
+    // console.log(event)
+    this.backward();
   }
 
 }

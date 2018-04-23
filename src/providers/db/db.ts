@@ -31,7 +31,6 @@ export class DbProvider {
   openDb(): Promise<any> {
     return new Promise((resolve, reject) => {
       if (this.dbo) {
-        console.log('==========> this.dbo is opened');
         resolve(this.dbo);
       } else {
         this.sqlite.create(this.getOptions())

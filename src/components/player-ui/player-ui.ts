@@ -5,7 +5,7 @@ import { map } from 'rxjs/operators';
 import { PlayerProvider } from '../../providers/player/player';
 import { UtilProvider } from '../../providers/util/util';
 import { DbProvider } from '../../providers/db/db';
-import { Loading } from 'ionic-angular';
+import { Loading, LoadingController } from 'ionic-angular';
 
 const enum PlayKind {
   BibleMode = 0,
@@ -26,7 +26,8 @@ class PlayerUiComponent implements OnInit, OnDestroy {
 
   constructor(private player: PlayerProvider,
     private util: UtilProvider,
-    private db: DbProvider) {
+    private db: DbProvider,
+    private indicator: LoadingController) {
     
   }
 
@@ -39,6 +40,7 @@ class PlayerUiComponent implements OnInit, OnDestroy {
 
   @Output() onPlayComplete: EventEmitter<any> = new EventEmitter();
   @Output() onForward: EventEmitter<any> = new EventEmitter();
+  @Output() onBackward: EventEmitter<any> = new EventEmitter();
 
   loadingBar: Loading;
 
@@ -51,9 +53,15 @@ class PlayerUiComponent implements OnInit, OnDestroy {
   isMediaRoop: boolean = false;
   isAutoPlay: boolean = false;
 
+  onViewInit() {
+    this.mediaTraker = '0:0';
+    this.mediaRange = '--:--';
+    this.currentTrack = '1%';
+  }
 
   ngOnInit() {
     console.log("=====================> ngOnInit");
+    this.onViewInit();
     this.trackerSubscription = this.playBack();
   }
 
@@ -62,6 +70,8 @@ class PlayerUiComponent implements OnInit, OnDestroy {
     if (this.trackerSubscription) {
       this.trackerSubscription.unsubscribe();
     }
+    this.player.stop();
+    this.player.release();
   }
   
 
@@ -74,6 +84,7 @@ class PlayerUiComponent implements OnInit, OnDestroy {
             return;
           } else {
             this.jang = this.jang + 1;
+            this.onForward.emit({isAutoPlay:this.isAutoPlay, book:this.book, jang:this.jang, p_num:this.p_num});
             this.play();
           }
         })
@@ -86,6 +97,7 @@ class PlayerUiComponent implements OnInit, OnDestroy {
         return;
       } else {
         this.p_num = this.util.pad(parseInt(this.p_num) + 1, 3);
+        this.onForward.emit({isAutoPlay:this.isAutoPlay, book:this.book, jang:this.jang, p_num:this.p_num});
         this.play();
       }
     }
@@ -98,6 +110,7 @@ class PlayerUiComponent implements OnInit, OnDestroy {
         return;
       } else {
         this.jang = this.jang - 1;
+        this.onBackward.emit({isAutoPlay:this.isAutoPlay, book:this.book, jang:this.jang, p_num:this.p_num});
         this.play()
       }
     } else {
@@ -106,6 +119,7 @@ class PlayerUiComponent implements OnInit, OnDestroy {
         return;
       } else {
         this.p_num = this.util.pad(parseInt(this.p_num) - 1, 3);
+        this.onBackward.emit({isAutoPlay:this.isAutoPlay, book:this.book, jang:this.jang, p_num:this.p_num});
         this.play();
       }
     }
@@ -139,7 +153,15 @@ class PlayerUiComponent implements OnInit, OnDestroy {
     this.playState = PlayState.PLAY;
 
     if (this.playKind == PlayKind.BibleMode) {
-      this.loadingBar = this.util.showSimpleLoading();
+      
+      this.loadingBar = this.indicator.create({
+        showBackdrop: false,
+        spinner: 'circles',
+        cssClass: 'only-loading-icon', 
+        dismissOnPageChange: true
+      });
+      this.loadingBar.present();
+
       this.player.checkOrDown({book:String(this.book), jang:String(this.jang)})
         .then(result => {
           console.log(result);
@@ -192,9 +214,13 @@ class PlayerUiComponent implements OnInit, OnDestroy {
         map(() => {
           this.player.getPosition()
             .then(data => {
+              
               let totRangeNum = Math.floor(this.player.getDuration());
-              if (totRangeNum == 0) {totRangeNum = 1}
               let curTimeValNum = Math.ceil(data);
+              
+              if (totRangeNum == 0 || curTimeValNum == -1) return;
+              // if (totRangeNum == 0) {totRangeNum = 1}
+
               let percentValNum = curTimeValNum / totRangeNum * 100;
 
               let minVal = Math.floor(curTimeValNum / 60);
@@ -206,9 +232,10 @@ class PlayerUiComponent implements OnInit, OnDestroy {
               let totMinVal = Math.floor(totRangeNum / 60);
               let totSecVal = totRangeNum % 60;
               this.mediaRange = totMinVal > 0 ? (totMinVal + ':' + this.db.pad(totSecVal,2)) : (this.db.pad(totSecVal,2) + '');
+              // if (totMinVal == 0 && totSecVal == 1) this.mediaRange = '--:--'; 
               
               if (curTimeValNum >= totRangeNum) {
-                
+                console.log('onPlayComplete')
                 this.onPlayComplete.emit({isAutoPlay:this.isAutoPlay, book:this.book, jang:this.jang, p_num:this.p_num});
                 
                 if (this.isMediaRoop) {
@@ -226,6 +253,10 @@ class PlayerUiComponent implements OnInit, OnDestroy {
             })
         })
       ).subscribe();
+  }
+
+  repeatToggle() {
+    this.isMediaRoop = !this.isMediaRoop;
   }
 
 }
