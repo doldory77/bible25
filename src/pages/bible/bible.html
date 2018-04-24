@@ -87,37 +87,49 @@
 
 
 
-<ion-content>
+<ion-content [class.disable-scrolling]='isScaling'>
+  
+  <div pinch
+    (pinchstart)="onPinchStart($event)"
+    (pinchend)="onPinchEnd($event)"
+    (pinchmove)="onPinchMove($event)">
 
-  <!-- <iframe [hidden]="isBibleMode" id="iframe2" (load)="iframeLoaded()" src="http://ch2ho.bible25.com/m/bbs/board2.php?bo_table=bible&t=tab1&key=NKRV&key2=&key3=&book=1&jang=1&tab_title=Study" width="100%" height="100%" seamless></iframe> -->
-  <ion-list [hidden]="isBibleMode">
-    <ion-item text-wrap *ngFor="let item of bibleSupportContents">
-      <div class="bible-support-title" *ngIf="item.title != ''">{{item.title}}&nbsp;<span *ngIf="item.bible != ''">({{item.bible}})</span></div>
-      <div *ngIf="item.context != ''" [innerHtml]="item.context"></div>
-      <div *ngIf="item.img_name != ''">
-        <img [src]="item.img_name">
-        <div *ngIf="item.title != ''">{{item.title}} <span>({{item.jang}} : item.jul)</span></div>
-        <div *ngIf="item.content != ''">{{item.content}}</div>
-      </div>
-    </ion-item>
-  </ion-list>
+    <ion-list [hidden]="isBibleMode">
+      <ion-item text-wrap *ngFor="let item of bibleSupportContents">
+        <div class="bible-support-title" *ngIf="item.title != ''">{{item.title}}&nbsp;<span *ngIf="item.bible != ''">({{item.bible}})</span></div>
+        <div *ngIf="item.context != ''" [innerHtml]="item.context" [style.fontSize]="fontSize"></div>
+        <div *ngIf="item.img_name != ''">
+          <img [src]="item.img_name">
+          <div *ngIf="item.title != ''">{{item.title}} <span>({{item.jang}} : item.jul)</span></div>
+          <div *ngIf="item.content != ''">{{item.content}}</div>
+        </div>
+      </ion-item>
+    </ion-list>
+  
 
-  <ion-list [hidden]="!isBibleMode" class="bible-content-list">
-    <ion-item *ngFor="let item of bibleContents" text-wrap>
-      <span class="bible-jul">{{item.jul}}</span><span class="bible-content" (click)="itemSelect(item)" [style.color]="item.selected ? 'red' : 'black'">{{item.content}}
-          <ion-icon *ngIf="item.isBookMarked" name="bookmark" color="danger"></ion-icon>
-      </span>
-      
-    </ion-item>
-  </ion-list>
+    <ion-list [hidden]="!isBibleMode" class="bible-content-list">
+      <ion-item *ngFor="let item of bibleContents" text-wrap>
+        <span class="bible-jul">{{item.jul}}</span><span [style.fontSize]="fontSize" class="bible-content" (click)="itemSelect(item)" [style.color]="item.selected ? 'red' : 'black'">{{item.content}}
+            <ion-icon *ngIf="item.isBookMarked" name="bookmark" color="danger"></ion-icon>
+        </span>
+      </ion-item>
+    </ion-list>
 
-  <button ion-button small outline class="bible-prev-button" [hidden]="!isBibleMode" (click)="move('prev', false)">
-    <ion-icon name="arrow-back"></ion-icon>
-  </button>
+  </div>
 
-  <button ion-button small outline class="bible-next-button" [hidden]="!isBibleMode" (click)="move('next', false)">
-    <ion-icon name="arrow-forward"></ion-icon>
-  </button>
+  <ion-fab bottom right [style.opacity]="0.6" [hidden]="isShow == false">
+    <button ion-fab mini>
+      <ion-icon name="move"></ion-icon>
+    </button>
+    <ion-fab-list side="top">
+        <button ion-fab (click)="backwardClick()">
+          <ion-icon name="arrow-round-back"></ion-icon>
+        </button>
+        <button ion-fab (click)="forwardClick()">
+          <ion-icon name="arrow-round-forward"></ion-icon>
+        </button>
+    </ion-fab-list>
+  </ion-fab>
 
 </ion-content>
 

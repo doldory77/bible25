@@ -76,6 +76,7 @@ class PlayerUiComponent implements OnInit, OnDestroy {
   
 
   forward() {
+
     if (this.playKind == PlayKind.BibleMode) {
       this.db.getLastJangByBibleBook(this.book)
         .then(rs => {
@@ -103,7 +104,14 @@ class PlayerUiComponent implements OnInit, OnDestroy {
     }
   }
 
+  directPlay(book:number, jang:number) {
+    this.book = book;
+    this.jang = jang;
+    this.play();
+  }
+
   backward() {
+
     if (this.playKind == PlayKind.BibleMode) {
       if (this.jang - 1 <= 0) {
         this.util.showToast('페이지의 처음입니다.', 2000);

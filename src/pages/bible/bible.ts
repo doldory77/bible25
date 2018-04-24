@@ -13,6 +13,7 @@ import { UtilProvider } from '../../providers/util/util';
 
 import { Pinchable } from '../../model/pinchable';
 import { OnScrollDetect, ScrollDetectable } from '../../model/onscroll-detect';
+import { PlayerUiComponent } from '../../components/player-ui/player-ui';
 
 @IonicPage()
 @Component({
@@ -36,21 +37,22 @@ export class BiblePage extends Pinchable implements OnScrollDetect {
   selectedLanguage: string = '';
   
   @ViewChild(Content) content: Content;
+  @ViewChild(PlayerUiComponent) playerUI: PlayerUiComponent;
 
   data: any[] = [];
 
-  currJangNumber: number = 0;
-  selectedLanguages: string = '';
-  isChange: boolean = false;
+  
+  // isChange: boolean = false;
+  // selectedLanguages: string = '';
+  // currJangNumber: number = 0;
+  // playState: string = 'play';
+  // mediaTraker: string = '0:0';
+  // mediaRange: string = '--:--';
+  // isMediaRoop: boolean = false;
 
-  playState: string = 'play';
-  mediaTraker: string = '0:0';
-  mediaRange: string = '--:--';
-  isMediaRoop: boolean = false;
-
-  currentPnumber: string;
-  trackerSubscription: Subscription;
-  currentTrack: string = '5%';
+  // currentPnumber: string;
+  // trackerSubscription: Subscription;
+  // currentTrack: string = '5%';
 
   isBookMarked: boolean = false;
   isBookMarkExists: boolean = false;
@@ -80,27 +82,19 @@ export class BiblePage extends Pinchable implements OnScrollDetect {
 
   ionViewDidLoad() {
     this.menuData[0].selected = true;
+    this.scrollDetector = new ScrollDetectable();
   }
-
+  
   ionViewWillEnter() {
-    // this.getBibleWrap();
+    this.onScrollBottomDetect(this.content);
     this.loadBible()
   }
 
   ionViewWillLeave() {
-    // if (this.trackerSubscription) {
-    //   this.trackerSubscription.unsubscribe();
-    // }
-    // if (this.player.isMediaObjectLive) {
-    //   this.player.stop();
-    //   this.player.release();
-    // }
-
     this.destroyScrollDetector(this.scrollDetector);
   }
 
   saveBookMark() {
-    // if (this.isBookMarked) return;
     let selectedJuls = this.bibleContents.filter(item => item.selected);
     if (selectedJuls.length == 0) {
       this.util.showAlert('즐겨찾기', '선택한 절이 없습니다.');
@@ -113,28 +107,21 @@ export class BiblePage extends Pinchable implements OnScrollDetect {
     })
     
     let bookMark = {
-      bibletype: this.util.getBibleType(this.db.appInfo.view_bible_book),
-      book: this.db.appInfo.view_bible_book,
-      jang: this.db.appInfo.view_bible_jang,
+      bibletype: this.util.getBibleType(this.bibleBook),
+      book: this.bibleBook,
+      jang: this.bibleJang,
       set_time: this.util.getToday(),
       julArr: julArr
     }
     this.db.insertBookMarkForBible(bookMark)
       .then(result => {
-        this.toast.create({
-          message: '즐겨찾기에 추가되었습니다.',
-          duration: 2000
-        }).present();
-
+        this.util.showToast('즐겨찾기에 추가되었습니다.', 3000);
         this.refleshBibl();
         
       })
       .catch(err => {
         console.log(err);
-        this.toast.create({
-          message: '즐겨찾기에 실패하였습니다.',
-          duration: 2000
-        }).present();
+        this.util.showToast('즐겨찾기에 실패하였습니다.', 3000);
       })
   }
 
@@ -162,61 +149,21 @@ export class BiblePage extends Pinchable implements OnScrollDetect {
         }
 
         this.db.getBibleContent(this.bibleContents, params)
-          .then(() => {})
+          .then(() => {
+            this.content.scrollToTop();
+          })
           .catch(err => {
             console.log(err);
           })
+          
       })
   }
-
-  // getBibleWrap() {
-
-  //   this.db.getAppInfo()
-  //   .then(result => {
-      
-  //     let params = {
-  //       book: this.db.appInfo.view_bible_book,
-  //       jang: this.db.appInfo.view_bible_jang,
-  //       multiLang: this.db.appInfo.selected_eng_names.split(',')
-  //     }
-
-  //     if (this.currBookName == this.db.appInfo.book_name
-  //         && this.selectedLanguages == this.db.appInfo.selected_eng_names
-  //         && this.currJangNumber == this.db.appInfo.view_bible_jang
-  //         && this.currSelectedLanguage == this.db.appInfo.selected_first_name) {
-  //       this.isChange = false;
-  //     } else {
-  //       this.currBookName = this.db.appInfo.book_name;
-  //       this.selectedLanguages = this.db.appInfo.selected_eng_names;
-  //       this.currJangNumber = this.db.appInfo.view_bible_jang;
-  //       this.currSelectedLanguage = this.db.appInfo.selected_first_name;
-  //       this.isChange = true;
-  //     }
-      
-  //     console.log('===========> isChange: ', this.isChange);
-
-  //     if (this.isChange) {
-
-  //       this.db.getBibleContent(this.bibleContents, params)
-  //         .then(result => {})
-  //         .catch(err => console.log(err));
-        
-        
-  //       // this.db.insertLearnBible(this.db.appInfo.view_bible_book, this.db.appInfo.view_bible_jang)
-  //       //   .then(result => {})
-  //       //   .catch(err => {console.log(err)});  
-
-  //     }
-  //   })
-  //   .catch(err => console.log(err));
-
-  // }
 
   refleshBibl() {
     this.isBookMarkExists = false;
     let params = {
-      book: this.db.appInfo.view_bible_book,
-      jang: this.db.appInfo.view_bible_jang,
+      book: this.bibleBook,
+      jang: this.bibleJang,
       multiLang: this.db.appInfo.selected_eng_names.split(',')
     }
 
@@ -242,7 +189,7 @@ export class BiblePage extends Pinchable implements OnScrollDetect {
       });
       this.loading.present();
       
-      this.rest.getBibleSupportInfo(String(this.db.appInfo.view_bible_book), String(this.db.appInfo.view_bible_jang), menu.url)
+      this.rest.getBibleSupportInfo(String(this.bibleBook), String(this.bibleJang), menu.url)
         .then(rs => {
           this.loading.dismiss();
           let tmpArr: any[] = (<any[]>rs);
@@ -251,6 +198,7 @@ export class BiblePage extends Pinchable implements OnScrollDetect {
             tmpArr.forEach(item => {
               this.bibleSupportContents.push(item);
             })
+            this.content.scrollToTop();
           }
 
         })
@@ -266,175 +214,13 @@ export class BiblePage extends Pinchable implements OnScrollDetect {
     }
   }
 
-  iframeLoaded() {
-    if (this.loading) {
-      this.screenUpdate();
-      this.loading.dismiss();
-    }
-  }
-
   screenUpdate(){
     this.content.resize();
-  }
-
-  canOnlyPaly(): boolean {
-    let currentMediaData = this.player.currentBibleAudioData;
-
-    const flag = this.player.isMediaObjectLive();
-    if (flag 
-      && currentMediaData.book == String(this.db.appInfo.view_bible_book)
-      && currentMediaData.jang == String(this.db.appInfo.view_bible_jang))
-    {
-      return true;
-    } else {
-      return false;
-    }
   }
 
   togglePlayer() {
     this.playerNonVisible = !this.playerNonVisible;
     this.screenUpdate();
-  }
-
-  playOrPause() {
-    
-    if (this.playState == 'pause') {
-      this.player.pause();
-      this.playState = 'play';
-      if (this.trackerSubscription) this.trackerSubscription.unsubscribe();
-      return;
-    }
-
-    if (this.canOnlyPaly()) {
-      this.player.play();
-      this.playState = 'pause';
-      this.trackerSubscription = this.startPlayBack();
-    } else {
-      
-      this.loading = this.indicator.create({
-        showBackdrop: false,
-        content: `<div>Loading...</div>`, 
-        spinner: 'circles', 
-        dismissOnPageChange: true,
-      });
-      this.loading.present();
-
-      this.player.checkOrDown({
-        book: String(this.db.appInfo.view_bible_book),
-        jang: String(this.db.appInfo.view_bible_jang)
-      })
-      .then(result => {
-
-        setTimeout(() => {
-          console.log('============> duration: ', this.player.getDuration());
-          let durationNum = Math.floor(this.player.getDuration());
-          let minVal = Math.floor(durationNum / 60);
-          let secVal = durationNum % 60;
-          this.mediaRange = minVal > 0 ? (minVal + ':' + this.db.pad(secVal,2)) : (this.db.pad(secVal,2) + '');
-        }, 1000);
-
-        this.playState = 'pause';
-        this.trackerSubscription = this.startPlayBack();
-        console.log(result);
-        if (this.loading) {
-          this.loading.dismiss();
-        }
-      })
-      .catch(err => {
-        console.log(err);
-        if (this.loading) {
-          this.loading.dismiss();
-        }
-      })
-    }
-  }
-
-  stop() {
-    this.player.stop();
-  }
-
-  // move(direction:string, withPaly:boolean) {
-  //   this.db.checkBibleContent(direction == 'prev' ? false : true)
-  //     .then(result => {
-  //       console.log(result);
-  //       if (result.result == 'success' && result.msg == 'Y') {
-  //         let moveStep = direction == 'prev' ? -1 : 1;
-  //         this.db.updateAppInfo('bible',{
-  //           book:this.db.appInfo.view_bible_book, 
-  //           jang:this.db.appInfo.view_bible_jang + (moveStep)
-  //         })
-  //         .then(() => {
-  //           this.getBibleWrap();
-
-  //           this.db.getAppInfo();
-  //           try {
-  //             this.player.stop();
-  //             this.playState = 'play';
-  //             this.mediaTraker = "0"
-  //             this.currentTrack = "1%";
-  //             this.mediaRange = '--:--';
-  //             if (this.trackerSubscription) this.trackerSubscription.unsubscribe();
-  //           } catch (err) {console.log(err)}
-
-  //           // if (withPaly && !this.playerNonVisible) {
-  //           //   this.playOrPause();
-  //           // }
-
-  //         })
-  //         .catch(err => {
-  //           console.log(err);
-  //         })
-          
-  //       } else {
-  //         this.toast.create({
-  //           message: `해당 장에서 더이상 읽을 자료가 없습니다.`,
-  //           duration: 3000,
-  //           position: 'bottom'
-  //         }).present();
-  //       }
-  //     })
-  //     .catch(err => {
-  //       console.log(err);
-  //     });
-  // }
-
-  roopToggle() {
-    this.isMediaRoop = !this.isMediaRoop;
-    this.rest.getBibleSupportInfo('1','1','tab1')
-      .then(res => {
-        console.log(res);
-      })
-      .catch(err => {
-        console.log(err);
-      })
-  }
-
-  startPlayBack(): Subscription {
-    return Observable.interval(500)
-      .pipe(
-        map(() => {
-          this.player.getPosition()
-            .then(data => {
-              let totRangeNum = Math.floor(this.player.getDuration());
-              let curTimeValNum = Math.ceil(data);
-              let percentValNum = curTimeValNum / totRangeNum * 100;
-
-              let minVal = Math.floor(curTimeValNum / 60);
-              let secVal = Math.floor(curTimeValNum % 60);
-
-              this.mediaTraker = minVal > 0 ? (minVal + ':' + this.db.pad(secVal,2)) : (this.db.pad(secVal,2) + '');
-              this.currentTrack = String(percentValNum) + "%";
-              
-              if (curTimeValNum >= totRangeNum) {
-                this.player.stop();
-                this.playState = 'play';
-                this.mediaTraker = "0"
-                this.currentTrack = "1%";
-              }
-
-            })
-        })
-      ).subscribe()
   }
 
   itemSelect(item:any) {
@@ -452,7 +238,11 @@ export class BiblePage extends Pinchable implements OnScrollDetect {
       1000,
       data => {
         // console.log(data);
-        if (data.scrollTop >= Math.floor(data.contentHeight * 0.4)) {
+        if (this.isBibleMode == false) {
+          this.isShow = false;
+          return;
+        }
+        if (data.scrollTop + data.contentTop >= Math.floor(data.scrollHeight * 0.7)) {
           this.isShow = true;
         } else {
           this.isShow = false;
@@ -466,30 +256,79 @@ export class BiblePage extends Pinchable implements OnScrollDetect {
     scrollDetector.destroy();
   }
 
-  forward() {
-    this.db.getLastJangByBibleBook(this.bibleBook)
-      .then(rs => {
-        if (this.bibleJang + 1 > rs.rows.item(0).total_jang) {
-          if (this.bibleBook + 1 <= 66) {
-            this.loadBible(this.bibleBook + 1, this.bibleJang + 1);
-          }
-        } else {
-          this.loadBible(this.bibleBook, this.bibleJang + 1);
+  forwardClick() {
+    this.forward()
+      .then((result:any) => {
+        if (this.playerUI.playState == 1) {
+          this.playerUI.directPlay(result.book, result.jang);    
+        } else if (this.playerUI.playState == 2) {
+          this.playerUI.book = result.book;
+          this.playerUI.jang = result.jang;
+          this.playerUI.stop();
         }
-      })
-      .catch(err => {
-        console.log(err);
       })
   }
 
-  backward() {
+  backwardClick() {
+    this.backward()
+      .then((result:any) => {
+        if (this.playerUI.playState == 1) {
+          this.playerUI.directPlay(result.book, result.jang);
+        } else if (this.playerUI.playState == 2) {
+          this.playerUI.book = result.book;
+          this.playerUI.jang = result.jang;
+          this.playerUI.stop();
+        }
+      })
+  }
+
+  forward(): Promise<any> {
+    return this.db.getLastJangByBibleBook(this.bibleBook)
+      .then(rs => {
+        let _book:number;
+        let _jang:number;
+        if (this.bibleJang + 1 > rs.rows.item(0).total_jang) {
+          if (this.bibleBook + 1 <= 66) {
+            _book = this.bibleBook + 1;
+            _jang = this.bibleJang + 1;
+          }
+        } else {
+          _book = this.bibleBook;
+          _jang = this.bibleJang + 1;
+        }
+
+        this.db.updateAppInfo('bible', {book:_book, jang:_jang})
+          .then(() => {
+            this.loadBible();
+          })
+
+        return Promise.resolve({book:_book, jang:_jang})
+      })
+      .catch(err => {
+        console.log(err);
+        return Promise.reject(err);
+      })
+  }
+
+  backward(): Promise<any> {
+    let _book:number;
+    let _jang:number;
     if (this.bibleJang - 1 <= 0) {
       if (this.bibleBook - 1 > 0) {
-        this.loadBible(this.bibleBook - 1, 1);
+        _book = this.bibleBook - 1;
+        _jang = 1;
       }
     } else {
-      this.loadBible(this.bibleBook, this.bibleJang - 1);
+      _book = this.bibleBook;
+      _jang = this.bibleJang - 1;
     }
+
+    this.db.updateAppInfo('bible', {book:_book, jang:_jang})
+      .then(() => {
+        this.loadBible();
+      })
+    
+    return Promise.resolve({book:_book, jang:_jang});
   }
 
   onPlayComplete(event) {
