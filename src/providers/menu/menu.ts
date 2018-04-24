@@ -172,6 +172,13 @@ export class MenuProvider {
           menuLevel: 'top_menu',
           url: ''
       })
+      .set('bibleLearn', {
+          name: '교독문',
+          page: 'LearnBiblePage',
+          selected: false,
+          menuLevel: 'top_menu',
+          url: ''
+      })
 
   constructor() {
 

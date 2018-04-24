@@ -22,6 +22,9 @@ import { PlayerUiComponent } from '../../components/player-ui/player-ui';
 })
 export class BiblePage extends Pinchable implements OnScrollDetect {
 
+  @ViewChild(Content) content: Content;
+  @ViewChild(PlayerUiComponent) playerUI: PlayerUiComponent;
+
   scrollDetector: ScrollDetectable;
   isShow: boolean = false;
   isBibleMode: boolean = true;
@@ -32,28 +35,9 @@ export class BiblePage extends Pinchable implements OnScrollDetect {
   loading: Loading;
   bibleContents: {lang:string, book:number, jul:number, content:string, ord:number, isBookMarked:boolean, selected:boolean}[] = [];
   bibleSupportContents: {title:string, bible:string, context:string, img_name:string}[] = [];
-
   bookName: string = '';
   selectedLanguage: string = '';
-  
-  @ViewChild(Content) content: Content;
-  @ViewChild(PlayerUiComponent) playerUI: PlayerUiComponent;
-
-  data: any[] = [];
-
-  
-  // isChange: boolean = false;
-  // selectedLanguages: string = '';
-  // currJangNumber: number = 0;
-  // playState: string = 'play';
-  // mediaTraker: string = '0:0';
-  // mediaRange: string = '--:--';
-  // isMediaRoop: boolean = false;
-
-  // currentPnumber: string;
-  // trackerSubscription: Subscription;
-  // currentTrack: string = '5%';
-
+  // data: any[] = [];
   isBookMarked: boolean = false;
   isBookMarkExists: boolean = false;
 
