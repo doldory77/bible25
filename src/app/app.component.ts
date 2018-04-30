@@ -80,6 +80,7 @@ export class MyApp implements OnInit {
       // console.log('==> ', home.iframe)
       // document.getElementById('iframe')['contentWindow'].location.href = url;
       home.goUrl(url);
+      // home.url = url;
     }
   }
 

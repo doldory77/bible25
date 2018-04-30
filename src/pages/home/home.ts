@@ -43,6 +43,7 @@ export class HomePage {
   topSearchBtnFlag: boolean = false;
   loading: Loading = null;
   searchKeyWord: string = '';
+  url: string = "http://ch2ho.bible25.com/m/main_renewal_android.php";
 
   /*
   Android Back Button 오버라이드
@@ -109,6 +110,16 @@ export class HomePage {
     if (this.loading) {
       this.loading.dismiss();
     }
+    try {
+      let frm: any = document.getElementById('iframe');
+      let frmDoc: any = frm.contentDocument || frm.contentWindow;
+      frmDoc.getElementById('fixedBox').style.display = 'none';
+      let tables: any = frmDoc.getElementsByTagName('table');
+      tables[tables.length - 5].style.display = 'none';
+      this.screenUpdate();
+    } catch (err) {
+      console.log('fixedBox display hide error: ', err);
+    }
   }
 
   goUrl(url: string) {
@@ -120,7 +131,8 @@ export class HomePage {
         dismissOnPageChange: true, 
       });
       this.loading.present();
-      this.iframe.location.href = url;
+      this.url = url;
+      // this.iframe.location.href = url;
     }
   }
 
@@ -129,8 +141,9 @@ export class HomePage {
    */
   goSearchPage() {
     // this.searchKeyWord = '';
-    this.topSearchBtnFlag = false;
-    this.navCtrl.push('SearchPage', {keyword:this.searchKeyWord});
+    // this.topSearchBtnFlag = false;
+    // this.navCtrl.push('SearchPage', {keyword:this.searchKeyWord});
+    this.url = "http://ministrynote.com/bbs/search_bible25.php?sfl=wr_subject&sop=and&stx=" + this.searchKeyWord;
   }
 
   showAlert() {

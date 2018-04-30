@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, Loading, LoadingController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, Loading, LoadingController, ViewController } from 'ionic-angular';
 
 @IonicPage()
 @Component({
@@ -10,7 +10,8 @@ export class SearchPage {
 
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
-    private indicator: LoadingController) {
+    private indicator: LoadingController,
+    private viewCtrl: ViewController) {
       this.searchKeyWord = this.navParams.get("keyword");
       this.onSearchInput();
   }
@@ -47,6 +48,10 @@ export class SearchPage {
       console.log('fixedBox display hide error: ', err);
     }
     if (this.loading) this.loading.dismiss();
+  }
+
+  close() {
+    this.viewCtrl.dismiss();
   }
 
 }

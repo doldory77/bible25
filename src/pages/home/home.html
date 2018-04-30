@@ -48,7 +48,7 @@
   </ion-toolbar>
 
 </ion-header>
-
+<!-- http://ch2ho.bible25.com/m/main_renewal_android.php -->
 <ion-content>
-  <iframe id="iframe" (load)="iframeLoaded()" src="http://ch2ho.bible25.com/m/main_renewal_android.php" width="100%" height="100%" seamless></iframe>
+  <iframe id="iframe" (load)="iframeLoaded()" [src]="url | safe" width="100%" height="100%" seamless></iframe>
 </ion-content>
