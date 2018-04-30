@@ -93,7 +93,7 @@ export class MenuProvider {
           page: 'HomePage',
           selected: false,
           menuLevel: 'top_menu',
-          url: 'http://www.naver.com'
+          url: 'http://ch2ho.bible25.com/m/deluxe_bible/list_depth1.php?bo_id=newbeliever'
       })
       .set('photo_bible', {
           name: '포토성경사전',
