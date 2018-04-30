@@ -135,20 +135,20 @@ export class HymnPage {
   }
 
   execSearch(type:string, keyword:string) {
-    console.log(type, keyword);
-    // this.db.getHymnListBySearch(type, keyword)
-    //   .then(rs => {
-    //     this.hymnData = [];
-    //     for (let i=0, max=rs.rows.length; i<max; i++) {
-    //       let item = rs.rows.item(i);
-    //       this.hymnData.push({
-    //         p_num: item.p_num,
-    //         p_num_old: item.p_num_old,
-    //         subject: item.subject
-    //       })
-    //     }
-    //   })
-    //   .catch(err => {console.log(err)});
+    // console.log(type, keyword);
+    this.db.getHymnListBySearch(type, keyword)
+      .then(rs => {
+        this.hymnData = [];
+        for (let i=0, max=rs.rows.length; i<max; i++) {
+          let item = rs.rows.item(i);
+          this.hymnData.push({
+            p_num: item.p_num,
+            p_num_old: item.p_num_old,
+            subject: item.subject
+          })
+        }
+      })
+      .catch(err => {console.log(err)});
   }
 
   showIndex() {

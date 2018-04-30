@@ -7,18 +7,24 @@
 <ion-header>
 
   <ion-toolbar>
-    <ion-buttons start class="left-ion-buttons">
+    <!-- <ion-buttons start class="left-ion-buttons">
       <button ion-button icon-only menuToggle class="left-ion-buttons">
         <ion-icon name="menu"></ion-icon>
       </button>
-    </ion-buttons>
+    </ion-buttons> -->
 
     <ion-searchbar
       [(ngModel)]="searchKeyWord"
       [debounce]="500"
-      (ionInput)="onSearchInput()">
+      >
     </ion-searchbar>
     
+    <ion-buttons end>
+      <button ion-button icon-only (click)="onSearchInput()">
+        <ion-icon name="search"></ion-icon>
+      </button>
+    </ion-buttons>
+
     <ion-buttons end>
       <button ion-button icon-only navPop>
         <ion-icon name="close"></ion-icon>
@@ -30,5 +36,5 @@
 
 
 <ion-content>
-  <h1>Search Page...</h1>
+  <iframe id="searchFrame" (load)="iframeLoaded()" [src]="url | safe" width="100%" height="100%" seamless></iframe>
 </ion-content>

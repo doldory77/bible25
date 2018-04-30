@@ -371,6 +371,7 @@ export class DbProvider {
   }
 
   getHymnListBySearch(type:string, key:string): Promise<any> {
+    // console.log(type, key)
     let query: string = 'select p_num, p_num_old, subject from hymn';
     
     switch (type) {
@@ -381,6 +382,14 @@ export class DbProvider {
         query = query.concat(" where song like '%'||?||'%'");
         break;
       case "2":
+        let pnum: string;
+        try {
+          pnum = this.util.pad(parseInt(key.replace(/[^0-9]/g,'')), 3);
+          key = pnum;
+        } catch (err) {
+          console.error(err);
+        }
+        
         query = query.concat(" where p_num = ?");
     }
     return this.openDb()

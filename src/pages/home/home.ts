@@ -128,9 +128,9 @@ export class HomePage {
    * 종합검색 페이지로 이동
    */
   goSearchPage() {
-    this.searchKeyWord = '';
+    // this.searchKeyWord = '';
     this.topSearchBtnFlag = false;
-    this.navCtrl.push('SearchPage');
+    this.navCtrl.push('SearchPage', {keyword:this.searchKeyWord});
   }
 
   showAlert() {
