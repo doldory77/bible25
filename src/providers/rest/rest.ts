@@ -93,4 +93,19 @@ export class RestProvider {
     })
   }
 
+  getUser(userId: string): Promise<any> {
+    return new Promise((resolve, reject) => {
+      this.http.post(this.bible_code_url, {api:'user', user_id:userId})
+        .subscribe(
+          (res: any) => {
+            if (res.result == 'fail') {
+              reject(res);
+            }
+            resolve(res);
+          },
+          err => {reject(err)}
+        )
+    })
+  }
+ 
 }

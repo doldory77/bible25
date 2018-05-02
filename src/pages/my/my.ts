@@ -61,17 +61,9 @@ export class MyPage {
   purposes: Code[] = [];
 
   ionViewDidLoad() {
-    this.user.nickname = '돌도리';
-    this.user.age = '004';
-    this.user.gender = '002';
-    this.user.join_purpose = '002';
-    this.user.church = 5;
-
-    // this.churches.push({id:0,name:'없음'});
-    // this.churches.push({id:1,name:'대구성결교회'});
-    // this.churches.push({id:2,name:'부평성결교회'});
 
     Promise.all([
+      this.rest.getUser('14259121'),
       this.rest.getChurches(),
       this.rest.getCode('001'),
       this.rest.getCode('003'),
@@ -81,34 +73,32 @@ export class MyPage {
         values.forEach((item, idx, arr) => {
           console.log(item);
           if (idx == 0) {
-            this.churches = item.data;
+            if (!item.data || item.data.length == 0) {
+              // TODO 사용자를 식별할 수 없을 경우 로그인 페이지로 이동
+              // default
+              this.user.age = '001';
+              this.user.gender = '001';
+              this.user.join_purpose = '001';
+              this.user.church = 3;
+
+            }
           }
           if (idx == 1) {
-            this.ages = item.data;
+            this.churches = item.data;
           }
           if (idx == 2) {
-            this.genders = item.data;
+            this.ages = item.data;
           }
           if (idx == 3) {
+            this.genders = item.data;
+          }
+          if (idx == 4) {
             this.purposes = item.data;
           }
+          
         })
       })
       .catch(error => console.log(error));
-    
-
-    // this.ages.push({code:'001', name:"10대"});
-    // this.ages.push({code:'002', name:"20대"});
-    // this.ages.push({code:'003', name:"30대"});
-    // this.ages.push({code:'004', name:"40대"});
-    // this.ages.push({code:'005', name:"50대"});
-
-    // this.genders.push({code:'001', name:"남성"});
-    // this.genders.push({code:'002', name:"여성"});
-    
-    // this.purposes.push({code:'001', name:'없음'});
-    // this.purposes.push({code:'002', name:'성경공부'});
-    // this.purposes.push({code:'003', name:'성경찬송을 배우기 위해서'});
   }
 
   getLearnInfo() {
