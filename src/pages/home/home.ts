@@ -43,7 +43,8 @@ export class HomePage {
   topSearchBtnFlag: boolean = false;
   loading: Loading = null;
   searchKeyWord: string = '';
-  url: string = "http://ch2ho.bible25.com/m/main_renewal_android.php";
+  // url: string = "http://ch2ho.bible25.com/m/main_renewal_android.php";
+  url: string = "http://ch2ho.bible25.com/m/main_bible25.php";
 
   /*
   Android Back Button 오버라이드

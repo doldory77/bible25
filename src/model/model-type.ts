@@ -34,6 +34,26 @@ class BibleLearnStateType {
     remainExpectationAvgJangCnt: string;
 }
 
+class BibleUser {
+    id: string;
+    nickname: string;
+    email: string;
+    age: string;
+    gender: string;
+    join_purpose: string;
+    church: number;
+}
+
+interface Church {
+    id: number;
+    name: string;
+}
+
+interface Code {
+    code: string;
+    name: string;
+}
+
 export {
-    MenuType, AppInfoType, BibleLearnStateType
+    MenuType, AppInfoType, BibleLearnStateType, BibleUser, Church, Code
 }

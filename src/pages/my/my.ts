@@ -2,7 +2,8 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { DbProvider } from '../../providers/db/db';
 import { UtilProvider } from '../../providers/util/util';
-import { BibleLearnStateType } from '../../model/model-type';
+import { BibleLearnStateType, BibleUser, Church, Code } from '../../model/model-type';
+import { RestProvider } from '../../providers/rest/rest';
 
 @IonicPage()
 @Component({
@@ -14,12 +15,15 @@ export class MyPage {
   constructor(public navCtrl: NavController, 
     public navParams: NavParams,
     private db: DbProvider,
-    private util: UtilProvider) {
+    private util: UtilProvider,
+    private rest: RestProvider) {
       this.tabMenu = new Map();
       this.tabMenu
         .set(0, {title:'즐겨찾기', selected:true})
         .set(1, {title:'성경통독', selected:false})
         .set(2, {title:'개인정보수정', selected:false});
+      
+      
   }
 
   tabMenu: Map<number, {title:string, selected:boolean}>;
@@ -49,8 +53,62 @@ export class MyPage {
 
   targetAmountName: string = '목표량 설정';
 
+
+  user: BibleUser = new BibleUser();
+  churches: Church[] = [];
+  ages: Code[] = [];
+  genders: Code[] = [];
+  purposes: Code[] = [];
+
   ionViewDidLoad() {
+    this.user.nickname = '돌도리';
+    this.user.age = '004';
+    this.user.gender = '002';
+    this.user.join_purpose = '002';
+    this.user.church = 5;
+
+    // this.churches.push({id:0,name:'없음'});
+    // this.churches.push({id:1,name:'대구성결교회'});
+    // this.churches.push({id:2,name:'부평성결교회'});
+
+    Promise.all([
+      this.rest.getChurches(),
+      this.rest.getCode('001'),
+      this.rest.getCode('003'),
+      this.rest.getCode('002')
+    ])
+      .then((values:any[]) => {
+        values.forEach((item, idx, arr) => {
+          console.log(item);
+          if (idx == 0) {
+            this.churches = item.data;
+          }
+          if (idx == 1) {
+            this.ages = item.data;
+          }
+          if (idx == 2) {
+            this.genders = item.data;
+          }
+          if (idx == 3) {
+            this.purposes = item.data;
+          }
+        })
+      })
+      .catch(error => console.log(error));
     
+
+    // this.ages.push({code:'001', name:"10대"});
+    // this.ages.push({code:'002', name:"20대"});
+    // this.ages.push({code:'003', name:"30대"});
+    // this.ages.push({code:'004', name:"40대"});
+    // this.ages.push({code:'005', name:"50대"});
+
+    // this.genders.push({code:'001', name:"남성"});
+    // this.genders.push({code:'002', name:"여성"});
+    
+    // this.purposes.push({code:'001', name:'없음'});
+    // this.purposes.push({code:'002', name:'성경공부'});
+    // this.purposes.push({code:'003', name:'성경찬송을 배우기 위해서'});
   }
 
   getLearnInfo() {

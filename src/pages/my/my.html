@@ -114,8 +114,39 @@
   
   <ion-list *ngIf="currViewMode == 2">
     <ion-item>
-      개인정보수정
+      원활안 서비스 이용을 위해 최소 정보가 필요합니다.
     </ion-item>
+    <ion-item>
+      <ion-label floating>사용자명/별칭</ion-label> 
+      <ion-input type="text" [(ngModel)]="user.nickname"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label>소속교회</ion-label>
+      <ion-select [(ngModel)]="user.church">
+        <ion-option *ngFor="let church of churches" [value]="church.id" [selected]="user.church == church.id">{{church.name}}</ion-option>
+      </ion-select>
+    </ion-item>
+    <ion-item>
+      <ion-label>연령대</ion-label>
+      <ion-select [(ngModel)]="user.age">
+        <ion-option *ngFor="let age of ages" [value]="age.code" [selected]="age.code == user.age">{{age.name}}</ion-option>
+      </ion-select>
+    </ion-item>
+    <ion-item>
+      <ion-label>성별</ion-label>
+      <ion-select [(ngModel)]="user.gender">
+        <ion-option *ngFor="let gender of genders" [value]="gender.code" [selected]="gender.code == user.gender">{{gender.name}}</ion-option>
+      </ion-select>
+    </ion-item>
+    <ion-item>
+      <ion-label>가입목적</ion-label>
+      <ion-select [(ngModel)]="user.join_purpose">
+        <ion-option *ngFor="let purpose of purposes" [value]="purpose.code" [selected]="purpose.code == user.join_purpose">{{purpose.name}}</ion-option>
+      </ion-select>
+    </ion-item>
+    <ion-buttons>
+      <button ion-button full>저장</button>
+    </ion-buttons>
   </ion-list>
 
 </ion-content>

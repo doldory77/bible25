@@ -17,6 +17,7 @@ export class RestProvider {
   }
   
   bible_support_info_url = "http://ch2ho.bible25.com/m/bbs/board99.php?book=#book&jang=#jang&t=#tab";
+  bible_code_url = "http://ch2ho.bible25.com/m/bbs/code.php";
   bible_support_img_prefix_url = "http://chweb.biblesmartphone.co.kr/_bible_img/";
   gyodok_content_url = "http://gyodok.bible25.co.kr/gyodok/gyodokContent?gyodok_id=#num";
 
@@ -59,6 +60,36 @@ export class RestProvider {
         .subscribe(res => {
           resolve(res)
         }, err => {reject(err)});
+    })
+  }
+
+  getChurches(): Promise<any> {
+    return new Promise((resolve, reject) => {
+      this.http.post(this.bible_code_url, {api:'church_all'})
+        .subscribe(
+          (res: any) => {
+            if (res.result == 'fail') {
+              reject(res);
+            }
+            resolve(res);
+          },
+          err => {reject(err)}
+        )
+    })
+  }
+
+  getCode(parentCode: string): Promise<any> {
+    return new Promise((resolve, reject) => {
+      this.http.post(this.bible_code_url, {api:'code', parent_code:parentCode})
+        .subscribe(
+          (res: any) => {
+            if (res.result == 'fail') {
+              reject(res);
+            }
+            resolve(res);
+          },
+          err => {reject(err)}
+        )
     })
   }
 
