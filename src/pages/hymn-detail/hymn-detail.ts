@@ -1,9 +1,6 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ToastController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { DbProvider } from '../../providers/db/db';
-import { PlayerProvider } from '../../providers/player/player';
-import { Observable, pipe, Subscription } from 'rxjs/Rx'
-import { map } from 'rxjs/operators';
 import { UtilProvider } from '../../providers/util/util';
 import { Pinchable } from '../../model/pinchable';
 import { ImageViewerController } from 'ionic-img-viewer';
@@ -25,8 +22,6 @@ export class HymnDetailPage extends Pinchable {
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
     private db: DbProvider,
-    private player: PlayerProvider,
-    private toast: ToastController,
     private util: UtilProvider,
     private imageViewerCtrl: ImageViewerController) {
       super();

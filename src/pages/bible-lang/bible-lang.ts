@@ -1,4 +1,4 @@
-import { Component, ElementRef } from '@angular/core';
+import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, Platform, Loading, LoadingController, ToastController } from 'ionic-angular';
 import { DbProvider } from '../../providers/db/db';
 import { File } from '@ionic-native/file';

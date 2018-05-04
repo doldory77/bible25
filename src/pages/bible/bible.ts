@@ -1,13 +1,9 @@
 import { Component, ViewChild } from '@angular/core';
-import { IonicPage, NavController, NavParams, LoadingController, Loading, ToastController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, LoadingController, Loading } from 'ionic-angular';
 import { DbProvider } from '../../providers/db/db';
-import { SQLiteObject } from '@ionic-native/sqlite';
 import { MenuType } from '../../model/model-type'
 import { MenuProvider } from '../../providers/menu/menu'
 import { Content } from 'ionic-angular';
-import { PlayerProvider } from '../../providers/player/player';
-import { Observable, pipe, Subscription } from 'rxjs/Rx';
-import { map } from 'rxjs/operators';
 import { RestProvider } from '../../providers/rest/rest';
 import { UtilProvider } from '../../providers/util/util';
 
@@ -46,8 +42,6 @@ export class BiblePage extends Pinchable implements OnScrollDetect {
     private menu: MenuProvider,
     private db: DbProvider,
     private indicator: LoadingController,
-    private player: PlayerProvider,
-    private toast: ToastController,
     private rest: RestProvider,
     private util: UtilProvider) {
 

@@ -1,10 +1,7 @@
 import { Component, ViewChild } from '@angular/core';
 import { IonicPage, NavController, NavParams, Content } from 'ionic-angular';
 import { DbProvider } from '../../providers/db/db';
-import { PlayerProvider } from '../../providers/player/player';
 import { Subscription } from 'rxjs/Subscription';
-import { Observable } from 'rxjs/Observable';
-import { ContentDimensions } from 'ionic-angular/components/content/content';
 import { Pinchable } from '../../model/pinchable';
 import { OnScrollDetect, ScrollDetectable } from '../../model/onscroll-detect';
 
@@ -19,8 +16,7 @@ export class LearnBibleDetailPage extends Pinchable implements OnScrollDetect {
 
   constructor(public navCtrl: NavController, 
     public navParams: NavParams,
-    private db: DbProvider,
-    private player: PlayerProvider) {
+    private db: DbProvider) {
       super();
       if (navParams.get('book')) this.bibleBook = navParams.get('book');
       if (navParams.get('jang')) this.bibleJang = navParams.get('jang');

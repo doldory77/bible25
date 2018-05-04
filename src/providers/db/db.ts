@@ -3,7 +3,6 @@ import { Injectable } from '@angular/core';
 import { Platform } from 'ionic-angular';
 import { SQLite, SQLiteObject } from '@ionic-native/sqlite';
 import { AppInfoType } from '../../model/model-type';
-import { File } from '@ionic-native/file';
 import { BibleLearnStateType } from '../../model/model-type';
 import { UtilProvider } from '../util/util';
 
@@ -23,7 +22,6 @@ export class DbProvider {
   constructor(public http: HttpClient,
     private platform: Platform,
     private sqlite: SQLite,
-    private file: File,
     private util: UtilProvider) {
     console.log('Hello DbProvider Provider');
   }

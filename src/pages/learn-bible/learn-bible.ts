@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, Loading } from 'ionic-angular';
+import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { DbProvider } from '../../providers/db/db';
-import { Observable } from 'rxjs/Observable';
 import { UtilProvider } from '../../providers/util/util';
 
 @IonicPage()

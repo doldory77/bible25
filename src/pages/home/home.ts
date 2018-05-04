@@ -5,16 +5,13 @@ import {
   NavController, 
   Platform, 
   MenuController, 
-  NavParams, 
-  ViewController, 
   Loading,
   AlertController,
   ActionSheetController,
   Content 
 } from 'ionic-angular';
 
-import { Observable, pipe, Subscription } from 'rxjs/Rx'
-import { map, delay } from 'rxjs/operators'
+import { Observable, Subscription } from 'rxjs/Rx'
 
 @IonicPage()
 @Component({
@@ -26,8 +23,6 @@ export class HomePage {
   constructor(public navCtrl: NavController,
     private platform: Platform,
     private menuCtrl: MenuController,
-    private navParams: NavParams,
-    private viewCtrl: ViewController,
     public indicator: LoadingController,
     public alertCtrl: AlertController,
     public sheetCtrl: ActionSheetController) {

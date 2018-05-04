@@ -2,7 +2,7 @@ import { Component, ViewChild, OnInit } from '@angular/core';
 import { Nav, Platform } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
-import { ViewController, LoadingController } from 'ionic-angular';
+import { LoadingController } from 'ionic-angular';
 
 import { MenuType } from '../model/model-type';
 import { MenuProvider } from '../providers/menu/menu';
