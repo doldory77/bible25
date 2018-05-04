@@ -17,6 +17,8 @@ import { HymnSearchTypeComponent } from '../components/hymn-search-type/hymn-sea
 import { RestProvider } from '../providers/rest/rest';
 import { UtilProvider } from '../providers/util/util';
 import { IonicImageViewerModule } from 'ionic-img-viewer';
+import { Push } from '@ionic-native/push';
+import { NativeAudio } from '@ionic-native/native-audio';
 
 @NgModule({
   declarations: [
@@ -46,7 +48,9 @@ import { IonicImageViewerModule } from 'ionic-img-viewer';
     DbProvider,
     PlayerProvider,
     RestProvider,
-    UtilProvider
+    UtilProvider,
+    Push,
+    NativeAudio
   ]
 })
 export class AppModule {}

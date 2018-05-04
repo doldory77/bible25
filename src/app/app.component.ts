@@ -2,11 +2,13 @@ import { Component, ViewChild, OnInit } from '@angular/core';
 import { Nav, Platform } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
-import { LoadingController } from 'ionic-angular';
+import { LoadingController, AlertController } from 'ionic-angular';
 
 import { MenuType } from '../model/model-type';
 import { MenuProvider } from '../providers/menu/menu';
 import { HomePage } from '../pages/home/home';
+import { Push, PushObject, PushOptions } from '@ionic-native/push';
+import { NativeAudio } from '@ionic-native/native-audio';
 
 @Component({
   templateUrl: 'app.html'
@@ -23,7 +25,10 @@ export class MyApp implements OnInit {
     public statusBar: StatusBar,
     public splashScreen: SplashScreen,
     public menuProvider: MenuProvider,
-    public indicator: LoadingController) {
+    public indicator: LoadingController,
+    private alertCtrl: AlertController,
+    private nativeAudio: NativeAudio,
+    private push: Push) {
     this.initializeApp();
 
   }
@@ -32,6 +37,7 @@ export class MyApp implements OnInit {
     this.platform.ready().then(() => {
       // Okay, so the platform is ready and our plugins are available.
       // Here you can do any higher level native things you might need.
+      this.checkPushPermission();
       this.statusBar.styleDefault();
       this.splashScreen.hide();
     });
@@ -78,6 +84,77 @@ export class MyApp implements OnInit {
       const home: HomePage = <HomePage> this.nav.getByIndex(0).instance
       home.goUrl(url);
     }
+  }
+
+  checkPushPermission() {
+    this.push.hasPermission()
+      .then((res: any) => {
+        if (res.isEnabled) {
+          console.info('We have permission to send push notifications');
+          this.initPushNotification();
+        } else {
+          console.warn('We do not have permission to send push notifications');
+        }
+      });
+  }
+
+  initPushNotification() {
+    // console.info("=== Push Notification Init ===");
+
+    if (!this.platform.is('cordova')) {
+      console.warn("Push notifications not initialized. Cordova is not available");
+      return;
+    }
+    const options: PushOptions = {
+      android: {},
+      ios: {
+        alert: 'true',
+        badge: true,
+        sound: 'true'
+      },
+      windows: {}
+    };
+    
+    const pushObject: PushObject = this.push.init(options);
+
+    pushObject.on('error').subscribe(error => console.log('Error with Push Plugin', error));
+
+    pushObject.on('registration').subscribe((data: any) => {
+      // console.log('device token -> ', data.registrationId);
+      // console.log('registrationType -> ', data.registrationType);
+      
+      // TODO - send device token to server
+    });
+
+    pushObject.on('notification').subscribe((data: any) => {
+      console.log('titleNotification -> ', data.title);
+      console.log('additionalData -> ', data.additionalData.customData);
+
+      this.nativeAudio.play('click', () => { console.log('success play audio') });
+      
+      if (data.additionalData.foreground) {
+        console.log('titleNotificationForegroundCheck -> ', data.title);
+        console.log('additionalDataForegroundCheck -> ', data.additionalData.customData);
+
+        let confirmAlert = this.alertCtrl.create({
+          title: data.title,
+          message: data.message,
+          buttons: [
+            {
+              text: 'Ignore',
+              role: 'cancel'
+            },
+            {
+              text: 'View',
+              handler: () => {
+                console.log('message', data.message);
+              }
+            }
+          ]
+        });
+        confirmAlert.present();
+      }
+    });
   }
 
 }

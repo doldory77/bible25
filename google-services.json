@@ -1,0 +1,73 @@
+{
+  "project_info": {
+    "project_number": "408241526688",
+    "firebase_url": "https://testionicapp-bacd6.firebaseio.com",
+    "project_id": "testionicapp-bacd6",
+    "storage_bucket": "testionicapp-bacd6.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:408241526688:android:c69fe5d65bbed9ef",
+        "android_client_info": {
+          "package_name": "com.doldory.push"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "408241526688-tpm5ohl8uacm1dr0846f2s72r3hef5rq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBMne3AhzQinECFJJf5NbdQg2axV7-ztUA"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:408241526688:android:60ee2db0eebefde7",
+        "android_client_info": {
+          "package_name": "com.sangs.bible25"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "408241526688-tpm5ohl8uacm1dr0846f2s72r3hef5rq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBMne3AhzQinECFJJf5NbdQg2axV7-ztUA"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
