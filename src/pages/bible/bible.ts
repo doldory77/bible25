@@ -98,7 +98,7 @@ export class BiblePage extends Pinchable implements OnScrollDetect {
         
       })
       .catch(err => {
-        console.log(err);
+        console.error(err);
         this.util.showToast('즐겨찾기에 실패하였습니다.', 3000);
       })
   }
@@ -131,7 +131,7 @@ export class BiblePage extends Pinchable implements OnScrollDetect {
             this.content.scrollToTop();
           })
           .catch(err => {
-            console.log(err);
+            console.error(err);
           })
           
       })
@@ -147,7 +147,7 @@ export class BiblePage extends Pinchable implements OnScrollDetect {
 
     this.db.getBibleContent(this.bibleContents, params)
         .then(result => {})
-        .catch(err => console.log(err));
+        .catch(err => console.error(err));
   }
   
   onSubPage(menuNum: number) {
@@ -182,7 +182,7 @@ export class BiblePage extends Pinchable implements OnScrollDetect {
         })
         .catch(err => {
           this.loading.dismiss();
-          console.log(err);
+          console.error(err);
         })
     } else {
       this.isBibleMode = true;
@@ -215,7 +215,6 @@ export class BiblePage extends Pinchable implements OnScrollDetect {
       this.content,
       1000,
       data => {
-        // console.log(data);
         if (this.isBibleMode == false) {
           this.isShow = false;
           return;
@@ -226,7 +225,7 @@ export class BiblePage extends Pinchable implements OnScrollDetect {
           this.isShow = false;
         }
       },
-      err => {console.log(err)},
+      err => {console.error(err)},
     )
   }
 
@@ -283,7 +282,7 @@ export class BiblePage extends Pinchable implements OnScrollDetect {
         return Promise.resolve({book:_book, jang:_jang})
       })
       .catch(err => {
-        console.log(err);
+        console.error(err);
         return Promise.reject(err);
       })
   }
@@ -310,16 +309,14 @@ export class BiblePage extends Pinchable implements OnScrollDetect {
   }
 
   onPlayComplete(event) {
-    console.log(event);
+    
   }
 
   onForward(event) {
-    // console.log(event)
     this.forward();
   }
 
   onBackward(event) {
-    // console.log(event)
     this.backward();
   }
 }

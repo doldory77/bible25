@@ -34,7 +34,6 @@ export class HymnSearchTypeComponent {
   }
 
   ionViewDidLoad() {
-    // console.log(this.navParams.get('searchType'));
     this.searchType = this.navParams.get('searchType');
   }
 
@@ -50,8 +49,6 @@ export class HymnSearchTypeComponent {
   }
 
   radioChecked(value:string) {
-    // console.log('searchType ==> ', this.searchType);
-    // console.log('value ===> ', value);
     this.close(this.searchTypes.get(value));
   }  
 

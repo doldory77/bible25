@@ -13,7 +13,6 @@ export class Pinchable {
     public onPinchStart(e) {
 
         // flag that sets the class to disable scrolling
-        console.log('onPinchStart')
         this.isScaling = true;
       }
     
@@ -25,7 +24,6 @@ export class Pinchable {
     
         // adjust the amount we already scaled
         this.alreadyScaled = this.scale * this.alreadyScaled;
-        console.log('onPinchEnd')
       }
     
       public onPinchMove(e) {

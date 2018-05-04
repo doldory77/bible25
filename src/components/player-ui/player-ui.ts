@@ -60,13 +60,11 @@ class PlayerUiComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    console.log("=====================> ngOnInit");
     this.onViewInit();
     this.trackerSubscription = this.playBack();
   }
 
   ngOnDestroy() {
-    console.log("=====================> ngOnDestory");
     if (this.trackerSubscription) {
       this.trackerSubscription.unsubscribe();
     }
@@ -90,7 +88,7 @@ class PlayerUiComponent implements OnInit, OnDestroy {
           }
         })
         .catch(err => {
-          console.log(err);
+          console.error(err);
         })
     } else {
       if (parseInt(this.p_num) + 1 > 600) {
@@ -172,21 +170,19 @@ class PlayerUiComponent implements OnInit, OnDestroy {
 
       this.player.checkOrDown({book:String(this.book), jang:String(this.jang)})
         .then(result => {
-          console.log(result);
           this.dismissLoadingBar();
         })
         .catch(err => {
-          console.log(err);
+          console.error(err);
           this.dismissLoadingBar();
         })
     } else {
       this.player.checkOrDownHymn(this.p_num)
         .then(result => {
-          console.log(result);
           this.dismissLoadingBar();
         })
         .catch(err => {
-          console.log(err);
+          console.error(err);
           this.dismissLoadingBar();
         })
     }
@@ -243,7 +239,6 @@ class PlayerUiComponent implements OnInit, OnDestroy {
               // if (totMinVal == 0 && totSecVal == 1) this.mediaRange = '--:--'; 
               
               if (curTimeValNum >= totRangeNum) {
-                console.log('onPlayComplete')
                 this.onPlayComplete.emit({isAutoPlay:this.isAutoPlay, book:this.book, jang:this.jang, p_num:this.p_num});
                 
                 if (this.isMediaRoop) {

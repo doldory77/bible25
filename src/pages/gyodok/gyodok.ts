@@ -60,13 +60,12 @@ export class GyodokPage extends Pinchable {
   gyodokView(num:number) {
     this.rest.getGyodokContent(num)
       .then(rs => {
-        // console.log(rs);
         this.gyodokMode = 2;
         this.gyodokItem = rs;
         this.gyodokContent = this.gyodokItem.CONTENT;
       })
       .catch(err => {
-        console.log(err);
+        console.error(err);
       })
   }
 

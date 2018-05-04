@@ -71,7 +71,6 @@ export class HomePage {
   시작시 메인홈 감시 시작(페이지 오픈시 매번 호출)
   */
   ionViewWillEnter() {
-    // console.log('==> ', this.navCtrl.getActive().name);
     this.topBackIconStateSubscription = Observable.interval(1000).subscribe(_ => {
       this.topBackIconIsNotActive = this.isBibleMainUrl();
     });
@@ -83,7 +82,7 @@ export class HomePage {
   ionViewWillLeave() {
     try {
       this.topBackIconStateSubscription.unsubscribe();
-    } catch(e) { console.log('error: ', e) }
+    } catch(e) { console.error('error: ', e) }
   }
 
   isBibleMainUrl() {
@@ -114,7 +113,7 @@ export class HomePage {
       tables[tables.length - 5].style.display = 'none';
       this.screenUpdate();
     } catch (err) {
-      console.log('fixedBox display hide error: ', err);
+      console.error('fixedBox display hide error: ', err);
     }
   }
 
@@ -157,22 +156,16 @@ export class HomePage {
         {
           text: 'Destructive',
           role: 'destructive',
-          handler: () => {
-            console.log('Destructive clicked');
-          }
+          handler: () => {}
         },
         {
           text: 'Archive',
-          handler: () => {
-            console.log('Archive clicked');
-          }
+          handler: () => {}
         },
         {
           text: 'Cancel',
           role: 'cancel',
-          handler: () => {
-            console.log('Cancel clicked');
-          }
+          handler: () => {}
         }
       ]
     }).present();

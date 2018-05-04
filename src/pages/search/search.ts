@@ -22,7 +22,6 @@ export class SearchPage {
   loading: Loading;
 
   onSearchInput() {
-    // console.log("=========>", this.searchApiUrl.replace('#keyword', this.searchKeyWord));
     this.loading = this.indicator.create({
       showBackdrop: false,
       spinner: 'circles',
@@ -36,7 +35,7 @@ export class SearchPage {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad SearchPage');
+
   }
 
   iframeLoaded() {
@@ -45,7 +44,7 @@ export class SearchPage {
       let frmDoc: any = frm.contentDocument || frm.contentWindow;
       frmDoc.getElementById('fixedBox').style.display = 'none';
     } catch (err) {
-      console.log('fixedBox display hide error: ', err);
+      console.error('fixedBox display hide error: ', err);
     }
     if (this.loading) this.loading.dismiss();
   }

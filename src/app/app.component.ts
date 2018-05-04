@@ -39,7 +39,6 @@ export class MyApp implements OnInit {
 
   ngOnInit() {
     this.menuData = this.menuProvider.MenuData;
-    // console.log(this.menuData);
   }
 
   menuData: Map<string, MenuType>;
@@ -77,10 +76,7 @@ export class MyApp implements OnInit {
   goUrl(url: string) {
     if (url) {
       const home: HomePage = <HomePage> this.nav.getByIndex(0).instance
-      // console.log('==> ', home.iframe)
-      // document.getElementById('iframe')['contentWindow'].location.href = url;
       home.goUrl(url);
-      // home.url = url;
     }
   }
 

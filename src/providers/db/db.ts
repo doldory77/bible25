@@ -23,7 +23,6 @@ export class DbProvider {
     private platform: Platform,
     private sqlite: SQLite,
     private util: UtilProvider) {
-    console.log('Hello DbProvider Provider');
   }
 
   openDb(): Promise<any> {
@@ -245,8 +244,8 @@ export class DbProvider {
           return dbo.executeSql('update app_info set view_hymn_pnum = ?', [data.pnumber]);
         }
       })
-      .then(result => console.log(result))
-      .catch(err => console.log(err));
+      .then(result => {})
+      .catch(err => console.error(err));
   }
 
   checkBibleContent(isNext: boolean): Promise<any> {
@@ -369,7 +368,6 @@ export class DbProvider {
   }
 
   getHymnListBySearch(type:string, key:string): Promise<any> {
-    // console.log(type, key)
     let query: string = 'select p_num, p_num_old, subject from hymn';
     
     switch (type) {
@@ -446,7 +444,6 @@ export class DbProvider {
         selectedArray.forEach(item => {
           sqlArr.push([sql, item]);
         });
-        console.log(sqlArr);
         return dbo.sqlBatch(sqlArr);
       })
   }

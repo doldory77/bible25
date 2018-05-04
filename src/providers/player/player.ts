@@ -25,7 +25,6 @@ export class PlayerProvider {
     private fileTransfer: FileTransfer,
     private media: Media,
     private platform: Platform) {
-      console.log('Hello PlayerProvider Provider');
   }
 
   nomalPath(localFilePath: string) {
@@ -44,7 +43,6 @@ export class PlayerProvider {
     let localFile = this.bibleAudioFile.localName.replace('#book', data.book).replace('#jang', data.jang);
     return this.file.checkFile(this.file.cacheDirectory, localFile)
       .then(result => {
-        // console.log('local file exists');
         this.initMedia(this.nomalPath(this.file.cacheDirectory+localFile))
           .play();
           return Promise.resolve({result:'ok', msg:'local file existes and play'});
@@ -74,17 +72,14 @@ export class PlayerProvider {
   }
 
   download(remoteFileUrl: string, targetFile: string): Promise<any> {
-    // console.log('start download');
     this.transferObj = this.fileTransfer.create();
     return this.transferObj.download(remoteFileUrl, targetFile)
       .then(result => {
-        // console.log('file download success');
         this.initMedia(this.nomalPath(targetFile))
           .play();
           return Promise.resolve({result:'ok', msg:'file download success'});
       })
       .catch(err => {
-        // console.log('===> ', 'download error: ', err);
         return Promise.reject({result:'fail', msg:err});
       })
   }

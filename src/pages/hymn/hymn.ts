@@ -50,7 +50,6 @@ export class HymnPage {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad HymnPage');
     this.getHymnCategory();
     this.showList(1);
   }
@@ -86,7 +85,7 @@ export class HymnPage {
         }
       })
       .catch(err => {
-        console.log(err)
+        console.error(err)
       })
   }
 
@@ -112,7 +111,7 @@ export class HymnPage {
         }
       })
       .catch(err => {
-        console.log('==========> hymn data load error: ', err);
+        console.error('hymn data load error: ', err);
       })  
   }
 
@@ -130,12 +129,11 @@ export class HymnPage {
         }
       })
       .catch(err => {
-        console.log(err);
+        console.error(err);
       })
   }
 
   execSearch(type:string, keyword:string) {
-    // console.log(type, keyword);
     this.db.getHymnListBySearch(type, keyword)
       .then(rs => {
         this.hymnData = [];
@@ -148,7 +146,7 @@ export class HymnPage {
           })
         }
       })
-      .catch(err => {console.log(err)});
+      .catch(err => {console.error(err)});
   }
 
   showIndex() {
@@ -168,7 +166,6 @@ export class HymnPage {
         {
           text:'검색',
           handler: data => {
-            console.log(data);
             this.showListByCategoryIdx(data);
           }
         }
@@ -182,7 +179,6 @@ export class HymnPage {
       ev: myEvent
     });
     popover.onDidDismiss(data => {
-      console.log('receive data ===> ', data);
       this.searchType = data;
     });
   }

@@ -33,22 +33,18 @@ export class BibleListPage {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad BibleListPage');
 
     this.db.getBibleListByType(0, this.bibleList)
       .then(data => {
-        // console.log(data);
-        console.log(this.bibleList);
+      
       })
-      .catch(err => console.log(err));
+      .catch(err => console.error(err));
 
       this.db.getRangeMapByAllBook(this.bibleRangeMapByAllBook)
         .then(data => {
-          // console.log(data);
-          // console.log(this.bibleRangeMapByAllBook);
           this.showJangList(1, '창세기');
         })
-        .catch(err => console.log(err));
+        .catch(err => console.error(err));
   }
 
   changeViewMode() {
@@ -73,7 +69,6 @@ export class BibleListPage {
       book: this.db.appInfo.view_bible_book,
       jang: this.db.appInfo.view_bible_jang
     }
-    console.log('updat app info ======> ', param);
     this.db.updateAppInfo('bible',param);
     setTimeout(() => {
       this.navCtrl.pop();
@@ -87,7 +82,6 @@ export class BibleListPage {
       book: this.db.appInfo.view_bible_book,
       jang: this.db.appInfo.view_bible_jang
     }
-    console.log('updat app info ======> ', param);
     this.db.updateAppInfo('bible',param);
     setTimeout(() => {
       this.navCtrl.pop();
@@ -95,7 +89,6 @@ export class BibleListPage {
   }
 
   showList(type: number) {
-    // console.log(type);
     this.bibleType = type;
     if (type == 0) {
       this.bibleHistoryName = '구약';
@@ -105,10 +98,9 @@ export class BibleListPage {
     
     this.db.getBibleListByType(type, this.bibleList)
       .then(data => {
-        console.log(data);
-        console.log(this.bibleList.length);
+        
       })
-      .catch(err => console.log(err));
+      .catch(err => console.error(err));
   }
 
 

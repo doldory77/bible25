@@ -71,7 +71,6 @@ export class MyPage {
     ])
       .then((values:any[]) => {
         values.forEach((item, idx, arr) => {
-          console.log(item);
           if (idx == 0) {
             if (!item.data || item.data.length == 0) {
               // TODO 사용자를 식별할 수 없을 경우 로그인 페이지로 이동
@@ -98,13 +97,12 @@ export class MyPage {
           
         })
       })
-      .catch(error => console.log(error));
+      .catch(error => console.error(error));
   }
 
   getLearnInfo() {
     this.db.getLearnStateInfo()
       .then((result:BibleLearnStateType) => {
-        console.log(result);
         this.isReadingSchedul = result.isLearn;
         this.startReadingDate = result.learn_start_dt;
         this.endReadingDate = result.learn_end_dt;
@@ -120,7 +118,7 @@ export class MyPage {
         this.remainExpectationAvgJangCnt = result.remainExpectationAvgJangCnt;
       })
       .catch(err => {
-        console.log(err);
+        console.error(err);
         this.isReadingSchedul = false;
         this.startReadingDate = this.util.getYYYYMMDD();
         this.endReadingDate = this.util.getYYYYMMDD();
@@ -159,7 +157,7 @@ export class MyPage {
           })
         }
       })
-      .catch(err => {console.log(err)})
+      .catch(err => {console.error(err)})
   }
 
   getBookMarkForHymn() {
@@ -176,7 +174,7 @@ export class MyPage {
           })
         }
       })
-      .catch(err => {console.log(err)})
+      .catch(err => {console.error(err)})
   }
 
   getMenu() {
@@ -203,7 +201,7 @@ export class MyPage {
           this.getBookMarkForBible();
         })
         .catch(err => {
-          console.log(err);
+          console.error(err);
         });
 
     })
@@ -216,12 +214,11 @@ export class MyPage {
         this.getBookMarkForHymn();
       })
       .catch(err => {
-        console.log(err);
+        console.error(err);
       })
   }
 
   setReadingAmount(event) {
-    console.log(event);
     this.targetAmount = event;
   }
 
@@ -256,7 +253,7 @@ export class MyPage {
         this.util.showToast('학습설정벙보를 저장하였습니다.', 2000);
         this.getLearnInfo();
       })
-      .catch(err => {console.log(err)})
+      .catch(err => {console.error(err)})
   }
 
   goBibleContent(book:number, jang:number) {

@@ -57,7 +57,7 @@ export class HymnDetailPage extends Pinchable {
           })
       })
       .catch(err => {
-        console.log(err);
+        console.error(err);
       })
   }
 
@@ -71,7 +71,7 @@ export class HymnDetailPage extends Pinchable {
         this.util.showToast('즐겨찾기에 추가되었습니다.', 3000);
       })
       .catch(err => {
-        console.log(err);
+        console.error(err);
       })
   }
 

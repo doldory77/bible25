@@ -46,11 +46,9 @@ export class BibleLangPage {
           });
         }
 
-        // console.log(this.bibleLangList.values());
-
       })
       .catch(err => {
-        console.log(err);
+        console.error(err);
       })
   }
 
@@ -120,12 +118,11 @@ export class BibleLangPage {
         return this.removeCacheBibleFile(lang);
       })
       .then(result => {
-        console.log('data bulk insert process ok');
         this.getBibleLangList();
         if (this.loading) this.loading.dismiss();
       })
       .catch(err => {
-        console.log(err);
+        console.error(err);
         if (this.loading) this.loading.dismiss();
       })
   }
@@ -186,16 +183,14 @@ export class BibleLangPage {
             }).present();
             return
           }
-          // console.log(resultArr);
           this.db.updateSelectedBibleLang(resultArr)
             .then(() => { 
-              // this.db.getAppInfo();
               this.navCtrl.pop(); 
             })
-            .catch(err => console.log(err));
+            .catch(err => console.error(err));
         },
-        err => console.log(err),
-        () => console.log('complete') 
+        err => console.error(err),
+        () => {} 
       );
 
 

@@ -55,12 +55,10 @@ export class LearnBiblePage {
         this.learnBibleData.forEach(item => {
           this.learnBibleBook.set(item.book, {name:item.name, book:item.book});
         })
-        // if (this.loading) this.loading.dismiss();
-        // console.log(this.learnBibleData);
+        
       })
       .catch(err => {
-        console.log(err);
-        // if (this.loading) this.loading.dismiss();
+        console.error(err);
       })
   }
 
@@ -74,7 +72,7 @@ export class LearnBiblePage {
         this.learn_title = `(읽기:${this.readCount}, 듣기:${this.listenCount})`;
       })
       .catch(err => {
-        console.log(err);
+        console.error(err);
       })
   }
 

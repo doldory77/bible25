@@ -65,14 +65,13 @@ export class LearnBibleDetailPage extends Pinchable implements OnScrollDetect {
       this.content,
       1000,
       data => {
-        // console.log(data);
         if (data.scrollTop >= Math.floor(data.contentHeight * 0.4)) {
           this.isShow = true;
         } else {
           this.isShow = false;
         }
       },
-      err => {console.log(err)},
+      err => {console.error(err)},
     )
   }
 
@@ -87,7 +86,7 @@ export class LearnBibleDetailPage extends Pinchable implements OnScrollDetect {
         this.bibleTitle = `(${item.bibletype}) ${item.name} ${item.jang}장`;
       })
       .catch(err => {
-        console.log(err);
+        console.error(err);
       })
   }
 
@@ -116,13 +115,10 @@ export class LearnBibleDetailPage extends Pinchable implements OnScrollDetect {
             this.isChecked = this.bibleContents[0].isListenYn;
           }
           
-          // this.isChecked = this.bibleContents[0].isListenYn || this.bibleContents[0].isReadYn;
-          // if (this.isChecked == false) {
-          // }
         }
       })
       .catch(err => {
-        console.log(err);
+        console.error(err);
       })
   }
 
@@ -138,7 +134,7 @@ export class LearnBibleDetailPage extends Pinchable implements OnScrollDetect {
         }
       })
       .catch(err => {
-        console.log(err);
+        console.error(err);
       })
   }
 
@@ -161,25 +157,22 @@ export class LearnBibleDetailPage extends Pinchable implements OnScrollDetect {
   }
 
   onPlayComplete(event) {
-    console.log(this.isChecked, event);
     if (this.isChecked == false) {
       this.db.insertLearnBible(this.learnMode, this.bibleBook, this.bibleJang)
         .then(result => {
-          // console.log(result);
+          
         })
         .catch(err => {
-          console.log(err);
+          console.error(err);
         })
     }
   }
 
   onForward(event) {
-    // console.log(event)
     this.forward();
   }
 
   onBackward(event) {
-    // console.log(event)
     this.backward();
   }
 

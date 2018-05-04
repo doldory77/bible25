@@ -1,7 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable'
-// import { map } from 'rxjs/operators';
 
 /*
   Generated class for the RestProvider provider.
@@ -13,7 +12,7 @@ import { Observable } from 'rxjs/Observable'
 export class RestProvider {
 
   constructor(public http: HttpClient) {
-    console.log('Hello RestProvider Provider');
+    
   }
   
   bible_support_info_url = "http://ch2ho.bible25.com/m/bbs/board99.php?book=#book&jang=#jang&t=#tab";
