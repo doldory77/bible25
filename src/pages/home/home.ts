@@ -127,7 +127,6 @@ export class HomePage {
       });
       this.loading.present();
       this.url = url;
-      // this.iframe.location.href = url;
     }
   }
 
@@ -135,9 +134,6 @@ export class HomePage {
    * 종합검색 페이지로 이동
    */
   goSearchPage() {
-    // this.searchKeyWord = '';
-    // this.topSearchBtnFlag = false;
-    // this.navCtrl.push('SearchPage', {keyword:this.searchKeyWord});
     this.url = "http://ministrynote.com/bbs/search_bible25.php?sfl=wr_subject&sop=and&stx=" + this.searchKeyWord;
   }
 

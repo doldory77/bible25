@@ -457,11 +457,7 @@ export class DbProvider {
           sqlArr.push([sql, [bookmark.bibletype, bookmark.book, bookmark.jang, jul, bookmark.set_time]]);
         })
         return dbo.sqlBatch(sqlArr);
-
-        // return dbo.executeSql(`
-        //     insert into bible_book_mark (bibletype, book, jang, set_time)
-        //     values (?,?,?,?,?)
-        //   `, [0, bookmark.bibletype, bookmark.book, bookmark.jang, bookmark.set_time]);
+        
       })
   }
 
@@ -478,17 +474,7 @@ export class DbProvider {
   getBookMarkForBible(): Promise<any> {
     return this.openDb()
       .then((dbo: SQLiteObject) => {
-        // return dbo.executeSql(`
-        //   select
-        //     case a.bibletype when 0 then '구약성경' else '신약성셩' end bibletype,
-        //     b.name,
-        //     a.book,
-        //     a.jang,
-        //     a.set_time
-        //   from new_book_mark a
-        //   join bible_list_kr b on (a.book = b.book)
-        //   where a.bookmark_type = 0
-        // `,[]);
+        
         return dbo.executeSql(`
           select
             case when a.bibletype = 0 then '구약성경' else '신약성경' end bibletype,
@@ -521,25 +507,6 @@ export class DbProvider {
       })
   }
 
-  // isBookMarkForBible(book:number, jang:number): Promise<boolean> {
-  //   return this.openDb()
-  //     .then((dbo: SQLiteObject) => {
-  //       return dbo.executeSql(`
-  //         select count(*) cnt from new_book_mark
-  //         where bookmark_type = 0
-  //         and book = ?
-  //         and jang = ?
-  //       `, [book, jang])
-  //       .then(rs => {
-  //         if (rs.rows.item(0).cnt == 0) {
-  //           return Promise.resolve(false);
-  //         } else {
-  //           return Promise.resolve(true);
-  //         }
-  //       })
-  //     });
-  // }
-
   isBookMarkForHymn(p_num:string): Promise<any> {
     return this.openDb()
       .then((dbo: SQLiteObject) => {
@@ -560,7 +527,6 @@ export class DbProvider {
   deleteBookMarkForBible(set_time:string): Promise<any> {
     return this.openDb()
       .then((dbo: SQLiteObject) => {
-        // return dbo.executeSql('delete from new_book_mark where book = ? and jang = ?', [book, jang]);
         return dbo.executeSql('delete from bible_book_mark where set_time = ?', [set_time]);
       })
   }

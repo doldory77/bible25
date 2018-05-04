@@ -99,7 +99,6 @@ export class BibleLangPage {
         </div>
       `,
       spinner: 'dots',
-      // cssClass: 'only-loading-icon',
       dismissOnPageChange: true, 
     });
     this.loading.present();

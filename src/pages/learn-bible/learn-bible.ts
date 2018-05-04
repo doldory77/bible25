@@ -20,7 +20,6 @@ export class LearnBiblePage {
 
   learnBibleBook:Map<number, {name:string, book:number}> = new Map();
   learnBibleData:{name:string, book:number, jang:number, isRead:boolean, isListen:boolean}[] = [];
-  // loading: Loading;
   readCount: number = 0;
   listenCount: number = 0;
   totalLearnCount: number = 0;

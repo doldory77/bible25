@@ -223,7 +223,6 @@ class PlayerUiComponent implements OnInit, OnDestroy {
               let curTimeValNum = Math.ceil(data);
               
               if (totRangeNum == 0 || curTimeValNum == -1) return;
-              // if (totRangeNum == 0) {totRangeNum = 1}
 
               let percentValNum = curTimeValNum / totRangeNum * 100;
 
@@ -236,7 +235,6 @@ class PlayerUiComponent implements OnInit, OnDestroy {
               let totMinVal = Math.floor(totRangeNum / 60);
               let totSecVal = totRangeNum % 60;
               this.mediaRange = totMinVal > 0 ? (totMinVal + ':' + this.db.pad(totSecVal,2)) : (this.db.pad(totSecVal,2) + '');
-              // if (totMinVal == 0 && totSecVal == 1) this.mediaRange = '--:--'; 
               
               if (curTimeValNum >= totRangeNum) {
                 this.onPlayComplete.emit({isAutoPlay:this.isAutoPlay, book:this.book, jang:this.jang, p_num:this.p_num});

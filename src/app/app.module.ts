@@ -17,13 +17,11 @@ import { HymnSearchTypeComponent } from '../components/hymn-search-type/hymn-sea
 import { RestProvider } from '../providers/rest/rest';
 import { UtilProvider } from '../providers/util/util';
 import { IonicImageViewerModule } from 'ionic-img-viewer';
-// import { PlayerUiComponent } from '../components/player-ui/player-ui';
 
 @NgModule({
   declarations: [
     MyApp,
     HymnSearchTypeComponent,
-    // PlayerUiComponent
   ],
   imports: [
     BrowserModule,
@@ -35,7 +33,6 @@ import { IonicImageViewerModule } from 'ionic-img-viewer';
   entryComponents: [
     MyApp,
     HymnSearchTypeComponent,
-    // PlayerUiComponent
   ],
   providers: [
     StatusBar,
