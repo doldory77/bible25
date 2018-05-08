@@ -173,6 +173,10 @@ export class HomePage {
     }).present();
   }
 
+  configPage() {
+    this.navCtrl.push('ConfigPage');
+  }
+
   toggleSearchBar() {
     this.topSearchBtnFlag = !this.topSearchBtnFlag;
     this.screenUpdate();

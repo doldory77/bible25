@@ -72,10 +72,10 @@ export class MyApp implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.menuData = this.menuProvider.MenuData;
-    this.nativeAudio.preloadSimple('click', 'assets/audio/click_on.mp3')
-        .then(() => {console.info('sound loaded')}, error => {console.error(error)});
-    this.checkPushPermission();
-    this.networkCheck();
+    // this.nativeAudio.preloadSimple('click', 'assets/audio/click_on.mp3')
+    //     .then(() => {console.info('sound loaded')}, error => {console.error(error)});
+    // this.checkPushPermission();
+    // this.networkCheck();
   }
 
   ngOnDestroy() {
