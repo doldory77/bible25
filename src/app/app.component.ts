@@ -35,9 +35,8 @@ export class MyApp implements OnInit {
 
   initializeApp() {
     this.platform.ready().then(() => {
-      // Okay, so the platform is ready and our plugins are available.
-      // Here you can do any higher level native things you might need.
-      this.checkPushPermission();
+      
+      // this.checkPushPermission();
       this.statusBar.styleDefault();
       this.splashScreen.hide();
     });

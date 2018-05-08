@@ -41,25 +41,6 @@
     line-height: 4em;
     background: #c2c2c2;
 }
-.search-input {
-    border: 1px solid #c2c2c2;
-    border-radius: 5px;
-}
-@keyframes searchBtnFade {
-    0% {
-        opacity: 0;
-        width: 0;
-    }
-    100% {
-        opacity: 1;
-        width: 1;
-    }
-}
-.searchBtnContainer {
-    animation-name: searchBtnFade;
-    animation-duration: 0.3s;
-    animation-timing-function: linear;
-}
 .media-progress-outer {
     width: 100%;
     padding: 0.5em;
@@ -93,3 +74,30 @@ ion-loading.only-loading-icon {
 ion-content.disable-scrolling .scroll-content {
     overflow-y: hidden;
 }
+
+/**/
+.toolbar {
+    min-height: 36px;
+    .toolbar-background {
+        background-color: goldenrod;
+    }
+}
+.toolbar ion-buttons button {
+    margin: 0 0.3em;
+}
+ion-content .scroll-content {
+    margin-top: 36px;
+}
+.searchbar-input-container {
+    .searchbar-search-icon {
+        display: none;
+    }
+    .searchbar-input {
+        padding: 0 40px 0 4px;
+    }
+    .searchbar-clear-icon {
+        display: inline;
+    }    
+}
+
+
