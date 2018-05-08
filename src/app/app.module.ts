@@ -19,6 +19,9 @@ import { UtilProvider } from '../providers/util/util';
 import { IonicImageViewerModule } from 'ionic-img-viewer';
 import { Push } from '@ionic-native/push';
 import { NativeAudio } from '@ionic-native/native-audio';
+import { Network } from '@ionic-native/network';
+import { GlobalVarsProvider } from '../providers/global-vars/global-vars';
+import { IonicStorageModule } from '@ionic/storage';
 
 @NgModule({
   declarations: [
@@ -29,7 +32,11 @@ import { NativeAudio } from '@ionic-native/native-audio';
     BrowserModule,
     IonicModule.forRoot(MyApp),
     HttpClientModule,
-    IonicImageViewerModule
+    IonicImageViewerModule,
+    IonicStorageModule.forRoot({
+      name: 'config_db',
+      driverOrder: ['indexeddb', 'websql']
+    })
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -50,7 +57,9 @@ import { NativeAudio } from '@ionic-native/native-audio';
     RestProvider,
     UtilProvider,
     Push,
-    NativeAudio
+    NativeAudio,
+    Network,
+    GlobalVarsProvider
   ]
 })
 export class AppModule {}

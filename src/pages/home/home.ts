@@ -8,10 +8,12 @@ import {
   Loading,
   AlertController,
   ActionSheetController,
-  Content 
+  Content
 } from 'ionic-angular';
 
 import { Observable, Subscription } from 'rxjs/Rx'
+import { GlobalVarsProvider } from '../../providers/global-vars/global-vars';
+import { NativeAudio } from '@ionic-native/native-audio';
 
 @IonicPage()
 @Component({
@@ -25,7 +27,9 @@ export class HomePage {
     private menuCtrl: MenuController,
     public indicator: LoadingController,
     public alertCtrl: AlertController,
-    public sheetCtrl: ActionSheetController) {
+    public sheetCtrl: ActionSheetController,
+    private globalVars: GlobalVarsProvider,
+    private nativeAudio: NativeAudio) {
 
   }
 
@@ -74,6 +78,7 @@ export class HomePage {
     this.topBackIconStateSubscription = Observable.interval(1000).subscribe(_ => {
       this.topBackIconIsNotActive = this.isBibleMainUrl();
     });
+    this.globalVars.getValueWithStorage('test')
   }
 
   /*
@@ -90,6 +95,7 @@ export class HomePage {
   }
 
   toggleMenu() {
+    this.nativeAudio.play('click', () => {});
     this.menuCtrl.toggle();
   }
 
@@ -97,9 +103,9 @@ export class HomePage {
     this.iframe.history.back();
   }
 
-  public goPage(url: string) {
-    this.iframe.location.href = url;
-  }
+  // public goPage(url: string) {
+  //   this.iframe.location.href = url;
+  // }
 
   iframeLoaded() {
     if (this.loading) {

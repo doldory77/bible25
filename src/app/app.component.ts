@@ -1,4 +1,4 @@
-import { Component, ViewChild, OnInit } from '@angular/core';
+import { Component, ViewChild, OnInit, OnDestroy } from '@angular/core';
 import { Nav, Platform } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -9,14 +9,19 @@ import { MenuProvider } from '../providers/menu/menu';
 import { HomePage } from '../pages/home/home';
 import { Push, PushObject, PushOptions } from '@ionic-native/push';
 import { NativeAudio } from '@ionic-native/native-audio';
+import { GlobalVarsProvider } from '../providers/global-vars/global-vars';
+import { Network } from '@ionic-native/network';
+import { Subscription } from 'rxjs/Subscription';
 
 @Component({
   templateUrl: 'app.html'
 })
-export class MyApp implements OnInit {
+export class MyApp implements OnInit, OnDestroy {
   @ViewChild(Nav) nav: Nav;
 
   rootPage: any = 'HomePage';
+  networkConnectionSubscription: Subscription;
+  netWorkDisConnectionSuscription: Subscription;
 
   /* accordian menu */
   todayMenuIsOpen = false;
@@ -28,22 +33,54 @@ export class MyApp implements OnInit {
     public indicator: LoadingController,
     private alertCtrl: AlertController,
     private nativeAudio: NativeAudio,
-    private push: Push) {
+    private push: Push,
+    private network: Network,
+    private globalVars: GlobalVarsProvider) {
     this.initializeApp();
 
   }
 
   initializeApp() {
     this.platform.ready().then(() => {
-      
-      // this.checkPushPermission();
       this.statusBar.styleDefault();
       this.splashScreen.hide();
     });
   }
 
+  networkCheck() {
+    
+    this.globalVars.addValue('networkType', this.network.type);
+    this.globalVars.addValue('networkState', "online");
+
+    this.networkConnectionSubscription = this.network.onConnect().subscribe(data => {
+      this.globalVars.addValue('networkType', this.network.type);
+      this.globalVars.addValue('networkState', data.type);
+      console.info(this.globalVars.getValue("networkType"), " ===> ", this.globalVars.getValue("networkState"));
+    }, error => {console.error(error)});
+
+    this.netWorkDisConnectionSuscription = this.network.onDisconnect().subscribe(data => {
+      this.globalVars.addValue('networkType', this.network.type);
+      this.globalVars.addValue('networkState', data.type);
+      console.info(this.globalVars.getValue("networkType"), " ===> ", this.globalVars.getValue("networkState"));
+    }, error => {console.error(error)});
+  }
+
+  networkUnsubscription() {
+    this.networkConnectionSubscription.unsubscribe();
+    this.netWorkDisConnectionSuscription.unsubscribe();
+  }
+
   ngOnInit() {
     this.menuData = this.menuProvider.MenuData;
+    this.nativeAudio.preloadSimple('click', 'assets/audio/click_on.mp3')
+        .then(() => {console.info('sound loaded')}, error => {console.error(error)});
+    this.checkPushPermission();
+    this.networkCheck();
+  }
+
+  ngOnDestroy() {
+    console.info("App Destroy");
+    this.networkUnsubscription();
   }
 
   menuData: Map<string, MenuType>;
