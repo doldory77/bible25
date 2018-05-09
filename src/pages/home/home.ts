@@ -42,8 +42,8 @@ export class HomePage {
   topSearchBtnFlag: boolean = false;
   loading: Loading = null;
   searchKeyWord: string = '';
-  url: string = "http://ch2ho.bible25.com/m/main_renewal_android.php";
-  // url: string = "http://ch2ho.bible25.com/m/main_bible25.php";
+  // url: string = "http://ch2ho.bible25.com/m/main_renewal_android.php";
+  url: string = "http://ch2ho.bible25.com/m/main_all.php";
 
   /*
   Android Back Button 오버라이드
@@ -91,7 +91,8 @@ export class HomePage {
   }
 
   isBibleMainUrl() {
-    return (/main_renewal_[a-z,1-9,A-Z]+.php/g).test(this.iframe.location.href);
+    // return (/main_renewal_[a-z,1-9,A-Z]+.php/g).test(this.iframe.location.href);
+    return (/main_all.php/g).test(this.iframe.location.href);
   }
 
   toggleMenu() {
@@ -102,10 +103,6 @@ export class HomePage {
   onBack() {
     this.iframe.history.back();
   }
-
-  // public goPage(url: string) {
-  //   this.iframe.location.href = url;
-  // }
 
   iframeLoaded() {
     if (this.loading) {
@@ -119,7 +116,7 @@ export class HomePage {
       tables[tables.length - 5].style.display = 'none';
       this.screenUpdate();
     } catch (err) {
-      console.error('fixedBox display hide error: ', err);
+      // console.error('fixedBox display hide error: ', err); 고의적으로 표시 안함
     }
   }
 
@@ -140,7 +137,9 @@ export class HomePage {
    * 종합검색 페이지로 이동
    */
   goSearchPage() {
-    this.url = "http://ministrynote.com/bbs/search_bible25.php?sfl=wr_subject&sop=and&stx=" + this.searchKeyWord;
+    this.goUrl("http://ministrynote.com/bbs/search_bible25.php?sfl=wr_subject&sop=and&stx=" + this.searchKeyWord);
+    this.searchKeyWord = "";
+    this.toggleSearchBar();
   }
 
   showAlert() {

@@ -1,5 +1,15 @@
 import { Injectable } from '@angular/core';
 
+// home: 'http://ch2ho.bible25.com/m/main_renewal_android.php'
+// 말씀따라: 'http://ch2ho.bible25.com/m/bless/today10.php?bo_id=grace&array_num=5'
+// 컬럼: 'http://ch2ho.bible25.com/m/bless/today3.php?bo_id=comm6'
+// 십자가: 'http://ch2ho.bible25.com/m/bless/today2.php?bo_id=comm5'
+// 메일아침: 'http://ch2ho.bible25.com/m/bless/today1.php?bo_id=comm2'
+// 오늘한컷: 'http://ch2ho.bible25.com/m/bless/today7.php?bo_id=calligraphy'
+// 축복기도문: 'http://ch2ho.bible25.com/m/bless/today10.php?bo_id=jewel&array_num=5'
+// 손편지: 'http://ch2ho.bible25.com/m/bless/today6.php?bo_id=calli'
+// 성경연구: 'http://ch2ho.bible25.com/m/contents.php'
+
 @Injectable()
 export class MenuProvider {
 
@@ -9,49 +19,49 @@ export class MenuProvider {
           page: 'HomePage',
           menuLevel: 'top_menu',
           selected: false,
-          url: 'http://ch2ho.bible25.com/m/main_renewal_android.php'
+          url: 'http://ch2ho.bible25.com/m/main_all.php'
       })
       .set('today_menu1', {
           name: '말씀따라',
           page: 'HomePage',
           menuLevel: 'sub_menu',
           selected: false,
-          url: 'http://ch2ho.bible25.com/m/bless/today10.php?bo_id=grace&array_num=5'
+          url: 'http://ch2ho.bible25.com/m/bbs_renew/board.php?bo_table=grace'
       })
       .set('today_menu2', {
           name: '컬럼',
           page: 'HomePage',
           menuLevel: 'sub_menu',
           selected: false,
-          url: 'http://ch2ho.bible25.com/m/bless/today3.php?bo_id=comm6'
+          url: 'http://ch2ho.bible25.com/m/bbs_renew/board.php?bo_table=comm6'
       })
       .set('today_menu3', {
           name: '십자가',
           page: 'HomePage',
           selected: false,
           menuLevel: 'sub_menu',
-          url: 'http://ch2ho.bible25.com/m/bless/today2.php?bo_id=comm5'
+          url: 'http://ch2ho.bible25.com/m/bbs_renew/board.php?bo_table=comm5'
       })
       .set('today_menu4', {
           name: '메일아침',
           page: 'HomePage',
           selected: false,
           menuLevel: 'sub_menu',
-          url: 'http://ch2ho.bible25.com/m/bless/today1.php?bo_id=comm2'
+          url: 'http://ch2ho.bible25.com/m/bbs_renew/board.php?bo_table=comm2'
       })
       .set('today_menu5', {
           name: '오늘한컷',
           page: 'HomePage',
           selected: false,
           menuLevel: 'sub_menu',
-          url: 'http://ch2ho.bible25.com/m/bless/today7.php?bo_id=calligraphy'
+          url: 'http://ch2ho.bible25.com/m/bbs_renew/board.php?bo_table=calligraphy'
       })
       .set('today_menu6', {
           name: '축복기도문',
           page: 'HomePage',
           selected: false,
           menuLevel: 'sub_menu',
-          url: 'http://ch2ho.bible25.com/m/bless/today10.php?bo_id=jewel&array_num=5'
+          url: 'http://ch2ho.bible25.com/m/bbs_renew/board.php?bo_table=jewel'
       })
       .set('today_menu7', {
           name: '말씀',
@@ -65,21 +75,21 @@ export class MenuProvider {
           page: 'HomePage',
           selected: false,
           menuLevel: 'sub_menu',
-          url: 'http://ch2ho.bible25.com/m/bless/today6.php?bo_id=calli'
+          url: 'http://ch2ho.bible25.com/m/bbs_renew/board.php?bo_table=calli'
       })
       .set('christian_news', {
           name: '기독뉴스',
           page: 'HomePage',
           selected: false,
           menuLevel: 'top_menu',
-          url: 'http://www.naver.com'
+          url: 'http://ch2ho.bible25.com/m/gyogye_news.php'
       })
       .set('bible_research', {
           name: '성경연구',
           page: 'HomePage',
           selected: false,
           menuLevel: 'top_menu',
-          url: 'http://ch2ho.bible25.com/m/contents.php'
+          url: 'http://ch2ho.bible25.com/m/contents_renew.php'
       })
       .set('bible_dictionary', {
           name: '성경사전',
