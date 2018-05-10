@@ -12,6 +12,7 @@ import { NativeAudio } from '@ionic-native/native-audio';
 import { GlobalVarsProvider } from '../providers/global-vars/global-vars';
 import { Network } from '@ionic-native/network';
 import { Subscription } from 'rxjs/Subscription';
+import { InAppBrowser, InAppBrowserOptions, InAppBrowserObject } from '@ionic-native/in-app-browser';
 
 @Component({
   templateUrl: 'app.html'
@@ -26,6 +27,28 @@ export class MyApp implements OnInit, OnDestroy {
   /* accordian menu */
   todayMenuIsOpen = false;
 
+  inAppBrowserPptions: InAppBrowserOptions = {
+    location: 'no',
+    hidden: 'no',
+    clearcache: 'yes',
+    clearsessioncache: 'yes',
+    zoom: 'yes',
+    hardwareback: 'yes',
+    mediaPlaybackRequiresUserAction: 'no',
+    shouldPauseOnSuspend: 'no',
+    closebuttoncaption: 'close',
+    disallowoverscroll: 'no',
+    toolbar: 'yes',
+    // toolbarposition: 'top',
+    enableViewportScale: 'no',
+    allowInlineMediaPlayback: 'no',
+    presentationstyle: 'formsheet',
+    fullscreen: 'yes'
+  }
+
+  inAppBrowserObj: InAppBrowserObject
+  inAppSubscription: Subscription;
+
   constructor(public platform: Platform,
     public statusBar: StatusBar,
     public splashScreen: SplashScreen,
@@ -35,9 +58,33 @@ export class MyApp implements OnInit, OnDestroy {
     private nativeAudio: NativeAudio,
     private push: Push,
     private network: Network,
-    private globalVars: GlobalVarsProvider) {
+    private globalVars: GlobalVarsProvider,
+    private browser: InAppBrowser) {
     this.initializeApp();
+    this.iframeEventObserve();
+  }
 
+  iframeEventObserve() {
+    let app: MyApp = this;
+    window.addEventListener('message', function(e){
+      app.callFromIframe(e.data);
+    });
+  }
+
+  callFromIframe(data) {
+    console.info(data.page);
+    switch(data.page) {
+      case 'bible':
+        this.openPage('bible');
+        break;
+      case 'hymn':
+        this.openPage('hymn');
+        break;
+      case 'posmall':
+        this.openPage('posmall');
+        break;
+      default:
+    }
   }
 
   initializeApp() {
@@ -89,6 +136,14 @@ export class MyApp implements OnInit, OnDestroy {
     
     let targetMenu: MenuType = this.menuData.get(menu);
     this.menuHighlight(menu);
+    // console.log(targetMenu);
+    if (menu === 'posmall') {
+      this.inAppBrowserObj = this.browser.create(targetMenu.url, '_blank', this.inAppBrowserPptions);
+      this.inAppSubscription = this.inAppBrowserObj.on('exit').subscribe(data => {
+        if (this.inAppBrowserObj) try { this.inAppBrowserObj.close(); this.inAppSubscription.unsubscribe(); this.inAppBrowserObj = undefined; } catch (err) { console.error(err); }  
+      }, err => {console.error(err)});
+      return;
+    }
     if (targetMenu.url) {
       this.nav.popToRoot().then(() => {
         this.goUrl(targetMenu.url);

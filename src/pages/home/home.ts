@@ -14,6 +14,7 @@ import {
 import { Observable, Subscription } from 'rxjs/Rx'
 import { GlobalVarsProvider } from '../../providers/global-vars/global-vars';
 import { NativeAudio } from '@ionic-native/native-audio';
+import { MenuProvider } from '../../providers/menu/menu';
 
 @IonicPage()
 @Component({
@@ -29,7 +30,8 @@ export class HomePage {
     public alertCtrl: AlertController,
     public sheetCtrl: ActionSheetController,
     private globalVars: GlobalVarsProvider,
-    private nativeAudio: NativeAudio) {
+    private nativeAudio: NativeAudio,
+    public menuProvider: MenuProvider,) {
 
   }
 
@@ -43,7 +45,8 @@ export class HomePage {
   loading: Loading = null;
   searchKeyWord: string = '';
   // url: string = "http://ch2ho.bible25.com/m/main_renewal_android.php";
-  url: string = "http://ch2ho.bible25.com/m/main_all.php";
+  // url: string = "http://ch2ho.bible25.com/m/main_all.php";
+  url: string = this.menuProvider.MenuData.get('home').url;
 
   /*
   Android Back Button 오버라이드
@@ -137,7 +140,8 @@ export class HomePage {
    * 종합검색 페이지로 이동
    */
   goSearchPage() {
-    this.goUrl("http://ministrynote.com/bbs/search_bible25.php?sfl=wr_subject&sop=and&stx=" + this.searchKeyWord);
+    let url = this.menuProvider.MenuData.get('search').url;
+    this.goUrl(url + this.searchKeyWord);
     this.searchKeyWord = "";
     this.toggleSearchBar();
   }

@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 
+// Original Url
 // home: 'http://ch2ho.bible25.com/m/main_renewal_android.php'
 // 말씀따라: 'http://ch2ho.bible25.com/m/bless/today10.php?bo_id=grace&array_num=5'
 // 컬럼: 'http://ch2ho.bible25.com/m/bless/today3.php?bo_id=comm6'
@@ -188,6 +189,20 @@ export class MenuProvider {
           selected: false,
           menuLevel: 'top_menu',
           url: ''
+      })
+      .set('posmall', {
+          name: 'BibleMall',
+          page: '',
+          selected: false,
+          menuLevel: 'top_menu',
+          url: 'https://www.pos-mall.co.kr:448/bible/bibleMembership.do'
+      })
+      .set('search', {
+          name: '목회자수첩검색',
+          page: '',
+          selected: false,
+          menuLevel: 'top_menu',
+          url: 'http://ministrynote.com/bbs/search_bible25.php?sfl=wr_subject&sop=and&stx='
       })
 
   constructor() {

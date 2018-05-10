@@ -25,6 +25,7 @@
     "@ionic-native/deeplinks": "^4.7.0",
     "@ionic-native/file": "^4.6.0",
     "@ionic-native/file-transfer": "^4.6.0",
+    "@ionic-native/in-app-browser": "^4.7.0",
     "@ionic-native/media": "^4.6.0",
     "@ionic-native/native-audio": "^4.7.0",
     "@ionic-native/network": "^4.7.0",
@@ -38,6 +39,7 @@
     "cordova-plugin-device": "^2.0.1",
     "cordova-plugin-file": "^6.0.1",
     "cordova-plugin-file-transfer": "^1.7.1",
+    "cordova-plugin-inappbrowser": "^3.0.0",
     "cordova-plugin-ionic-keyboard": "^2.0.5",
     "cordova-plugin-ionic-webview": "^1.1.16",
     "cordova-plugin-media": "^5.0.2",
@@ -98,7 +100,8 @@
         "DEEPLINK_4_HOST": " ",
         "DEEPLINK_5_SCHEME": " ",
         "DEEPLINK_5_HOST": " "
-      }
+      },
+      "cordova-plugin-inappbrowser": {}
     },
     "platforms": [
       "android",
