@@ -8,6 +8,37 @@ export class GlobalVarsProvider {
 
   constructor(private storage: Storage) {
     this._vars = new Map();
+
+    // 초기화
+    this.getValueWithStorage('fontSize')
+      .then(value => {
+        console.log(value);
+        if (!value) {
+          this.addValueWithStorage('fontSize', 1.0);
+        }
+      }, error => {console.error(error)});
+
+    this.getValueWithStorage('backgroundColor')
+      .then(value => {
+        if (!value) {
+          this.addValueWithStorage('backgroundColor', '#FFFFFF');
+        }
+      }, error => {console.error(error)});
+
+    this.getValueWithStorage('fontColor')
+      .then(value => {
+        if (!value) {
+          this.addValueWithStorage('fontColor', '#000000');
+        }
+      }, error => {console.error(error)});
+
+    this.getValueWithStorage('pushYn')
+      .then(value => {
+        if (value == null || value == undefined) {
+          this.addValueWithStorage('pushYn', true);
+        }
+      }, error => {console.error(error)});
+    
   }
 
   varExist(varName: string): boolean {

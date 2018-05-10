@@ -153,7 +153,7 @@ export class DbProvider {
             (select name from bible_list_kr where book = view_bible_book) book_name,
             view_bible_jang,
             view_hymn_pnum,
-            (select ifnull(kor_name, eng_name) from bible_db_name where selected = 'Y' order by seq limit 1) selected_first_name,
+            (select case when kor_name = '' then eng_name else kor_name end from bible_db_name where selected = 'Y' order by seq limit 1) selected_first_name,
             (select group_concat(lower(eng_name)) from bible_db_name where selected = 'Y') selected_eng_names
           from app_info
         `, [])
@@ -200,7 +200,8 @@ export class DbProvider {
           );
         }
       });
-      query = query.concat(' order by jul, ord');
+      // query = query.concat(' order by jul, ord');
+      query = "select * from (" + query + ") order by jul, ord";
     } else {
       query = tmp.replace('#number', String(1))
         .replace(/#lang/g, param.multiLang[0])

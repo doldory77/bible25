@@ -10,6 +10,7 @@ import { UtilProvider } from '../../providers/util/util';
 import { Pinchable } from '../../model/pinchable';
 import { OnScrollDetect, ScrollDetectable } from '../../model/onscroll-detect';
 import { PlayerUiComponent } from '../../components/player-ui/player-ui';
+import { GlobalVarsProvider } from '../../providers/global-vars/global-vars';
 
 @IonicPage()
 @Component({
@@ -42,7 +43,8 @@ export class BiblePage extends Pinchable implements OnScrollDetect {
     private db: DbProvider,
     private indicator: LoadingController,
     private rest: RestProvider,
-    private util: UtilProvider) {
+    private util: UtilProvider,
+    private globalVars: GlobalVarsProvider) {
 
       super();
       
@@ -54,6 +56,11 @@ export class BiblePage extends Pinchable implements OnScrollDetect {
         .forEach(key => {
           this.menuData.push(this.menu.MenuData.get(key));
         });
+      
+      this.globalVars.getValueWithStorage('fontSize')
+        .then(value => {
+          this.fontSize = value + "em";
+        }, error => {console.error(error)});
 
   }
 
@@ -68,6 +75,7 @@ export class BiblePage extends Pinchable implements OnScrollDetect {
   }
 
   ionViewWillLeave() {
+    this.globalVars.addValueWithStorage('fontSize', Number(this.fontSize.replace('em','')));
     this.destroyScrollDetector(this.scrollDetector);
   }
 

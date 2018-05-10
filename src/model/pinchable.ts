@@ -1,11 +1,15 @@
 export class Pinchable {
     
-    static MAX_SCALE = 2.1;
+    // static MAX_SCALE = 2.1;
+    // // static MIN_SCALE = 0.9;
+    // static MIN_SCALE = 1.1;
+    // static BASE_SCALE = 1.5;
+    static MAX_SCALE = 1.5;
     // static MIN_SCALE = 0.9;
-    static MIN_SCALE = 1.1;
-    static BASE_SCALE = 1.5;
+    static MIN_SCALE = 1.0;
+    static BASE_SCALE = 1.0;
 
-    public fontSize = `${Pinchable.BASE_SCALE}rem`;
+    public fontSize = `${Pinchable.BASE_SCALE}em`;
     public scale = Pinchable.BASE_SCALE;
     public alreadyScaled = Pinchable.BASE_SCALE;
     public isScaling = false;
@@ -57,7 +61,7 @@ export class Pinchable {
         if ((fontSize * 10) % 3 === 0) {
     
           // update the fontsize
-          this.fontSize = `${fontSize}rem`;
+          this.fontSize = `${fontSize}em`;
         }
     
       }

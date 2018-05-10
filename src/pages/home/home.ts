@@ -69,9 +69,6 @@ export class HomePage {
   ionViewDidLoad() {
     this.iframe = document.getElementById('iframe')['contentWindow'];
     this.unRegisterBackButton = this.customBackButton();
-    // this.platform.registerBackButtonAction(() => {
-    //   this.iframe.history.history.back();
-    // });
   }
 
   /*
@@ -104,12 +101,13 @@ export class HomePage {
   }
 
   onBack() {
+    this.nativeAudio.play('click2', () => {});
     this.iframe.history.back();
   }
 
   iframeLoaded() {
     if (this.loading) {
-      this.loading.dismiss();
+      try { this.loading.dismiss(); } catch (err) {}
     }
     try {
       let frm: any = document.getElementById('iframe');
@@ -125,14 +123,19 @@ export class HomePage {
 
   goUrl(url: string) {
     if (url) {
+      if (url == this.iframe.location.href) {
+        return;
+      }
       this.loading = this.indicator.create({
         showBackdrop: false,
         content: `<div>Loading...</div>`, 
         spinner: 'circles', 
-        dismissOnPageChange: true, 
+        dismissOnPageChange: true,
       });
       this.loading.present();
-      this.url = url;
+
+      this.iframe.location.href = url;
+
     }
   }
 
@@ -177,10 +180,17 @@ export class HomePage {
   }
 
   configPage() {
+    this.nativeAudio.play('click2', () => {});
     this.navCtrl.push('ConfigPage');
   }
 
+  myPage() {
+    this.nativeAudio.play('click2', () => {});
+    this.navCtrl.push('MyPage');
+  }
+
   toggleSearchBar() {
+    this.nativeAudio.play('click2', () => {});
     this.topSearchBtnFlag = !this.topSearchBtnFlag;
     this.screenUpdate();
   }

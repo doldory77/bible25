@@ -1,18 +1,18 @@
 <ion-header>
 
-  <ion-toolbar>
+  <ion-navbar>
 
-    <!-- <ion-buttons start class="left-ion-buttons">
-      <button ion-button icon-only menuToggle>
+    <ion-buttons start class="left-ion-buttons">
+        <button ion-button icon-only (click)="showIndex()">
+          <ion-icon name="book"></ion-icon>
+        </button>
+      <!-- <button ion-button icon-only menuToggle>
         <ion-icon name="menu"></ion-icon>
-      </button>
-    </ion-buttons> -->
-    
-    <ion-title class="center-ion-title">hymn</ion-title>
+      </button> -->
+    </ion-buttons>
+
+    <ion-title class="center-ion-title">찬송</ion-title>
     <ion-buttons end>
-      <button ion-button icon-only (click)="showIndex()">
-        <ion-icon name="book"></ion-icon>
-      </button>
       <button ion-button clear icon-only (click)="toggleSearch()">
         <ion-icon name="search"></ion-icon>
       </button>
@@ -20,16 +20,11 @@
         <ion-icon name="close"></ion-icon>
       </button>
     </ion-buttons>
-  </ion-toolbar>
+  </ion-navbar>
 
   <div class="search-bar" [hidden]="isNoneVisibleSearch">
     <div (click)="showSearchType($event)">
       <label>검색조건: {{searchType.name}}</label>
-      <!-- <select #searchType>
-        <option value="0">제목</option>
-        <option value="1">가사</option>
-        <option value="2">장</option>
-      </select> -->
     </div>
     <div>
       <input #searchKeyword type="text" value="" placeholder="제목 또는 가사">

@@ -119,10 +119,12 @@ export class MyApp implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.menuData = this.menuProvider.MenuData;
-    // this.nativeAudio.preloadSimple('click', 'assets/audio/click_on.mp3')
-    //     .then(() => {console.info('sound loaded')}, error => {console.error(error)});
-    // this.checkPushPermission();
-    // this.networkCheck();
+    this.nativeAudio.preloadSimple('click', 'assets/audio/click_on.mp3')
+        .then(() => {console.info('sound loaded')}, error => {console.error(error)});
+    this.nativeAudio.preloadSimple('click2', 'assets/audio/click_on2.mp3')
+        .then(() => {console.info('sound loaded')}, error => {console.error(error)});
+    this.checkPushPermission();
+    this.networkCheck();
   }
 
   ngOnDestroy() {
@@ -133,7 +135,7 @@ export class MyApp implements OnInit, OnDestroy {
   menuData: Map<string, MenuType>;
 
   openPage(menu: string) {
-    
+    this.nativeAudio.play('click2', () => {});
     let targetMenu: MenuType = this.menuData.get(menu);
     this.menuHighlight(menu);
     // console.log(targetMenu);
@@ -173,6 +175,7 @@ export class MyApp implements OnInit, OnDestroy {
   goUrl(url: string) {
     if (url) {
       const home: HomePage = <HomePage> this.nav.getByIndex(0).instance
+      // console.log(url);
       home.goUrl(url);
     }
   }

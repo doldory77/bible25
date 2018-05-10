@@ -23,44 +23,67 @@ export class ConfigPage {
   pushYn: boolean = true;
 
   ionViewDidLoad() {
+
     this.globalVars.getValueWithStorage('fontSize')
       .then(value => {
         console.log(value);
-        if (!value) {
-          this.fontSize = 1.0;
-          this.displayFont = Math.floor(this.fontSize * 10) + "";
-        } else {
-          this.fontSize = value;
-          this.displayFont = Math.floor(this.fontSize * 10) + "";
-        }
+        this.fontSize = value;
+        this.displayFont = Math.floor(this.fontSize * 10) + "";
       }, error => {console.error(error)});
 
     this.globalVars.getValueWithStorage('backgroundColor')
       .then(value => {
-        if (!value) {
-          this.backgroundColor = '#FFFFFF';
-        } else {
-          this.backgroundColor = value;
-        }
+        this.backgroundColor = value;
       }, error => {console.error(error)});
 
     this.globalVars.getValueWithStorage('fontColor')
       .then(value => {
-        if (!value) {
-          this.fontColor = '#000000';
-        } else {
-          this.fontColor = value;
-        }
+        this.fontColor = value;
       }, error => {console.error(error)});
 
     this.globalVars.getValueWithStorage('pushYn')
       .then(value => {
-        if (value == null || value == undefined) {
-          this.pushYn = true;
-        } else {
-          this.pushYn = value;
-        }
+        this.pushYn = value;
       }, error => {console.error(error)});
+
+    // this.globalVars.getValueWithStorage('fontSize')
+    //   .then(value => {
+    //     console.log(value);
+    //     if (!value) {
+    //       this.fontSize = 1.0;
+    //       this.displayFont = Math.floor(this.fontSize * 10) + "";
+    //     } else {
+    //       this.fontSize = value;
+    //       this.displayFont = Math.floor(this.fontSize * 10) + "";
+    //     }
+    //   }, error => {console.error(error)});
+
+    // this.globalVars.getValueWithStorage('backgroundColor')
+    //   .then(value => {
+    //     if (!value) {
+    //       this.backgroundColor = '#FFFFFF';
+    //     } else {
+    //       this.backgroundColor = value;
+    //     }
+    //   }, error => {console.error(error)});
+
+    // this.globalVars.getValueWithStorage('fontColor')
+    //   .then(value => {
+    //     if (!value) {
+    //       this.fontColor = '#000000';
+    //     } else {
+    //       this.fontColor = value;
+    //     }
+    //   }, error => {console.error(error)});
+
+    // this.globalVars.getValueWithStorage('pushYn')
+    //   .then(value => {
+    //     if (value == null || value == undefined) {
+    //       this.pushYn = true;
+    //     } else {
+    //       this.pushYn = value;
+    //     }
+    //   }, error => {console.error(error)});
 
   }
 
