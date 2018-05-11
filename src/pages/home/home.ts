@@ -79,6 +79,8 @@ export class HomePage {
       this.topBackIconIsNotActive = this.isBibleMainUrl();
     });
     this.globalVars.getValueWithStorage('test')
+    // this.iframe.location.reload(true);
+    this.iframe.postMessage('reload', '*');
   }
 
   /*

@@ -11,7 +11,9 @@ import { Push, PushObject, PushOptions } from '@ionic-native/push';
 import { NativeAudio } from '@ionic-native/native-audio';
 import { GlobalVarsProvider } from '../providers/global-vars/global-vars';
 import { Network } from '@ionic-native/network';
-import { Subscription } from 'rxjs/Subscription';
+// import { Subscription } from 'rxjs/Subscription';
+// import { Observable } from 'rxjs/Observable';
+import { Observable, Subscription } from 'rxjs/Rx'
 import { InAppBrowser, InAppBrowserOptions, InAppBrowserObject } from '@ionic-native/in-app-browser';
 
 @Component({
@@ -23,6 +25,7 @@ export class MyApp implements OnInit, OnDestroy {
   rootPage: any = 'HomePage';
   networkConnectionSubscription: Subscription;
   netWorkDisConnectionSuscription: Subscription;
+  iframeCallCheckSubscription: Subscription;
 
   /* accordian menu */
   todayMenuIsOpen = false;
@@ -65,26 +68,21 @@ export class MyApp implements OnInit, OnDestroy {
   }
 
   iframeEventObserve() {
-    let app: MyApp = this;
+    window['iframe_call'] = {apiNum:0};
     window.addEventListener('message', function(e){
-      app.callFromIframe(e.data);
+      switch(e.data.page) {
+        case 'bible':
+          window['iframe_call'].apiNum = 1;
+          break;
+        case 'hymn':
+          window['iframe_call'].apiNum = 2;
+          break;
+        case 'posmall':
+          window['iframe_call'].apiNum = 3;
+          break;
+        default:
+      }
     });
-  }
-
-  callFromIframe(data) {
-    console.info(data.page);
-    switch(data.page) {
-      case 'bible':
-        this.openPage('bible');
-        break;
-      case 'hymn':
-        this.openPage('hymn');
-        break;
-      case 'posmall':
-        this.openPage('posmall');
-        break;
-      default:
-    }
   }
 
   initializeApp() {
@@ -125,11 +123,30 @@ export class MyApp implements OnInit, OnDestroy {
         .then(() => {console.info('sound loaded')}, error => {console.error(error)});
     this.checkPushPermission();
     this.networkCheck();
+
+    this.iframeCallCheckSubscription = Observable.interval(300).subscribe(() => {
+      let currentApiNum = window['iframe_call'].apiNum;
+      window['iframe_call'].apiNum = 0;
+      // console.log(currentApiNum + " ===> " + window['iframe_call'].apiNum);
+      switch(currentApiNum) {
+        case 1:
+          this.openPage('bible');
+          break;
+        case 2:
+          this.openPage('hymn');
+          break;
+        case 3:
+          this.openPage('posmall');
+          break;
+        default:
+      }
+    });
   }
 
   ngOnDestroy() {
     console.info("App Destroy");
     this.networkUnsubscription();
+    if (this.iframeCallCheckSubscription) this.iframeCallCheckSubscription.unsubscribe();
   }
 
   menuData: Map<string, MenuType>;
