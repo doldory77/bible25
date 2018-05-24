@@ -2,17 +2,27 @@
   <ion-navbar>
 
     <ion-buttons start class="left-ion-buttons">
-      <button ion-button icon-only (click)="toggleMenu()">
+      <!-- <button ion-button icon-only (click)="toggleMenu()">
         <ion-icon name="menu"></ion-icon>
-      </button>
-      <button ion-button clear icon-only (click)="onBack()" [class.back-inActive]="topBackIconIsNotActive">
+      </button> -->
+      <a (click)="toggleMenu()">
+          <img class="btnMenu" src="assets/imgs/menu.png">
+      </a>
+      <a (click)="onBack()" [class.back-inActive]="topBackIconIsNotActive">
+          <img class="btnBack" src="assets/imgs/h_preview.png">
+      </a>
+      <!-- <button ion-button clear icon-only (click)="onBack()" [class.back-inActive]="topBackIconIsNotActive">
         <ion-icon name="arrow-round-back"></ion-icon>
-      </button>
+      </button> -->
+      
     </ion-buttons>
 
-    <ion-title class="center-ion-title">Bible25</ion-title>
+    <!-- <ion-title class="center-ion-title">Bible25</ion-title> -->
+    <ion-title class="center-ion-title">
+        <img class="imgTitle" src="assets/imgs/title.png">
+    </ion-title>
     
-    <ion-buttons end>
+    <!-- <ion-buttons end>
         <button ion-button clear icon-only (click)="toggleSearchBar()">
           <ion-icon name="search"></ion-icon>
         </button>
@@ -22,6 +32,17 @@
         <button ion-button clear icon-only (click)="configPage()">
           <ion-icon name="settings"></ion-icon>
         </button>
+    </ion-buttons> -->
+    <ion-buttons end class="headerRighButtons">
+        <a (click)="toggleSearchBar()">
+            <img class="btnMenu" src="assets/imgs/w_search.png">
+        </a>
+        <a (click)="myPage()">
+            <img class="btnMenu" src="assets/imgs/me.png">
+        </a>
+        <a (click)="configPage()">
+            <img class="btnMenu" src="assets/imgs/set.png">
+        </a>
     </ion-buttons>
 
   </ion-navbar>
@@ -40,10 +61,15 @@
       [(ngModel)]="searchKeyWord"
       [debounce]="500">`
     </ion-searchbar>
-    <ion-buttons end class="search-button">
+    <!-- <ion-buttons end class="search-button">
         <button ion-button icon-only color="primary" (click)="goSearchPage()">
           <ion-icon name="search"></ion-icon>
         </button>
+    </ion-buttons> -->
+    <ion-buttons end class="search-button">
+        <a (click)="goSearchPage()">
+            <img class="btnMenu" src="assets/imgs/w_s_search.png">
+        </a>
     </ion-buttons>
   </ion-toolbar>
 

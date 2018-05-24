@@ -77,13 +77,28 @@ ion-content.disable-scrolling .scroll-content {
 
 /*css 정리*/
 .toolbar {
-    min-height: 36px;
+    min-height: 60px;
     .toolbar-background {
-        background-color: goldenrod;
+        background-color: #47afea;
     }
+}
+.btnMenu {
+    width: 32px;
+    margin-left: 0.5em;
+}
+.btnBack {
+    height: 22px;
+    width: 22px;
+    margin-left: 0.5em;
+}
+.imgTitle {
+    width: 96px;
 }
 .toolbar ion-buttons button {
     margin: 0 0.3em;
+}
+.headerRighButtons {
+    padding-right: 0.2em;
 }
 ion-content .scroll-content {
     margin-top: 36px;
@@ -94,6 +109,7 @@ ion-content .scroll-content {
     }
     .searchbar-input {
         padding: 0 40px 0 4px;
+        line-height: 4rem;
     }
     .searchbar-clear-icon {
         display: inline;
