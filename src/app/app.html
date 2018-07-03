@@ -1,20 +1,32 @@
 <ion-menu [content]="content">
   <ion-header>
     <ion-toolbar color="primary">
-      <ion-title>Menu</ion-title>
+      <!-- <ion-title>Menu</ion-title> -->
+      <!-- <ion-title class="left-ion-title">
+        <img class="imgTitle" src="assets/imgs/img_logo.png">
+      </ion-title> -->
+      <div class="cust-menu-title">
+        <img class="imgTitle" src="assets/imgs/img_logo.png">
+        <div menuClose (click)="openPage('home')">
+          <ion-icon name="home" color="light"></ion-icon>
+        </div>
+      </div>
     </ion-toolbar>
   </ion-header>
 
   <ion-content>
     <ion-list>
 
-      <button menuClose ion-item (click)="openPage('home')"><ion-icon name="home"></ion-icon><span class="menu-top" [ngClass]="{menuActive:menuData.get('home').selected}">홈</span></button>
+      <!-- <button menuClose ion-item (click)="openPage('home')"><span class="menu-top" [ngClass]="{menuActive:menuData.get('home').selected}">홈</span></button> -->
       <ion-item>
-        <div (click)="todayMenuIsOpen = !todayMenuIsOpen">
-            <ion-icon name="search"></ion-icon>
-            <span class="menu-top">오늘</span>
+        <div style="position: relative;" (click)="todayMenuIsOpen = !todayMenuIsOpen">
+          <span class="box-ico" style="margin-left: -14px;"></span>
+          <span class="menu-top">오늘</span>
+          <div class="menu-arrow">
+            <img src="assets/imgs/bg_menuArrow.png" [ngClass]="{spinimageUp:todayMenuIsOpen == true, spinimageDown:todayMenuIsOpen == false}">
+          </div>
         </div>
-        <ion-list *ngIf="todayMenuIsOpen">
+        <ion-list *ngIf="todayMenuIsOpen" id="today-submenu">
           <button menuClose ion-item (click)="openPage('today_menu1')"><div [ngClass]="{menuActive:menuData.get('today_menu1').selected}">말씀따라</div></button>  
           <button menuClose ion-item (click)="openPage('today_menu2')"><div [ngClass]="{menuActive:menuData.get('today_menu2').selected}">컬럼</div></button>  
           <button menuClose ion-item (click)="openPage('today_menu3')"><div [ngClass]="{menuActive:menuData.get('today_menu3').selected}">십자가</div></button>  
@@ -24,16 +36,16 @@
           <button menuClose ion-item (click)="openPage('today_menu8')"><div [ngClass]="{menuActive:menuData.get('today_menu8').selected}">손편지</div></button>  
         </ion-list>
       </ion-item>
-      <button menuClose ion-item (click)="openPage('christian_news')"><ion-icon name="home"></ion-icon><span class="menu-top" [ngClass]="{menuActive:menuData.get('christian_news').selected}">기독뉴스</span></button>
-      <button menuClose ion-item (click)="openPage('bible_research')"><ion-icon name="home"></ion-icon><span class="menu-top" [ngClass]="{menuActive:menuData.get('bible_research').selected}">성경연구</span></button>
-      <button menuClose ion-item (click)="openPage('bible_dictionary')"><ion-icon name="home"></ion-icon><span class="menu-top" [ngClass]="{menuActive:menuData.get('bible_dictionary').selected}">성경사전</span></button>
-      <button menuClose ion-item (click)="openPage('new_guide')"><ion-icon name="home"></ion-icon><span class="menu-top" [ngClass]="{menuActive:menuData.get('new_guide').selected}">새신자가이드</span></button>
-      <button menuClose ion-item (click)="openPage('photo_bible')"><ion-icon name="home"></ion-icon><span class="menu-top" [ngClass]="{menuActive:menuData.get('photo_bible').selected}">포토성경사전</span></button>
+      <button menuClose ion-item (click)="openPage('christian_news')"><span class="box-ico"></span><span class="menu-top" [ngClass]="{menuActive:menuData.get('christian_news').selected}">기독뉴스</span></button>
+      <button menuClose ion-item (click)="openPage('bible_research')"><span class="box-ico"></span><span class="menu-top" [ngClass]="{menuActive:menuData.get('bible_research').selected}">성경연구</span></button>
+      <button menuClose ion-item (click)="openPage('bible_dictionary')"><span class="box-ico"></span><span class="menu-top" [ngClass]="{menuActive:menuData.get('bible_dictionary').selected}">성경사전</span></button>
+      <button menuClose ion-item (click)="openPage('new_guide')"><span class="box-ico"></span><span class="menu-top" [ngClass]="{menuActive:menuData.get('new_guide').selected}">새신자가이드</span></button>
+      <button menuClose ion-item (click)="openPage('photo_bible')"><span class="box-ico"></span><span class="menu-top" [ngClass]="{menuActive:menuData.get('photo_bible').selected}">포토성경사전</span></button>
       
-      <button menuClose ion-item (click)="openPage('bible')"><ion-icon name="home"></ion-icon><span class="menu-top" [ngClass]="{menuActive:menuData.get('bible').selected}">성경</span></button>
-      <button menuClose ion-item (click)="openPage('bibleLearn')"><ion-icon name="home"></ion-icon><span class="menu-top" [ngClass]="{menuActive:menuData.get('bibleLearn').selected}">성경통독</span></button>
-      <button menuClose ion-item (click)="openPage('hymn')"><ion-icon name="home"></ion-icon><span class="menu-top" [ngClass]="{menuActive:menuData.get('hymn').selected}">찬송</span></button>
-      <button menuClose ion-item (click)="openPage('gyodok')"><ion-icon name="home"></ion-icon><span class="menu-top" [ngClass]="{menuActive:menuData.get('gyodok').selected}">교독문</span></button>
+      <button menuClose ion-item (click)="openPage('bible')"><span class="box-ico"></span><span class="menu-top" [ngClass]="{menuActive:menuData.get('bible').selected}">성경</span></button>
+      <button menuClose ion-item (click)="openPage('bibleLearn')"><span class="box-ico"></span><span class="menu-top" [ngClass]="{menuActive:menuData.get('bibleLearn').selected}">성경통독</span></button>
+      <button menuClose ion-item (click)="openPage('hymn')"><span class="box-ico"></span><span class="menu-top" [ngClass]="{menuActive:menuData.get('hymn').selected}">찬송</span></button>
+      <button menuClose ion-item (click)="openPage('gyodok')"><span class="box-ico"></span><span class="menu-top" [ngClass]="{menuActive:menuData.get('gyodok').selected}">교독문</span></button>
     </ion-list>
   </ion-content>
 

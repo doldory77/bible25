@@ -21,7 +21,7 @@ export class MyPage {
       this.tabMenu
         .set(0, {title:'즐겨찾기', selected:true})
         .set(1, {title:'성경통독', selected:false})
-        .set(2, {title:'개인정보수정', selected:false});
+        // .set(2, {title:'개인정보수정', selected:false});
       
       
   }
@@ -61,7 +61,7 @@ export class MyPage {
   purposes: Code[] = [];
 
   ionViewDidLoad() {
-
+    /*
     Promise.all([
       this.rest.getUser('14259121'),
       this.rest.getChurches(),
@@ -98,6 +98,7 @@ export class MyPage {
         })
       })
       .catch(error => console.error(error));
+      */
   }
 
   getLearnInfo() {
@@ -136,9 +137,11 @@ export class MyPage {
   }
 
   ionViewWillEnter() {
+    /*
     this.getBookMarkForBible();
     this.getBookMarkForHymn();
     this.getLearnInfo();
+    */
   }
 
   getBookMarkForBible() {

@@ -19,7 +19,26 @@
     min-height: 2em;
 }
 .menu-top {
-    margin-left: 0.5em;    
+    margin-left: 1em;    
+}
+.menu-arrow {
+    position: absolute;
+    display: inline-block;
+    right: 0px;
+    width: 16px;
+    height: 9px;
+}
+.box-ico {
+    content: "";
+    display: block;
+    width: 8px;
+    height: 8px;
+    border-radius: 2px;
+    background-color: #33afe9;
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    margin-top: -6px;    
 }
 .menuActive {
     color: map-get($colors, danger);
@@ -30,7 +49,16 @@
     order: 1;
 }
 .center-ion-title {
-    text-align: center;
+    text-align: center
+}
+.cust-menu-title {
+    padding: 0 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    ion-icon {
+        font-size: 1.6em;
+    }
 }
 .back-inActive {
     display: none;
@@ -79,12 +107,24 @@ ion-content.disable-scrolling .scroll-content {
 .toolbar {
     min-height: 60px;
     .toolbar-background {
-        background-color: #47afea;
+        background-color: #33afe9;
     }
 }
 .btnMenu {
-    width: 32px;
+    width: 28px;
+    height: 22px;
     margin-left: 0.5em;
+}
+.btnIco {
+    width: 22px;
+    height: 22px;
+    margin-left: 0.5em;
+}
+.btnIco2 {
+    width: 22px;
+    height: 22px;
+    margin-left: 0.5em;
+    margin-right: 0.5em;
 }
 .btnBack {
     height: 22px;
@@ -92,7 +132,8 @@ ion-content.disable-scrolling .scroll-content {
     margin-left: 0.5em;
 }
 .imgTitle {
-    width: 96px;
+    width: 80px;
+    height: 20px;
 }
 .toolbar ion-buttons button {
     margin: 0 0.3em;
@@ -116,4 +157,31 @@ ion-content .scroll-content {
     }    
 }
 
-
+.spinimageUp {
+    transform-origin: 50% 50%;
+    animation-name: spinUp;
+    animation-duration: 0.3s;
+    animation-fill-mode: forwards;
+    animation-timing-function: cubic-bezier(0.075, 0.82, 0.165, 1);
+}
+.spinimageDown {
+    transform-origin: 50% 50%;
+    animation-name: spinDown;
+    animation-duration: 0.3s;
+    animation-fill-mode: forwards;
+    animation-timing-function: cubic-bezier(0.075, 0.82, 0.165, 1);
+}
+@keyframes spinUp {
+    0% {transform: rotate(0deg);}
+    100% {transform: rotate(180deg);}
+}
+@keyframes spinDown {
+    0% {transform: rotate(180deg);}
+    100% {transform: rotate(0deg);}
+}
+#today-submenu {
+    margin-top: 10px;
+    button {
+        background-color: #ededed;
+    }
+}

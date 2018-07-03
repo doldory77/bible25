@@ -1,12 +1,21 @@
 <ion-header>
 
-  <ion-navbar>
+  <!-- <ion-navbar>
     <ion-title>마이페이지</ion-title>
-  </ion-navbar>
+  </ion-navbar> -->
+
+  <ion-toolbar>
+    <div class="tool-bar-title">
+      <img class="tool-bar-prev-btn" navPop src="assets/imgs/btn_prev.png">
+      <span class="menu-item-inner-title">마이페이지</span>
+    </div>
+  </ion-toolbar>
 
   <div class="my-tab-menu">
-    <div class="menu-item" [ngClass]="{highlight:menu.selected}" *ngFor="let menu of getMenu(); let i = index" (click)="toggleTabMenu(i)">
-      {{menu.title}}
+    <div class="menu-item" *ngFor="let menu of getMenu(); let i = index" (click)="toggleTabMenu(i)">
+      <div class="menu-item-inner" [ngClass]="{borderHilight:menu.selected}" [style.border-right]="i == 0 ? '1px solid #e0e0e0':''">
+        <div class="menu-item-inner-title" [ngClass]="{selectedText:menu.selected}">{{menu.title}}</div>
+      </div>
     </div>
   </div>
 
@@ -15,14 +24,19 @@
 
 <ion-content>
   <div *ngIf="currViewMode == 0">
-    <div class="bookmark-list-header">
-      <div>성경</div>
-      <div (click)="isBibleShow = !isBibleShow">
-        <ion-icon [name]="isBibleShow ? 'arrow-down' : 'arrow-forward'"></ion-icon>
+    <div class="bookmark-list-header" (click)="isBibleShow = !isBibleShow">
+      <div>
+        <span class="box-ico2"></span>
+        <span class="bookmark-list-header-title">성경</span>
+      </div>
+      <div>
+        <div class="mypage-arrow">
+          <img src="assets/imgs/bg_menuArrow.png" [ngClass]="{spinimageUp:isBibleShow == true, spinimageDown:isBibleShow == false}">
+        </div>
       </div>
     </div>
-    <ion-list *ngIf="isBibleShow">
-      <ion-item *ngFor="let item of bibleBookMarkData">
+    <ion-list *ngIf="isBibleShow" class="bookmark-item-container">
+      <ion-item *ngFor="let item of bibleBookMarkData" class="bookmark-item-row">
         <div class="bookmark-item">
           <div (click)="goBibleContent(item.book, item.jang)">{{item.bibletype}} >{{item.name}} > {{item.jang}}장 <span class="bookmark-item-jul">({{item.jul}})절</span></div>
           <div (click)="removeBibleBookMark(item)">
@@ -32,14 +46,19 @@
       </ion-item>
     </ion-list>
 
-    <div class="bookmark-list-header">
-      <div>찬송</div>
-      <div (click)="isHymnShow = !isHymnShow">
-        <ion-icon [name]="isHymnShow ? 'arrow-down' : 'arrow-forward'"></ion-icon>
+    <div class="bookmark-list-header" (click)="isHymnShow = !isHymnShow">
+        <div>
+          <span class="box-ico2"></span>
+          <span class="bookmark-list-header-title">찬송</span>
+        </div>
+      <div>
+        <div class="mypage-arrow">
+          <img src="assets/imgs/bg_menuArrow.png" [ngClass]="{spinimageUp:isHymnShow == true, spinimageDown:isHymnShow == false}">
+        </div>
       </div>
     </div>
-    <ion-list *ngIf="isHymnShow">
-      <ion-item *ngFor="let item of hymnBookMarkData">
+    <ion-list *ngIf="isHymnShow" class="bookmark-item-container">
+      <ion-item *ngFor="let item of hymnBookMarkData" class="bookmark-item-row">
         <div class="bookmark-item">
           <div>
             <div (click)="goHymnContent(item.p_num)">{{item.p_num}}. {{item.subject}}</div>
@@ -54,15 +73,15 @@
   </div>
 
   <ion-list *ngIf="currViewMode == 1">
-    <ion-item>
+    <ion-item class="viewmode1-header">
       <ion-label>성경읽기여부</ion-label>
       <ion-toggle [(ngModel)]="isReadingSchedul"></ion-toggle>
     </ion-item>
-    <ion-item>
+    <ion-item class="viewmode1-row">
       <ion-label>시작한 날짜:</ion-label>
       <ion-datetime displayFormat="YYYY-MM-DD" [(ngModel)]="startReadingDate"></ion-datetime>
     </ion-item>
-    <ion-item>
+    <ion-item class="viewmode1-row">
       <ion-label>목표한 날짜:</ion-label>
       <ion-datetime displayFormat="YYYY-MM-DD" [(ngModel)]="endReadingDate"></ion-datetime>
     </ion-item>
@@ -75,8 +94,9 @@
         <ion-option value="4">4독</ion-option>
       </ion-select>
     </ion-item> -->
-    <ion-item>
-      <div>경과일수:</div>
+    <div style="height:10px;"></div>
+    <ion-item class="viewmode1-row">
+      <div style="color:#423e3e;">경과일수:</div>
       <div item-end class="bible-range">
         <div class="bible-range-outer">
           <div class="bible-range-inner" [style.width]="untilCurrDayPercentByCeil"></div>
@@ -87,8 +107,8 @@
         </div>
       </div>
     </ion-item>
-    <ion-item>
-      <div>학습장수:</div>
+    <ion-item class="viewmode1-row">
+      <div style="color:#423e3e;">학습장수:</div>
       <div item-end class="bible-range">
         <div class="bible-range-outer">
           <div class="bible-range-inner" [style.width]="untilCurrLearnJangPercentByCeil"></div>
@@ -105,9 +125,12 @@
     </ion-item>
     <ion-item>
       <div class="bible-range-button-box">
-        <button ion-button (click)="resetLearnBible()">설정초기화</button>
+        <div (click)="resetLearnBible()">설정초기화</div>
+        <div (click)="saveLearnConfig()" style="background-color: #33afe9;">설정저장</div>
+        <div [navPush]="'LearnBiblePage'" style="background-color: #33afe9;">진도현황</div>
+        <!-- <button ion-button (click)="resetLearnBible()">설정초기화</button>
         <button ion-button (click)="saveLearnConfig()">설정저장</button>
-        <button ion-button [navPush]="'LearnBiblePage'">진도현황</button>
+        <button ion-button [navPush]="'LearnBiblePage'">진도현황</button> -->
       </div>
     </ion-item>
   </ion-list>

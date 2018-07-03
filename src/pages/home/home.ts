@@ -76,7 +76,7 @@ export class HomePage {
   */
   ionViewWillEnter() {
     this.topBackIconStateSubscription = Observable.interval(1000).subscribe(_ => {
-      this.topBackIconIsNotActive = this.isBibleMainUrl();
+      // this.topBackIconIsNotActive = this.isBibleMainUrl();
     });
     this.globalVars.getValueWithStorage('test')
     // this.iframe.location.reload(true);
