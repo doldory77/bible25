@@ -1,8 +1,8 @@
 page-bible-list {
     .bible-jang-list {
         position: fixed;
-        top: 25%;
-        right: 5%;
+        top: 30%;
+        right: 7%;
         bottom: 7%;
         overflow: auto;
 
@@ -11,17 +11,29 @@ page-bible-list {
         }
 
         li {
-            padding: 0.4em 1.2em 0.4em 0.4em;
+            padding: 0.7em;
+            color: #666;
         }
     }
 
     .bible-item {
         display: flex;
         align-items: center;
-        justify-content: space-around;
+        justify-content: space-between;
+        border-bottom: 1px solid #e6e6e6;
+        padding: 10px;
+        .bible-item-number {
+            display: flex;
+            width: 100%;
+            height: 100%;
+            justify-content: center;
+            align-items: center;
+        }
         & > div {
-            flex-basis: 7em;
+            flex-basis: 5em;
             flex-shrink: 0;
+            font-size: 1.2em;
+            color:#666;
         }
 
         & > ul {
@@ -33,11 +45,63 @@ page-bible-list {
         li {
             display: inline-block;
             padding: 0.3em;
-            margin: 0.1em;
-            width: 2em;
+            margin: 0.2em;
+            width: 35px;
+            height: 35px;
             text-align: center;
-            border: 1px solid orange;
-            border-radius: 0.2em;
+            border: 1px solid white;
+            background-color: #33afe9;
+            border-radius: 17.5px;
+            color: white;
         }
     }
+}
+.view-mode-box {
+    position: fixed;
+    top: 120px;
+    width: 100%;
+    background-color: white;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 60px;
+    padding: 10px;
+    .view-mode-box-header {
+        background-color: #33afe9;
+        color: white;
+        width: 80%;
+        height: 40px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 5px;
+        font-size: 1.2em;
+    }
+    img {
+        vertical-align: middle;
+    }
+}
+.content-list {
+    margin-top: 70px;
+}
+.content-list-item {
+    height: 50px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #e6e6e6;
+    border-right: 1px solid #e6e6e6;
+    padding: 10px;
+    .content-list-item-title {
+        font-size: 1.2em;
+        color: #666;
+        padding-left: 20px;
+    }
+    .content-list-item-ico {
+        width: 9px;
+    }
+}
+.selectedJang {
+    border-right: none;
 }

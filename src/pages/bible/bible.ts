@@ -33,7 +33,7 @@ export class BiblePage extends Pinchable implements OnScrollDetect {
   bibleContents: {lang:string, book:number, jul:number, content:string, ord:number, isBookMarked:boolean, selected:boolean}[] = [];
   bibleSupportContents: {title:string, bible:string, context:string, img_name:string}[] = [];
   bookName: string = '';
-  selectedLanguage: string = '';
+  selectedLanguage: string = '개혁개정';
   isBookMarked: boolean = false;
   isBookMarkExists: boolean = false;
 

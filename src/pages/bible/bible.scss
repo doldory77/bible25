@@ -3,6 +3,7 @@ page-bible {
         text-align: center;
         height: 2em;
         line-height: 2em;
+        color: #666;
     }
     .footer {
         .grid {
@@ -13,12 +14,16 @@ page-bible {
         }
     }
     .foot-menu-highlight {
-        background-color: orange;
+        background-color: #33afe9;
+    }
+    .foot-text-highlight {
+        color: white;
+        font-weight: bold;
     }
     .bible-content-list {
         font-size: 0.8em;
         .bible-jul {
-            color: map-get($colors, primary);
+            color: #33afe9;
             position: absolute;
         }
         .bible-content {
@@ -41,5 +46,16 @@ page-bible {
     .bible-support-title {
         font-size: 1.2em;
         font-weight: bold;
+    }
+    .header-title {
+        font-size: 1.2em;
+        color: #33afe9;
+    }
+    .header-ico {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
     }
 }

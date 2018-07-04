@@ -137,11 +137,11 @@ export class MyPage {
   }
 
   ionViewWillEnter() {
-    /*
+    
     this.getBookMarkForBible();
     this.getBookMarkForHymn();
     this.getLearnInfo();
-    */
+    
   }
 
   getBookMarkForBible() {

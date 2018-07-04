@@ -1,14 +1,28 @@
 page-learn-bible {
     .learn-bible-box {
+        .learn-bible-item-title {
+            font-size: 1.3em;
+            font-weight: bold;
+            padding-left: 0.2em;
+        }
         .learn-bible-item {
             display: inline-block;
             padding: 0.3em;
-            width: 2.5em;
-            font-size: 0.8em;
-            background-color: navajowhite;
-            border: 1px solid gray;
-            margin: 0.1em;
+            width: 30px;
+            height: 30px;
+            border-radius: 15px;
+            font-size: 0.9em;
+            color: white;
+            font-weight: bold;
+            margin: 5px;
             text-align: center;
+            .learn-bible-item-number {
+                width: 100%;
+                height: 100%;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
         }
         ion-row {
             border-bottom: 1px solid #c2c2c2;

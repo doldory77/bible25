@@ -1,20 +1,34 @@
 <ion-header>
 
-  <ion-navbar>
-    <!-- <ion-buttons start class="left-ion-buttons">
-      <button ion-button clear icon-only menuToggle>
-        <ion-icon name="menu"></ion-icon>
-      </button>
-    </ion-buttons> -->
+  <!-- <ion-navbar>
     <ion-title class="center-ion-title">성경목록</ion-title>
     <ion-buttons end>
       <button ion-button clear icon-only navPop>
         <ion-icon name="close"></ion-icon>
       </button> 
     </ion-buttons>
-  </ion-navbar>
+  </ion-navbar> -->
+  <ion-toolbar>
+    <div class="tool-bar-title">
+      <img class="tool-bar-prev-btn" navPop src="assets/imgs/btn_prev.png">
+      <span class="menu-item-inner-title">성경</span>
+    </div>
+  </ion-toolbar>
 
-  <ion-grid>
+  <div class="my-tab-menu">
+    <div class="menu-item" (click)="showList(0)">
+      <div class="menu-item-inner" [ngClass]="{borderHilight:bibleType == 0}" style="border-right: 1px solid #e0e0e0">
+          <div class="menu-item-inner-title" [ngClass]="{selectedText:bibleType == 0}">구약</div>
+      </div>
+    </div>
+    <div class="menu-item" (click)="showList(1)">
+      <div class="menu-item-inner" [ngClass]="{borderHilight:bibleType == 1}">
+          <div class="menu-item-inner-title" [ngClass]="{selectedText:bibleType == 1}">신약</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- <ion-grid>
     <ion-row>
       <ion-col>
         <button ion-button small block [outline]="bibleType == 0 ? false : true" (click)="showList(0)">
@@ -35,39 +49,66 @@
         <ion-icon name="{{viewModeIconName}}" (click)="changeViewMode()" style="font-size: 2em; padding-right: 0.2em;"></ion-icon>
       </ion-col>
     </ion-row>
-  </ion-grid>
+  </ion-grid> -->
 
 </ion-header>
 
 
 <ion-content>
+  <!-- <ion-grid>
+      <ion-row>
+        <ion-col col-10><span style="line-height:2em;"> *{{bibleHistoryName}}성경 소개</span></ion-col> 
+        <ion-col col-2 text-right>
+          <ion-icon name="{{viewModeIconName}}" (click)="changeViewMode()" style="font-size: 2em; padding-right: 0.2em;"></ion-icon>
+        </ion-col>
+      </ion-row>
+  </ion-grid> -->
+  <div class="view-mode-box">
+    <div class="view-mode-box-header">*{{bibleHistoryName}}성경 소개</div>
+    <div (click)="changeViewMode()">
+      <img [src]="viewModeIconName" width="40">
+    </div>
+  </div>
 
-  <ion-grid [hidden]="viewMode == 'type2'">
+  <ion-grid  class="content-list" [hidden]="viewMode == 'type2'">
     <ion-row>
-      <ion-col col-9>
+      <ion-col col-8>
         <ion-list>
-          <ion-item *ngFor="let item of bibleList; index as i" (click)="showJangList(item.book, item.name)">{{item.name}}</ion-item>
+          <!-- <ion-item *ngFor="let item of bibleList; index as i" (click)="showJangList(item.book, item.name)">{{item.name}}</ion-item> -->
+          <div class="content-list-item" *ngFor="let item of bibleList; index as i" (click)="showJangList(item.book, item.name, index)">
+            <div style="position: relative;">
+              <span style="position: absolute; top:25%" class="box-ico2"></span>
+              <span class="content-list-item-title">{{item.name}}</span>
+            </div>
+            <div class="content-list-item-ico">
+              <img src="assets/imgs/img_arrow_r.png">
+              <!-- [ngClass]="{spinimageUp:todayMenuIsOpen == true, spinimageDown:todayMenuIsOpen == false}" -->
+              <!-- [ngClass]="{selectedJang:item.selected}" -->
+            </div>
+          </div>
         </ion-list>
       </ion-col>
-      <ion-col col-3>
+      <ion-col col-4>
           <div class="bible-jang-list">
               <ul>
-                <li *ngFor="let number of bibleCurrentRange" (click)="selectJang(number)">{{number}}장</li>
+                <li *ngFor="let number of bibleCurrentRange" (click)="selectJang(number)">{{selectedBookName}} {{number}}장</li>
               </ul>  
             </div>
       </ion-col>
     </ion-row>
   </ion-grid>
 
-  <ion-list [hidden]="viewMode == 'type1'">
-    <ion-item text-wrap *ngFor="let item of bibleList">
+  <ion-list class="content-list" [hidden]="viewMode == 'type1'">
+    <div text-wrap *ngFor="let item of bibleList">
       <div class="bible-item">
         <div>{{item.name}}</div>
         <ul>
-            <li *ngFor="let number of bibleRangeMapByAllBook.get(item.book)" (click)="selectBookAndJang(item.book, number)">{{number}}</li>
+            <li *ngFor="let number of bibleRangeMapByAllBook.get(item.book)" (click)="selectBookAndJang(item.book, number)">
+              <div class="bible-item-number">{{number}}</div>
+            </li>
         </ul>  
       </div>
-    </ion-item>
+    </div>
   </ion-list>
   
 </ion-content>

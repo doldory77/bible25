@@ -1,15 +1,18 @@
 <ion-header>
-
-  <ion-navbar>
-    <ion-title>config</ion-title>
-  </ion-navbar>
+  
+  <ion-toolbar>
+    <div class="tool-bar-title">
+      <img class="tool-bar-prev-btn" navPop src="assets/imgs/btn_prev.png">
+      <span class="menu-item-inner-title">환경설정</span>
+    </div>
+  </ion-toolbar>
 
 </ion-header>
 
 
 <ion-content>
   <div class="item" [style.fontSize]="fontSize + 'em'" [style.backgroundColor]="backgroundColor" [style.color]="fontColor">
-    <div class="title">시편 23장 1절 ~ 6절</div>
+    <div [style.fontSize]="'1.2em'">시편 23장 1절 ~ 6절</div>
     <p>
       여호와는 나의 목자시니 내게 부족함이 없으리로다. 그가 나를 푸른 풀밭에 누이시며 쉴 만한 물 가로 인도하시는도다.
       내 영혼을 소생시키시고 자기 이름을 위하여 의의 길로 인도하시는도다. 내가 사망의 음침한 골짜기로 다닐지라도 해를 
@@ -18,41 +21,39 @@
       따르리니 내가 여호와의 집에 영원히 살리로다.
     </p>
   </div>
-  <div class="config-item">
-    <div class="title">글씨쓰기</div>
-    <div class="config-sub-item">
-      <span>{{displayFont}}</span>
-      <button ion-button small outline (click)="increaseFont()">
-        <ion-icon name="add"></ion-icon>
-      </button>
-      <button ion-button small outline (click)="decreaseFont()">
-          <ion-icon name="remove"></ion-icon>
-      </button>
-    </div>
-  </div>
-  <div class="config-item">
-    <div class="title">배경색</div>
-    <div class="config-sub-item">
-      <div class="color-box" (click)="changeColor('#FFFFFF', '#000000')">
-        <div class="color-inner-box1"></div>
-      </div>
-      <div class="color-box" (click)="changeColor('#A9BCF5', '#000000')">
-        <div class="color-inner-box2"></div>
-      </div>
-      <div class="color-box" (click)="changeColor('#000000', '#FFFFFF')">
-        <div class="color-inner-box3"></div>
+  <div class="config-controll-box">
+    <div class="config-item">
+      <div class="title">글씨쓰기</div>
+      <div class="config-sub-item">
+        <button class="cust-btn" (click)="increaseFont()">
+          <img src="assets/imgs/btn_plus.png" width="20">
+        </button>
+        <span>{{displayFont}}</span>
+        <button class="cust-btn" (click)="decreaseFont()">
+            <img src="assets/imgs/btn_minus.png" width="20">
+          </button>
       </div>
     </div>
-  </div>
-  <div class="config-item">
-    <div class="title">푸시알림</div>
-    <div>
-      <ion-toggle [(ngModel)]="pushYn"></ion-toggle>
+    <div class="config-item">
+      <div class="title">배경색</div>
+      <div class="config-sub-item">
+        
+        <button class="color color1" (click)="changeColor('#fff', '#000')">흰색</button>
+        <button class="color color2" (click)="changeColor('#aaaaaa', '#000')">밝은회색</button>
+        <button class="color color3" (click)="changeColor('#666666', '#000')">회색</button>
+        <button class="color color4" (click)="changeColor('#000', '#fff')">검정</button>
+      </div>
     </div>
-  </div>
-  <div class="config-item">
-    <div class="title">버전정보</div>
-    <div>Ver_1.452</div>
+    <div class="config-item">
+      <div class="title">푸시알림</div>
+      <div>
+        <ion-toggle [(ngModel)]="pushYn"></ion-toggle>
+      </div>
+    </div>
+    <div class="config-item">
+      <div class="title">버전정보</div>
+      <div style="color:#aaa">Ver_1.452</div>
+    </div>
   </div>
 
 </ion-content>

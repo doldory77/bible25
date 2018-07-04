@@ -90,7 +90,7 @@ export class DbProvider {
 
   }
 
-  getBibleListByType(typeNo:number, ref:{book:number, name:string, total_jang:number, bibletype:number}[]): Promise<any> {
+  getBibleListByType(typeNo:number, ref:{book:number, name:string, total_jang:number, bibletype:number, selected:boolean}[]): Promise<any> {
 
     return this.openDb()
       .then((dbo: SQLiteObject) => {
@@ -106,6 +106,7 @@ export class DbProvider {
               name: item.name,
               total_jang: item.total_jang,
               bibletype: item.bibletype,
+              selected: false
             });
           }
           return Promise.resolve({result:'ok', msg:'success'});

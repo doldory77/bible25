@@ -17,13 +17,14 @@ import { DbProvider } from '../../providers/db/db'
 export class BibleListPage {
 
   bibleType: number = 0;
-  bibleHistoryName: string;
+  bibleHistoryName: string = '구약';
   viewMode: string = 'type1';
-  viewModeIconName: string = 'menu';
+  viewModeIconName: string = 'assets/imgs/btn_sort01.png';
 
-  bibleList: {book:number, name:string, total_jang:number, bibletype:number}[] = [];
+  bibleList: {book:number, name:string, total_jang:number, bibletype:number, selected:boolean}[] = [];
   bibleCurrentRange: number[] = [];
   bibleRangeMapByAllBook: Map<number, number[]> = new Map();
+  selectedBookName: string = '창세기';
 
 
 
@@ -42,7 +43,7 @@ export class BibleListPage {
 
       this.db.getRangeMapByAllBook(this.bibleRangeMapByAllBook)
         .then(data => {
-          this.showJangList(1, '창세기');
+          this.showJangList(1, '창세기', 0);
         })
         .catch(err => console.error(err));
   }
@@ -50,17 +51,22 @@ export class BibleListPage {
   changeViewMode() {
     if (this.viewMode === 'type2') {
       this.viewMode = 'type1';
-      this.viewModeIconName = 'list-box';
+      this.viewModeIconName = 'assets/imgs/btn_sort01.png';
     } else {
       this.viewMode = 'type2';
-      this.viewModeIconName = 'apps';
+      this.viewModeIconName = 'assets/imgs/btn_sort02.png';
     }
   }
 
-  showJangList(book: number, name: string) {
+  showJangList(book: number, name: string, idx: number) {
     this.bibleCurrentRange = this.bibleRangeMapByAllBook.get(book);
+    this.selectedBookName = name;
     this.db.appInfo.book_name = name;
     this.db.appInfo.view_bible_book = book;
+    this.bibleList.forEach(value => {
+      value.selected = false;
+    });
+    this.bibleList[idx].selected = true;
   }
 
   selectJang(jang: number) {
