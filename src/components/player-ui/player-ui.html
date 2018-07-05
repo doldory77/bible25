@@ -1,4 +1,4 @@
-<ion-grid [hidden]="playerNonVisible">
+<!-- <ion-grid [hidden]="playerNonVisible">
   <ion-row>
     <ion-col>
       <div class="media-progress-outer">
@@ -32,4 +32,31 @@
       </button>
     </ion-col>
   </ion-row>
-</ion-grid>
+</ion-grid> -->
+
+<div class="player-box">
+  <div>
+      <div class="media-progress-outer">
+        <div class="media-progress-inner" [style.width]="currentTrack"></div>
+      </div>
+      <div class="media-time">
+        <div style="color: #33afe9;">{{mediaTraker}}</div>&nbsp;/&nbsp;<div style="color: #666;">{{mediaRange}}</div>  
+      </div>
+  </div>
+  <div class="player-buttons">
+    <div class="buttons-group">
+      <div (click)="backward()">
+        <img src="assets/imgs/ico_player_prev.png" width="25">
+      </div>  
+      <div (click)="command()" style="margin-left: 15px;">
+        <img [src]="getPlayStateName()" width="25">
+      </div>  
+      <div (click)="forward()" style="margin-left: 15px;">
+        <img src="assets/imgs/ico_player_next.png" width="25">
+      </div>  
+    </div>
+    <div (click)="repeatToggle()">
+        <img src="assets/imgs/ico_player_re.png" width="22">
+    </div>
+  </div>
+</div>

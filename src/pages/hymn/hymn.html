@@ -1,14 +1,11 @@
 <ion-header>
 
-  <ion-navbar>
+  <!-- <ion-navbar>
 
     <ion-buttons start class="left-ion-buttons">
         <button ion-button icon-only (click)="showIndex()">
           <ion-icon name="book"></ion-icon>
         </button>
-      <!-- <button ion-button icon-only menuToggle>
-        <ion-icon name="menu"></ion-icon>
-      </button> -->
     </ion-buttons>
 
     <ion-title class="center-ion-title">찬송</ion-title>
@@ -20,7 +17,30 @@
         <ion-icon name="close"></ion-icon>
       </button>
     </ion-buttons>
-  </ion-navbar>
+  </ion-navbar> -->
+
+  <!-- <ion-toolbar>
+    <div class="tool-bar-title">
+      <img class="tool-bar-prev-btn" navPop src="assets/imgs/btn_prev.png">
+      <span class="menu-item-inner-title">찬송</span>
+      
+    </div>
+  </ion-toolbar> -->
+  <div class="gb-header">
+    <div class="gb-header-pop" navPop style="margin-right: 40px;">
+      <img src="assets/imgs/btn_prev.png">
+    </div>
+    <div class="gb-header-title">찬송</div>
+    <div class="gb-header-ctrl">
+      <div (click)="showIndex()" style="width: 25px;">
+        <!-- <img src="assets/imgs/ico_search_w.png"> -->
+        <ion-icon name="book" color="light" style="font-size: 25px;"></ion-icon>
+      </div>
+      <div (click)="toggleSearch()" style="width: 25px; margin-left: 10px;">
+        <img src="assets/imgs/ico_search_w.png">
+      </div>
+    </div>
+  </div>
 
   <div class="search-bar" [hidden]="isNoneVisibleSearch">
     <div (click)="showSearchType($event)">
@@ -38,7 +58,7 @@
 
   <ion-grid class="hymn-top-container">
     <ion-row>
-      <ion-col *ngFor="let menu of topMenuData; index as idx" [ngClass]="{'top-menu-highlight':menu.selected}">
+      <ion-col class="hymn-header-menu" *ngFor="let menu of topMenuData; index as idx" [ngClass]="{'top-menu-highlight':menu.selected}">
         <div class="hymn-top-list-button" (click)="showList(menu.menuIdx)">{{menu.title}}</div>
       </ion-col>
     </ion-row>
@@ -47,12 +67,24 @@
 </ion-header>
 
 
-<ion-content padding>
+<ion-content>
   <ion-list>
     <ion-item class="hymn-item" *ngFor="let item of hymnData" (click)="showDetail(item.p_num)">
-      <div>{{item.p_num}}</div>
-      <div>{{item.subject}}</div>
-      <div>통일찬송가 {{item.p_num_old}}장</div>
+      <div class="hymn-item-row">
+        <div class="hymn-item-row-item1">
+          <div>
+            <div class="item-point"></div>
+          </div>
+          <div>
+            <div class="item-child1">{{item.p_num}}</div>
+            <div class="item-child2">{{item.subject}}</div>
+            <div class="item-child3">통일찬송가 {{item.p_num_old}}장</div>
+          </div>
+        </div>
+        <div>
+          <img src="assets/imgs/img_arrow_r.png" width="9">
+        </div>
+      </div>
     </ion-item>
     
   </ion-list>

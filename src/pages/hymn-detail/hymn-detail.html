@@ -14,14 +14,23 @@
     </ion-buttons>
   </ion-toolbar> -->
 
-  <ion-navbar>
+  <!-- <ion-navbar>
     <ion-title>찬송</ion-title>
-  </ion-navbar>
+  </ion-navbar> -->
+  <ion-toolbar>
+    <div class="tool-bar-title">
+      <img class="tool-bar-prev-btn" navPop src="assets/imgs/btn_prev.png">
+      <span class="menu-item-inner-title">찬송</span>
+    </div>
+  </ion-toolbar>
 
   <div class="hymn-player-header">
-      <div><span>{{p_num}}. </span>{{subject}}</div>
-      <div class="hymn-book-mark" (click)="saveBookMark()">
+      <div style="color: #666;"><span>{{p_num}}. </span>{{subject}}</div>
+      <!-- <div class="hymn-book-mark" (click)="saveBookMark()">
         <ion-icon [name]="isBookMarked ? 'star' : 'star-outline'"></ion-icon>
+      </div> -->
+      <div (click)="saveBookMark()">
+          <img src="assets/imgs/btn_favorite.png" width="26.5">
       </div>
   </div>
   <player-ui [playerNonVisible]="false"
@@ -40,7 +49,7 @@
     (pinchend)="onPinchEnd($event)"
     (pinchmove)="onPinchMove($event)">
 
-    <ion-grid>
+    <!-- <ion-grid>
       <ion-row>
         <ion-col>
           <button ion-button small block [outline]="viewType == 0 ? false : true" (click)="viewType = 0">
@@ -55,7 +64,16 @@
           </button>
         </ion-col>
       </ion-row>
-    </ion-grid>
+    </ion-grid> -->
+    <div class="hymn-detail-buttons">
+      <div class="hymn-detail-buttons-group">
+        <div class="hymn-btn" (click)="viewType = 0">가사</div>
+        <div class="hymn-btn" (click)="viewType = 1" style="margin-left: 10px;">악보</div>
+      </div>
+      <div class="hymn-btn" navPop style="background-color: #aaaaaa;">
+        목록보기
+      </div>
+    </div>
     
     <div [hidden]="viewType == 0 ? false : true">
       <div [style.fontSize]="fontSize" class="viewType0" [innerHtml]="song"></div>

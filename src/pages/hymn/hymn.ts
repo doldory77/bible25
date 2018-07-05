@@ -69,7 +69,7 @@ export class HymnPage {
     this.isNoneVisibleSearch = !this.isNoneVisibleSearch;
     // console.log(this.isNoneVisibleSearch);
     this.screenUpdate();
-    this.nativeAudio.play('click2', () => {});
+    this.nativeAudio.play('click', () => {});
   }
 
   showDetail(pnum: string) {
@@ -175,7 +175,7 @@ export class HymnPage {
         }
       ]
     }).present();
-    this.nativeAudio.play('click2', () => {});
+    this.nativeAudio.play('click', () => {});
   }
 
   showSearchType(myEvent) {

@@ -15,8 +15,8 @@ export class MyPage {
   constructor(public navCtrl: NavController, 
     public navParams: NavParams,
     private db: DbProvider,
-    private util: UtilProvider,
-    private rest: RestProvider) {
+    // private rest: RestProvider,
+    private util: UtilProvider) {
       this.tabMenu = new Map();
       this.tabMenu
         .set(0, {title:'즐겨찾기', selected:true})

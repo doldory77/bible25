@@ -76,7 +76,7 @@ export class HomePage {
   */
   ionViewWillEnter() {
     this.topBackIconStateSubscription = Observable.interval(1000).subscribe(_ => {
-      // this.topBackIconIsNotActive = this.isBibleMainUrl();
+      this.topBackIconIsNotActive = this.isBibleMainUrl();
     });
     this.globalVars.getValueWithStorage('test')
     // this.iframe.location.reload(true);
@@ -103,7 +103,7 @@ export class HomePage {
   }
 
   onBack() {
-    this.nativeAudio.play('click2', () => {});
+    this.nativeAudio.play('click', () => {});
     this.iframe.history.back();
   }
 
@@ -182,17 +182,17 @@ export class HomePage {
   }
 
   configPage() {
-    this.nativeAudio.play('click2', () => {});
+    this.nativeAudio.play('click', () => {});
     this.navCtrl.push('ConfigPage');
   }
 
   myPage() {
-    this.nativeAudio.play('click2', () => {});
+    this.nativeAudio.play('click', () => {});
     this.navCtrl.push('MyPage');
   }
 
   toggleSearchBar() {
-    this.nativeAudio.play('click2', () => {});
+    this.nativeAudio.play('click', () => {});
     this.topSearchBtnFlag = !this.topSearchBtnFlag;
     this.screenUpdate();
   }

@@ -1,4 +1,7 @@
 page-gyodok {
+    ion-content {
+        background: url('../assets/imgs/bg_bibleCon.png') no-repeat center bottom;
+    }
     .gyodok-tab-menu {
         display: flex;
         justify-content: space-between;
@@ -18,47 +21,71 @@ page-gyodok {
     }
     .gydok-box {
         display: flex;
-        justify-content: flex-start;
+        justify-content: center;
         align-items: center;
         flex-wrap: wrap;
         padding: 0.5em;
+        margin-top: 10px;
         .gydok-item {
-            padding: 0.3em;
-            margin: 0.2em;  
-            border: 1px solid #c2c2c2;
-            padding: 0.3em;
-            width: 2.5em;
-            height: 2.5em;
+            margin: 0.3em;  
+            border: 1px solid #aaa;
+            // padding: 0.3em;
+            width: 34px;
+            height: 34px;
             line-height: 2em;
             text-align: center;
+            border-radius: 5px;
         }
     }
     .gyodok-content-box {
         padding: 1em;
+        // background: url('../assets/imgs/bg_bibleCon.png') no-repeat center bottom;
         .gyodok-content {
             span {
                 display: block;
             }
             span:nth-child(odd) {
                 font-weight: bold;
-                color: orangered;
+                color: #2995c7;
             }
             span:nth-child(even) {
-                color: blue;
+                color: #333;
                 margin-bottom: 0.8em;
             }
         }
+        
+    }
+    .gyodok-content-box-tit {
+        height: 25px;
+        text-align: center;
+        margin-bottom: 20px;
+    }
+    .playerBox {
+        padding: 14px;
+        // background: url('../assets/imgs/bg_bibleCon.png') no-repeat center bottom;
+    }
+    .btn {
+        height: 35px;
+        min-width: 70px;
+        background-color: #33afe9;
+        color: #fff;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 16px;
     }
     .buttom-button-1 {
         display: flex;
         justify-content: space-between;
         align-items: center;
+        margin-top: 30px;
     }
     .buttom-button-2 {
         display: flex;
         justify-content: flex-end;
         align-items: center;
         padding: 0.3em;
+        margin-right: 10px;
     }
     .player {
         padding: 1em;

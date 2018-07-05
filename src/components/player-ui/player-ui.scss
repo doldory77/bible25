@@ -1,24 +1,45 @@
 player-ui {
     .media-progress-outer {
         width: 100%;
-        padding: 0.5em;
-        background-color: #f4f4f4;
-        border: 1px solid #dcdcdc;
-        color: #fff;
-        border-radius: 0.1em;
+        // padding: 0.5em;
+        background-color: #e5e5e5;
+        // border: 1px solid #dcdcdc;
+        // color: #fff;
+        border-radius: 6px;
+        height: 10px;
+        overflow: hidden;
     }
     .media-progress-inner {
-        min-width: 5%;
-        white-space: nowrap;
-        overflow: hidden;
-        padding:0.1em;
-        border-radius: 0.1em;
-        background-color: map-get($colors, primary);
+        // min-width: 5%;
+        // white-space: nowrap;
+        // overflow: hidden;
+        // padding:0.1em;
+        // border-radius: 0.1em;
+        // background-color: map-get($colors, primary);
+        background-color: #33afe9;
+        height: 10px;
     }
     .media-time {
         display: flex;
-        justify-content: space-between;
-        padding-top: 0.3em;
-        font-size: 0.6em;
+        justify-content: center;
+        padding-top: 10px;
+        font-size: 0.7em;
+    }
+
+    .player-box {
+        padding: 12px;
+
+        .player-buttons {
+            padding-top: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            .buttons-group {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+            }
+        }
     }
 }

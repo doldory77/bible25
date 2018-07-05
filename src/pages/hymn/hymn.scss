@@ -8,25 +8,61 @@ page-hymn {
     }
     .hymn-top-list-button {
         text-align: center;
-        height: 2em;
-        line-height: 2em;
+        height: 50px;
+        line-height: 50px;
+    }
+    .hymn-header-menu {
+        border-right: 1px solid #e6e6e6;
     }
     .hymn-item {
         padding: 0;
-        font-size: 1.2em;
-        div:nth-child(1) {
-            display: inline-block;
+        font-size: 1.1em;
+        color: #666;
+        height: 50px;
+        margin: 10px 0;
+        .hymn-item-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            .hymn-item-row-item1 {
+                display: flex;
+                align-items: center;
+            }
+            .item-point {
+                width: 8px;
+                height: 8px;
+                background-color: #33afe9;
+                border-radius: 2px;
+                margin-right: 10px;
+                margin-left: 15px;    
+            }
+            .item-child1 {
+                display: inline-block;
+            }
+            .item-child2 {
+                display: inline-block;
+            }
+            .item-child3 {
+                font-size: 0.7em;
+                padding-top: 0.3em;
+            }
         }
-        div:nth-child(2) {
-            display: inline-block;
-        }
-        div:nth-child(3) {
-            font-size: 0.6em;
-            padding-top: 0.3em;
-        }
+        // div:nth-child(1) {
+        //     display: inline-block;
+        // }
+        // div:nth-child(2) {
+        //     display: inline-block;
+        // }
+        // div:nth-child(3) {
+        //     font-size: 0.7em;
+        //     padding-top: 0.3em;
+        // }
     }
     .top-menu-highlight {
-        background-color: orange;
+        // background-color: orange;
+        color: #33afe9;
+        border-bottom: 2px solid #33afe9;
     }
     .search-bar {
         display: flex;

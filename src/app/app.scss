@@ -77,22 +77,22 @@
     line-height: 4em;
     background: #c2c2c2;
 }
-.media-progress-outer {
-    width: 100%;
-    padding: 0.5em;
-    background-color: #f4f4f4;
-    border: 1px solid #dcdcdc;
-    color: #fff;
-    border-radius: 0.1em;
-}
-.media-progress-inner {
-    min-width: 5%;
-    white-space: nowrap;
-    overflow: hidden;
-    padding:0.1em;
-    border-radius: 0.1em;
-    background-color: map-get($colors, primary);
-}
+// .media-progress-outer {
+//     width: 100%;
+//     padding: 0.5em;
+//     background-color: #f4f4f4;
+//     border: 1px solid #dcdcdc;
+//     color: #fff;
+//     border-radius: 0.1em;
+// }
+// .media-progress-inner {
+//     min-width: 5%;
+//     white-space: nowrap;
+//     overflow: hidden;
+//     padding:0.1em;
+//     border-radius: 0.1em;
+//     background-color: map-get($colors, primary);
+// }
 .media-time {
     display: flex;
     justify-content: space-between;
@@ -247,4 +247,26 @@ ion-content .scroll-content {
     button {
         background-color: #ededed;
     }
+}
+.gb-header {
+    background-color: #33afe9;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 15px;
+    .gb-header-pop {
+        width: 12px;
+    }
+    .gb-header-title {
+        color: #fff;
+        font-size: 1.3em;
+        font-weight: bold;
+    }
+    .gb-header-ctrl {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
 }

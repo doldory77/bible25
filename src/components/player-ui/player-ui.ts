@@ -147,9 +147,11 @@ class PlayerUiComponent implements OnInit, OnDestroy {
 
   getPlayStateName() {
     if (this.playState == PlayState.STOP || this.playState == PlayState.PAUSE) {
-      return 'play'
+      // return 'play'
+      return 'assets/imgs/ico_player_stop.png';
     } else {
-      return 'pause'
+      // return 'pause'
+      return 'assets/imgs/ico_player_stop.png';
     }
   }
 

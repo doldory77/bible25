@@ -7,11 +7,34 @@ page-hymn-detail {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        padding: 0.3em 0.6em 0 0.6em;
+        padding: 15px 15px 2px 15px;
     }
     .size-expand-box {
         display: flex;
         justify-content: center;
         padding:0.6em;
+    }
+    .hymn-detail-buttons {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 30px 15px 20px 10px;
+        .hymn-detail-buttons-group {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .hymn-btn {
+            background-color: #33afe9;
+            border: none;
+            height: 35px;
+            min-width: 65px;
+            border-radius: 16px;
+            font-size: 1.1em;
+            color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
     }
 }
