@@ -34,7 +34,7 @@
   </ion-row>
 </ion-grid> -->
 
-<div class="player-box">
+<div class="player-box" [hidden]="playerNonVisible">
   <div>
       <div class="media-progress-outer">
         <div class="media-progress-inner" [style.width]="currentTrack"></div>
@@ -56,7 +56,7 @@
       </div>  
     </div>
     <div (click)="repeatToggle()">
-        <img src="assets/imgs/ico_player_re.png" width="22">
+        <img [src]="isMediaRoop ? 'assets/imgs/ico_player_re_on.png' : 'assets/imgs/ico_player_re.png'" width="22">
     </div>
   </div>
 </div>

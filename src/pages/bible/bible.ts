@@ -36,6 +36,7 @@ export class BiblePage extends Pinchable implements OnScrollDetect {
   selectedLanguage: string = '개혁개정';
   isBookMarked: boolean = false;
   isBookMarkExists: boolean = false;
+  currTitle: string = '성경';
 
   constructor(public navCtrl: NavController, 
     public navParams: NavParams,
@@ -161,7 +162,7 @@ export class BiblePage extends Pinchable implements OnScrollDetect {
     this.menuData.forEach(menu => menu.selected = false);
     const menu = this.menuData[menuNum];
     menu.selected = true;
-    
+    this.currTitle = menu.name;
     this.screenUpdate();
 
     if (menuNum > 0) {

@@ -25,7 +25,7 @@ export class BibleListPage {
   bibleCurrentRange: number[] = [];
   bibleRangeMapByAllBook: Map<number, number[]> = new Map();
   selectedBookName: string = '창세기';
-
+  currSelectedIdx: number = 0;
 
 
   constructor(public navCtrl: NavController, 
@@ -67,6 +67,8 @@ export class BibleListPage {
       value.selected = false;
     });
     this.bibleList[idx].selected = true;
+    this.currSelectedIdx = idx;
+
   }
 
   selectJang(jang: number) {

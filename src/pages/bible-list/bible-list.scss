@@ -91,7 +91,7 @@ page-bible-list {
     justify-content: space-between;
     align-items: center;
     border-bottom: 1px solid #e6e6e6;
-    border-right: 1px solid #e6e6e6;
+    // border-right: 1px solid #e6e6e6;
     padding: 10px;
     .content-list-item-title {
         font-size: 1.2em;
@@ -99,6 +99,7 @@ page-bible-list {
         padding-left: 20px;
     }
     .content-list-item-ico {
+        transform-origin: 0% 50%;
         width: 9px;
     }
 }

@@ -72,15 +72,15 @@
 
   <ion-grid  class="content-list" [hidden]="viewMode == 'type2'">
     <ion-row>
-      <ion-col col-8>
+      <ion-col col-7>
         <ion-list>
           <!-- <ion-item *ngFor="let item of bibleList; index as i" (click)="showJangList(item.book, item.name)">{{item.name}}</ion-item> -->
-          <div class="content-list-item" *ngFor="let item of bibleList; index as i" (click)="showJangList(item.book, item.name, index)">
+          <div class="content-list-item" *ngFor="let item of bibleList; index as i" (click)="showJangList(item.book, item.name, i)" [style.borderRight]="i == currSelectedIdx ? 'none':'1px solid #e6e6e6'">
             <div style="position: relative;">
               <span style="position: absolute; top:25%" class="box-ico2"></span>
               <span class="content-list-item-title">{{item.name}}</span>
             </div>
-            <div class="content-list-item-ico">
+            <div class="content-list-item-ico" [style.transform]="i == currSelectedIdx ? 'rotate(90deg)' : 'rotate(0deg)'">
               <img src="assets/imgs/img_arrow_r.png">
               <!-- [ngClass]="{spinimageUp:todayMenuIsOpen == true, spinimageDown:todayMenuIsOpen == false}" -->
               <!-- [ngClass]="{selectedJang:item.selected}" -->
@@ -88,7 +88,7 @@
           </div>
         </ion-list>
       </ion-col>
-      <ion-col col-4>
+      <ion-col col-5>
           <div class="bible-jang-list">
               <ul>
                 <li *ngFor="let number of bibleCurrentRange" (click)="selectJang(number)">{{selectedBookName}} {{number}}장</li>

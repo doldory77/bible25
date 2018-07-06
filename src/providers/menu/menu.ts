@@ -97,21 +97,24 @@ export class MenuProvider {
           page: 'HomePage',
           selected: false,
           menuLevel: 'top_menu',
-          url: 'http://ch2ho.bible25.com/m/deluxe_bible_renew/list_lexicom1.php?bo_id=bibled'
+        //   url: 'http://ch2ho.bible25.com/m/deluxe_bible_renew/list_lexicom1.php?bo_id=bibled'
+          url: 'http://ch2ho.bible25.com/m/deluxe_bible_renew/list_lexicom1_renew.php?bo_id=bibled'
       })
       .set('new_guide', {
           name: '새신자가이드',
           page: 'HomePage',
           selected: false,
           menuLevel: 'top_menu',
-          url: 'http://ch2ho.bible25.com/m/deluxe_bible/list_depth1.php?bo_id=newbeliever'
+        //   url: 'http://ch2ho.bible25.com/m/deluxe_bible/list_depth1.php?bo_id=newbeliever'
+          url: 'http://ch2ho.bible25.com/m/deluxe_bible_renew/list_depth1.php?bo_id=newbeliever'
       })
       .set('photo_bible', {
           name: '포토성경사전',
           page: 'HomePage',
           selected: false,
           menuLevel: 'top_menu',
-          url: 'http://ch2ho.bible25.com/m/bbs/board.php?bo_table=photo_bible_dic&array_num=14'
+        //   url: 'http://ch2ho.bible25.com/m/bbs/board.php?bo_table=photo_bible_dic&array_num=14'
+          url: 'http://ch2ho.bible25.com/m/bbs_renew/board.php?bo_table=photo_bible_dic'
       })
       .set('bible', {
           name: '성경',

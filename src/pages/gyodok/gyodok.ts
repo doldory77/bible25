@@ -27,6 +27,7 @@ export class GyodokPage extends Pinchable {
   
   tabMenu: Map<number, {title:string, selected:boolean}>;
   currViewMode: number = 0;
+  currTitle: string = '교독문';
   gyodokMode: number = 0;
   playerMode: number = 0;
   creedMode: number = 0;
@@ -52,6 +53,7 @@ export class GyodokPage extends Pinchable {
       });
     let menu = this.tabMenu.get(i);
     menu.selected = true;
+    this.currTitle = menu.title;
 
     this.currViewMode = i;
     if (i == 0) this.gyodokMode = 0;

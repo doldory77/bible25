@@ -47,7 +47,7 @@ class PlayerUiComponent implements OnInit, OnDestroy {
   playState: PlayState = PlayState.STOP;
   mediaTraker: string = '0:0';
   mediaRange: string = '--:--';
-  currentTrack: string = '1%';
+  currentTrack: string = '0%';
   
   trackerSubscription: Subscription;
   isMediaRoop: boolean = false;
@@ -56,7 +56,7 @@ class PlayerUiComponent implements OnInit, OnDestroy {
   onViewInit() {
     this.mediaTraker = '0:0';
     this.mediaRange = '--:--';
-    this.currentTrack = '1%';
+    this.currentTrack = '0%';
   }
 
   ngOnInit() {
@@ -148,7 +148,7 @@ class PlayerUiComponent implements OnInit, OnDestroy {
   getPlayStateName() {
     if (this.playState == PlayState.STOP || this.playState == PlayState.PAUSE) {
       // return 'play'
-      return 'assets/imgs/ico_player_stop.png';
+      return 'assets/imgs/ico_player_play.png';
     } else {
       // return 'pause'
       return 'assets/imgs/ico_player_stop.png';
@@ -203,7 +203,7 @@ class PlayerUiComponent implements OnInit, OnDestroy {
   stop() {
     this.mediaTraker = '0:0';
     this.mediaRange = '--:--';
-    this.currentTrack = '1%';
+    this.currentTrack = '0%';
     this.player.stop();
     this.playState = PlayState.STOP;
   }

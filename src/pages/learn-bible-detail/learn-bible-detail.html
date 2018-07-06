@@ -1,8 +1,15 @@
 <ion-header>
 
-  <ion-navbar>
+  <!-- <ion-navbar>
     <ion-title>{{bibleTitle}}</ion-title>
-  </ion-navbar>
+  </ion-navbar> -->
+  <ion-toolbar>
+    <div class="tool-bar-title">
+      <img class="tool-bar-prev-btn" navPop src="assets/imgs/btn_prev.png">
+      <span class="menu-item-inner-title">{{bibleTitle}}</span>
+    </div>
+  </ion-toolbar>
+
   <player-ui [playerNonVisible]="learnMode == 0 ? true : false"
     [playKind]="0"
     [book]="bibleBook"
@@ -21,7 +28,7 @@
 
       <ion-grid>
         <ion-row *ngFor="let item of bibleContents">
-          <ion-col col-1>{{item.jul}}</ion-col>
+          <ion-col col-1 style="text-align: right;"><span class="item-idx">{{item.jul}}.</span></ion-col>
           <ion-col col-11 [style.fontSize]="fontSize">{{item.content}}</ion-col>
         </ion-row>
       </ion-grid>

@@ -1,18 +1,19 @@
 <ion-header>
 
-  <ion-navbar>
-    <!-- <ion-buttons start class="left-ion-buttons">
-      <button ion-button clear icon-only menuToggle>
-        <ion-icon name="menu"></ion-icon>
-      </button>
-    </ion-buttons> -->
+  <!-- <ion-navbar>
     <ion-title class="center-ion-title">번역본</ion-title>
     <ion-buttons end>
       <button ion-button clear icon-only navPop>
         <ion-icon name="close"></ion-icon>
       </button> 
     </ion-buttons>
-  </ion-navbar>
+  </ion-navbar> -->
+  <ion-toolbar>
+    <div class="tool-bar-title">
+      <img class="tool-bar-prev-btn" navPop src="assets/imgs/btn_prev.png">
+      <span class="menu-item-inner-title">번역본</span>
+    </div>
+  </ion-toolbar>
 
 </ion-header>
 
@@ -27,7 +28,8 @@
         <div>{{item.kor_name}}</div>
         <div *ngIf="item.downloaded == 'Y'" class="download-complete">완료</div>
         <div *ngIf="item.downloaded == 'N'">
-          <button ion-button small (click)="downloadAndDbInsert(item.eng_name)">다운로드</button>
+          <!-- <button ion-button small (click)="downloadAndDbInsert(item.eng_name)">다운로드</button> -->
+          <div class="down-btn" (click)="downloadAndDbInsert(item.eng_name)">다운로드</div>
         </div>
       </div>
     </ion-item>
@@ -35,7 +37,7 @@
 </ion-content>
 
 <ion-footer>
-  <div class="bible-lang-footer">
-    <button ion-button small color="primary" (click)="saveShowBibleList()">저장</button>
+  <div class="button-wrap">
+    <div class="save-btn" (click)="saveShowBibleList()">저장</div>
   </div>
 </ion-footer>

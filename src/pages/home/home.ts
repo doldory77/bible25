@@ -130,7 +130,8 @@ export class HomePage {
       }
       this.loading = this.indicator.create({
         showBackdrop: false,
-        content: `<div>Loading...</div>`, 
+        // content: `<div>Loading...</div>`, 
+        cssClass: 'only-loading-icon',
         spinner: 'circles', 
         dismissOnPageChange: true,
       });
@@ -145,10 +146,12 @@ export class HomePage {
    * 종합검색 페이지로 이동
    */
   goSearchPage() {
-    let url = this.menuProvider.MenuData.get('search').url;
-    this.goUrl(url + this.searchKeyWord);
-    this.searchKeyWord = "";
-    this.toggleSearchBar();
+    if (this.searchKeyWord != "") {
+      let url = this.menuProvider.MenuData.get('search').url;
+      this.goUrl(url + this.searchKeyWord);
+      this.searchKeyWord = "";
+      this.toggleSearchBar();
+    }
   }
 
   showAlert() {

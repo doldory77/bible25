@@ -30,7 +30,7 @@
         <ion-icon [name]="isBookMarked ? 'star' : 'star-outline'"></ion-icon>
       </div> -->
       <div (click)="saveBookMark()">
-          <img src="assets/imgs/btn_favorite.png" width="26.5">
+          <img [src]="isBookMarked ? 'assets/imgs/btn_favorite_on.png' : 'assets/imgs/btn_favorite.png'" width="26.5">
       </div>
   </div>
   <player-ui [playerNonVisible]="false"
@@ -70,8 +70,8 @@
         <div class="hymn-btn" (click)="viewType = 0">가사</div>
         <div class="hymn-btn" (click)="viewType = 1" style="margin-left: 10px;">악보</div>
       </div>
-      <div class="hymn-btn" navPop style="background-color: #aaaaaa;">
-        목록보기
+      <div class="hymn-btn" navPop style="background-color: #aaaaaa; min-width: 75px;">
+        록보기
       </div>
     </div>
     

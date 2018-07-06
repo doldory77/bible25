@@ -3,7 +3,7 @@ page-bible-lang {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        
+        padding-left: 20px;
         div {
             flex-basis: 4em;
         }
@@ -18,6 +18,40 @@ page-bible-lang {
         padding: 1em 0;
         button {
             width: 8em;
+        }
+    }
+    .button-wrap {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: #fff;
+        height: 55px;
+    }
+    .save-btn {
+        height: 40px;
+        min-width: 100px;
+        color: #fff;
+        border-radius: 20px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: #33afe9;
+        font-size: 1.3em;
+    }
+    .down-btn {
+        height: 30px;
+        min-width: 70px;
+        color: #fff;
+        border-radius: 15px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: #9e9a9a;
+        font-size: 0.8em;
+    }
+    ion-list {
+        .item {
+            padding: 0;
         }
     }
 }
