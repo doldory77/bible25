@@ -18,6 +18,12 @@ const enum PlayState {
   PAUSE = 2
 }
 
+const enum PlaySpeed {
+  SPEED_1 = "",
+  SPEED_1_2 = "1_2",
+  SPEED_1_5 = "1_5"
+}
+
 @Component({
   selector: 'player-ui',
   templateUrl: 'player-ui.html'
@@ -52,6 +58,8 @@ class PlayerUiComponent implements OnInit, OnDestroy {
   trackerSubscription: Subscription;
   isMediaRoop: boolean = false;
   isAutoPlay: boolean = false;
+
+  currPlaySpeed: string = PlaySpeed.SPEED_1;
 
   onViewInit() {
     this.mediaTraker = '0:0';
@@ -170,7 +178,7 @@ class PlayerUiComponent implements OnInit, OnDestroy {
       });
       this.loadingBar.present();
 
-      this.player.checkOrDown({book:String(this.book), jang:String(this.jang)})
+      this.player.checkOrDown({book:String(this.book), jang:String(this.jang), speed:this.currPlaySpeed})
         .then(result => {
           this.dismissLoadingBar();
         })

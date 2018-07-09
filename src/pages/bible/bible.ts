@@ -62,6 +62,14 @@ export class BiblePage extends Pinchable implements OnScrollDetect {
         .then(value => {
           this.fontSize = value + "em";
         }, error => {console.error(error)});
+      this.globalVars.getValueWithStorage('fontColor')
+        .then(value => {
+          this.fontColor = value;
+        }, error => {console.error(error)});
+      this.globalVars.getValueWithStorage('backgroundColor')
+        .then(value => {
+          this.backgroundColor = value;
+        }, error => {console.error(error)});
 
   }
 
@@ -72,7 +80,7 @@ export class BiblePage extends Pinchable implements OnScrollDetect {
   
   ionViewWillEnter() {
     this.onScrollBottomDetect(this.content);
-    this.loadBible()
+    this.loadBible();
   }
 
   ionViewWillLeave() {

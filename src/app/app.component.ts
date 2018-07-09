@@ -3,7 +3,7 @@ import { Nav, Platform } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { LoadingController, AlertController } from 'ionic-angular';
-
+import { ScreenOrientation } from '@ionic-native/screen-orientation';
 import { MenuType } from '../model/model-type';
 import { MenuProvider } from '../providers/menu/menu';
 import { HomePage } from '../pages/home/home';
@@ -17,7 +17,10 @@ import { Observable, Subscription } from 'rxjs/Rx'
 import { InAppBrowser, InAppBrowserOptions, InAppBrowserObject } from '@ionic-native/in-app-browser';
 
 @Component({
-  templateUrl: 'app.html'
+  templateUrl: 'app.html',
+  providers: [
+    ScreenOrientation
+  ]
 })
 export class MyApp implements OnInit, OnDestroy {
   @ViewChild(Nav) nav: Nav;
@@ -61,10 +64,14 @@ export class MyApp implements OnInit, OnDestroy {
     private nativeAudio: NativeAudio,
     private push: Push,
     private network: Network,
+    private screenOrientation: ScreenOrientation,
     private globalVars: GlobalVarsProvider,
     private browser: InAppBrowser) {
+
     this.initializeApp();
     this.iframeEventObserve();
+    // this.screenOrientation.lock(this.screenOrientation.ORIENTATIONS.PORTRAIT);
+
   }
 
   iframeEventObserve() {

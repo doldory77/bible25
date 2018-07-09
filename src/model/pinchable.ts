@@ -10,6 +10,8 @@ export class Pinchable {
     static BASE_SCALE = 1.0;
 
     public fontSize = `${Pinchable.BASE_SCALE}em`;
+    public fontColor: string = "#000";
+    public backgroundColor: string = "#fff";
     public scale = Pinchable.BASE_SCALE;
     public alreadyScaled = Pinchable.BASE_SCALE;
     public isScaling = false;

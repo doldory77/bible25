@@ -43,17 +43,20 @@
   </div>
 
   <div class="search-bar" [hidden]="isNoneVisibleSearch">
-    <div (click)="showSearchType($event)">
+    <div (click)="showSearchType($event)" class="search-kind">
       <label>검색조건: {{searchType.name}}</label>
     </div>
-    <div>
+    <div class="search-input-box">
       <input #searchKeyword type="text" value="" placeholder="제목 또는 가사">
+      <span (click)="execSearch(searchType.code, searchKeyword.value)" class="search-btn-area">
+        <ion-icon name="search" color="primary"></ion-icon>
+      </span>
     </div>
-    <div>
+    <!-- <div>
       <button (click)="execSearch(searchType.code, searchKeyword.value)">
         <ion-icon name="search" color="light"></ion-icon>
       </button>
-    </div>
+    </div> -->
   </div>
 
   <ion-grid class="hymn-top-container">
@@ -77,7 +80,7 @@
           </div>
           <div>
             <div class="item-child1">{{item.p_num}}</div>
-            <div class="item-child2">{{item.subject}}</div>
+            <div class="item-child2"><span [innerHtml]="item.subject"></span></div>
             <div class="item-child3">통일찬송가 {{item.p_num_old}}장</div>
           </div>
         </div>
@@ -91,5 +94,8 @@
 </ion-content>
 
 <ion-footer>
-  <div text-center class="ad-demo-1">광고영역</div>
+  <div text-center class="ad-demo-1">
+    광고영역
+    <iframe style="display: none;" src="http://ch2ho.bible25.com/m/deluxe_bible/list_depth1.php?bo_id=newbeliever"></iframe>
+  </div>
 </ion-footer>

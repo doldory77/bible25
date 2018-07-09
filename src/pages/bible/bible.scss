@@ -58,4 +58,10 @@ page-bible {
         justify-content: center;
         align-items: center;
     }
+    .item {
+        padding: 0;
+        ion-label {
+            padding-left: 15px;
+        }
+    }
 }

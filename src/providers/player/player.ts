@@ -35,7 +35,7 @@ export class PlayerProvider {
     }
   }
 
-  checkOrDown(data: {book:string, jang:string}): Promise<any> {
+  checkOrDown(data: {book:string, jang:string, speed:string}): Promise<any> {
     
     this.currentBibleAudioData.book = data.book;
     this.currentBibleAudioData.jang = data.jang;

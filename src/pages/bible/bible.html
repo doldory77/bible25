@@ -79,8 +79,8 @@
   
 
     <ion-list [hidden]="!isBibleMode" class="bible-content-list">
-      <ion-item *ngFor="let item of bibleContents" text-wrap>
-        <span class="bible-jul">{{item.jul}}.</span><span [style.fontSize]="fontSize" class="bible-content" (click)="itemSelect(item)" [style.color]="item.selected ? 'red' : 'black'">{{item.content}}
+      <ion-item *ngFor="let item of bibleContents" text-wrap [style.backgroundColor]="backgroundColor">
+        <span [style.fontSize]="fontSize" class="bible-jul">{{item.jul}}.</span><span [style.fontSize]="fontSize" class="bible-content" (click)="itemSelect(item)" [style.color]="item.selected ? 'red' : fontColor">{{item.content}}
             <ion-icon *ngIf="item.isBookMarked" name="bookmark" color="danger"></ion-icon>
         </span>
       </ion-item>

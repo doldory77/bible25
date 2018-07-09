@@ -3,7 +3,7 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { DbProvider } from '../../providers/db/db';
 import { UtilProvider } from '../../providers/util/util';
 import { BibleLearnStateType, BibleUser, Church, Code } from '../../model/model-type';
-import { RestProvider } from '../../providers/rest/rest';
+// import { RestProvider } from '../../providers/rest/rest';
 
 @IonicPage()
 @Component({
@@ -260,9 +260,9 @@ export class MyPage {
   }
 
   goBibleContent(book:number, jang:number) {
-    this.db.updateAppInfo('bibl',{book:book, jang:jang})
+    this.db.updateAppInfo('bible',{book:book, jang:jang})
       .then(() => {
-        this.navCtrl.push('BiblePage');
+        this.navCtrl.push('BiblePage', {book:book, jang:jang});
       })
   }
 

@@ -38,7 +38,7 @@ export class HymnSearchTypeComponent {
   }
 
   searchTypes = new Map<string,any>()
-    .set('0', {code:'0', name:'전체'})
+    .set('0', {code:'0', name:'제목'})
     .set('1', {code:'1', name:'가사'})
     .set('2', {code:'2', name:'장'});
 

@@ -146,7 +146,8 @@ export class HymnPage {
           this.hymnData.push({
             p_num: item.p_num,
             p_num_old: item.p_num_old,
-            subject: item.subject
+            // subject: item.subject
+            subject: item.subject.replace(keyword, '<font color="red">'+keyword+'</font>')
           })
         }
       })
@@ -179,7 +180,7 @@ export class HymnPage {
   }
 
   showSearchType(myEvent) {
-    let popover = this.popoverCtrl.create(HymnSearchTypeComponent, {searchType:this.searchType.code});
+    let popover = this.popoverCtrl.create(HymnSearchTypeComponent, {searchType:this.searchType.code}, {enableBackdropDismiss:false});
     popover.present({
       ev: myEvent
     });

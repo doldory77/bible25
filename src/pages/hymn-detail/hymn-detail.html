@@ -70,8 +70,8 @@
         <div class="hymn-btn" (click)="viewType = 0">가사</div>
         <div class="hymn-btn" (click)="viewType = 1" style="margin-left: 10px;">악보</div>
       </div>
-      <div class="hymn-btn" navPop style="background-color: #aaaaaa; min-width: 75px;">
-        록보기
+      <div class="hymn-btn" navPop style="background-color: #aaaaaa; min-width: 90px;">
+        목록보기
       </div>
     </div>
     
@@ -81,9 +81,10 @@
     <div [hidden]="viewType == 1 ? false : true">
       <img #music src="http://bible25.bible25.com/hymn_jpg.php?p_num={{p_num}}">
       <div class="size-expand-box">
-        <button ion-button icon-only outline (click)="presentImage(music)">
+        <!-- <button ion-button icon-only outline (click)="presentImage(music)">
           <ion-icon name="expand"></ion-icon>
-        </button>
+        </button> -->
+        <div (click)="presentImage(music)" class="size-btn">확대보기</div>
       </div>
     </div>
 
