@@ -13,7 +13,7 @@ import { Injectable } from '@angular/core';
 @Injectable()
 export class PlayerProvider {
 
-  bibleAudioFile = {url:"http://bible25.bible25.com/bible_mp3.php?book=#book&jang=#jang", localName:"book#book_jang#jang.mp3"};
+  bibleAudioFile = {url:"http://bible25.bible25.com/bible_mp3_jyj.php?book=#book&jang=#jang&speed=#speed", localName:"book#book_jang#jang_speed#speed.mp3"};
   hymnAudioFile = {url:"http://bible25.bible25.com/hymn_mp3.php?p_num=#p_num", localName:"hymn#p_num.mp3"};
   public currentBibleAudioData: {book:string, jang:string} = {book:'', jang:''};
   public currentHymnAudioData: {p_num:string} = {p_num:''};
@@ -40,7 +40,7 @@ export class PlayerProvider {
     this.currentBibleAudioData.book = data.book;
     this.currentBibleAudioData.jang = data.jang;
 
-    let localFile = this.bibleAudioFile.localName.replace('#book', data.book).replace('#jang', data.jang);
+    let localFile = this.bibleAudioFile.localName.replace('#book', data.book).replace('#jang', data.jang).replace('#speed', data.speed);
     return this.file.checkFile(this.file.cacheDirectory, localFile)
       .then(result => {
         this.initMedia(this.nomalPath(this.file.cacheDirectory+localFile))
@@ -48,7 +48,7 @@ export class PlayerProvider {
           return Promise.resolve({result:'ok', msg:'local file existes and play'});
       })
       .catch(err => {
-        let remoteFile = this.bibleAudioFile.url.replace('#book', data.book).replace('#jang', data.jang);
+        let remoteFile = this.bibleAudioFile.url.replace('#book', data.book).replace('#jang', data.jang).replace('#speed', data.speed);
         return this.download(remoteFile, this.file.cacheDirectory + localFile);
       });
   }

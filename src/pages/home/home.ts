@@ -8,7 +8,9 @@ import {
   Loading,
   AlertController,
   ActionSheetController,
-  Content
+  Content,
+  ViewController,
+  App
 } from 'ionic-angular';
 
 import { Observable, Subscription } from 'rxjs/Rx'
@@ -31,6 +33,7 @@ export class HomePage {
     public sheetCtrl: ActionSheetController,
     private globalVars: GlobalVarsProvider,
     private nativeAudio: NativeAudio,
+    private app: App,
     public menuProvider: MenuProvider,) {
 
   }
@@ -53,14 +56,38 @@ export class HomePage {
   */
   customBackButton(): Function {
     return this.platform.registerBackButtonAction(() => {
+      let viewCtrl: ViewController = this.navCtrl.getActive();
+      console.log("view name ==> ", viewCtrl.name);
+
       if (this.navCtrl.canGoBack()) {
         this.navCtrl.pop();
+        // console.log("pop()");
         return;
       } else {
         if (this.topBackIconIsNotActive) {
           this.unRegisterBackButton();
+          // console.log("exitApp()")
+          const alert = this.alertCtrl.create({
+            title: '앱 종료',
+            message: '앱을 종료하시겠습니까?',
+            buttons: [{
+              text: '취소',
+              role: 'cancel',
+              handler: () => {
+                console.log('Application exit prevented!');
+              }
+            }, {
+              text: '종료',
+              handler: () => {
+                this.platform.exitApp();
+              }  
+            }]
+          });
+          alert.present();
+          // this.platform.exitApp();
         } else {
           this.iframe.history.back();
+          // console.log("history.back() [", flag, "] ", this.iframe.location.href);
         }
       }
     });
