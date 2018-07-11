@@ -53,8 +53,20 @@
       </div>  
       <div (click)="forward()" style="margin-left: 15px;">
         <img src="assets/imgs/ico_player_next.png" width="25">
+      </div>
+      <div class="speed-btns" [hidden]="speedBtnNonVisible">
+        <div (click)="changeSpeed('1')" style="margin-left: 15px;">
+          <img [src]="currPlaySpeed === '1' ? 'assets/imgs/x1_on.png' : 'assets/imgs/x1_off.png'" width="25">
+        </div>
+        <div (click)="changeSpeed('1_2')" style="margin-left: 15px;">
+          <img [src]="currPlaySpeed === '1_2' ? 'assets/imgs/x12_on.png' : 'assets/imgs/x12_off.png'" width="25">
+        </div>
+        <div (click)="changeSpeed('1_5')" style="margin-left: 15px;">
+          <img [src]="currPlaySpeed === '1_5' ? 'assets/imgs/x15_on.png' : 'assets/imgs/x15_off.png'" width="25">
+        </div>
       </div>  
     </div>
+    
     <div (click)="repeatToggle()">
         <img [src]="isMediaRoop ? 'assets/imgs/ico_player_re_on.png' : 'assets/imgs/ico_player_re.png'" width="22">
     </div>

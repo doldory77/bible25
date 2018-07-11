@@ -10,13 +10,15 @@ import {
   ActionSheetController,
   Content,
   ViewController,
-  App
+  App,
+  ModalController
 } from 'ionic-angular';
 
 import { Observable, Subscription } from 'rxjs/Rx'
 import { GlobalVarsProvider } from '../../providers/global-vars/global-vars';
 import { NativeAudio } from '@ionic-native/native-audio';
 import { MenuProvider } from '../../providers/menu/menu';
+import { AdPopupComponent } from '../../components/ad-popup/ad-popup';
 
 @IonicPage()
 @Component({
@@ -34,6 +36,7 @@ export class HomePage {
     private globalVars: GlobalVarsProvider,
     private nativeAudio: NativeAudio,
     private app: App,
+    private modalCtrl: ModalController,
     public menuProvider: MenuProvider,) {
 
   }
@@ -65,26 +68,31 @@ export class HomePage {
         return;
       } else {
         if (this.topBackIconIsNotActive) {
-          this.unRegisterBackButton();
+          // this.unRegisterBackButton();
           // console.log("exitApp()")
-          const alert = this.alertCtrl.create({
-            title: '앱 종료',
-            message: '앱을 종료하시겠습니까?',
-            buttons: [{
-              text: '취소',
-              role: 'cancel',
-              handler: () => {
-                console.log('Application exit prevented!');
-              }
-            }, {
-              text: '종료',
-              handler: () => {
-                this.platform.exitApp();
-              }  
-            }]
-          });
-          alert.present();
+
+          // const alert = this.alertCtrl.create({
+          //   title: '앱 종료',
+          //   message: '앱을 종료하시겠습니까?',
+          //   buttons: [{
+          //     text: '취소',
+          //     role: 'cancel',
+          //     handler: () => {
+          //       console.log('Application exit prevented!');
+          //     }
+          //   }, {
+          //     text: '종료',
+          //     handler: () => {
+          //       this.platform.exitApp();
+          //     }  
+          //   }]
+          // });
+          // alert.present();
+
           // this.platform.exitApp();
+          let adPopup = this.modalCtrl.create(AdPopupComponent);
+          adPopup.present();
+
         } else {
           this.iframe.history.back();
           // console.log("history.back() [", flag, "] ", this.iframe.location.href);

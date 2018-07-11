@@ -200,6 +200,13 @@ export class MenuProvider {
           menuLevel: 'top_menu',
           url: 'https://www.pos-mall.co.kr:448/bible/bibleMembership.do'
       })
+      .set('showAd', {
+          name: 'showAd',
+          page: '',
+          selected: false,
+          menuLevel: 'top_menu',
+          url: 'http://bible25ad.bible25.com/bible25ad/ad/mobile_main_popup_ad/app_index.php'
+      })
       .set('search', {
           name: '목회자수첩검색',
           page: '',

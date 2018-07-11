@@ -29,6 +29,7 @@ export class BiblePage extends Pinchable implements OnScrollDetect {
   bibleBook: number = 1;
   bibleJang: number = 1;
   playerNonVisible = true;
+  speedBtnNonVisible = false;
   loading: Loading;
   bibleContents: {lang:string, book:number, jul:number, content:string, ord:number, isBookMarked:boolean, selected:boolean}[] = [];
   bibleSupportContents: {title:string, bible:string, context:string, img_name:string}[] = [];
@@ -88,7 +89,13 @@ export class BiblePage extends Pinchable implements OnScrollDetect {
     this.destroyScrollDetector(this.scrollDetector);
   }
 
+  tmpNum: number = 92;
   saveBookMark() {
+    // this.content.scrollTo(0, this.tmpNum, 300);
+    // this.tmpNum += 92;
+    // console.log("this.content.scrollHeight ==> ", this.content.scrollHeight);
+    // return;
+    
     let selectedJuls = this.bibleContents.filter(item => item.selected);
     if (selectedJuls.length == 0) {
       this.util.showAlert('즐겨찾기', '선택한 절이 없습니다.');
@@ -117,6 +124,7 @@ export class BiblePage extends Pinchable implements OnScrollDetect {
         console.error(err);
         this.util.showToast('즐겨찾기에 실패하였습니다.', 3000);
       })
+    
   }
 
   loadBible(book?:number, jang?:number) {

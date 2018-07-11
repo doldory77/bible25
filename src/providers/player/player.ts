@@ -106,7 +106,8 @@ export class PlayerProvider {
 
   stop() {
     if (this.mediaObj) {
-      this.mediaObj.stop()
+      this.mediaObj.stop();
+      this.release();
     }
   }
 

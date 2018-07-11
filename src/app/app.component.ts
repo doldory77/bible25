@@ -70,6 +70,8 @@ export class MyApp implements OnInit, OnDestroy {
 
     this.initializeApp();
     this.iframeEventObserve();
+    this.showAd();
+    
     // this.screenOrientation.lock(this.screenOrientation.ORIENTATIONS.PORTRAIT);
 
   }
@@ -97,6 +99,12 @@ export class MyApp implements OnInit, OnDestroy {
       this.statusBar.styleDefault();
       this.splashScreen.hide();
     });
+  }
+
+  showAd() {
+    setTimeout(() => {
+      this.openPage("showAd");
+    }, 500);
   }
 
   networkCheck() {
@@ -163,13 +171,20 @@ export class MyApp implements OnInit, OnDestroy {
     let targetMenu: MenuType = this.menuData.get(menu);
     this.menuHighlight(menu);
     // console.log(targetMenu);
-    if (menu === 'posmall') {
+    if (menu === 'posmall' || menu === 'showAd') {
       this.inAppBrowserObj = this.browser.create(targetMenu.url, '_blank', this.inAppBrowserPptions);
       this.inAppSubscription = this.inAppBrowserObj.on('exit').subscribe(data => {
         if (this.inAppBrowserObj) try { this.inAppBrowserObj.close(); this.inAppSubscription.unsubscribe(); this.inAppBrowserObj = undefined; } catch (err) { console.error(err); }  
       }, err => {console.error(err)});
       return;
     }
+    // if (menu === 'showAd') {
+    //   this.inAppBrowserObj = this.browser.create(targetMenu.url, '_blank', this.inAppBrowserPptions);
+    //   this.inAppSubscription = this.inAppBrowserObj.on('exit').subscribe(data => {
+    //     if (this.inAppBrowserObj) try { this.inAppBrowserObj.close(); this.inAppSubscription.unsubscribe(); this.inAppBrowserObj = undefined; } catch (err) { console.error(err); }  
+    //   }, err => {console.error(err)});
+    //   return;
+    // }
     if (targetMenu.url) {
       this.nav.popToRoot().then(() => {
         this.goUrl(targetMenu.url);

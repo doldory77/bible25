@@ -19,7 +19,7 @@ const enum PlayState {
 }
 
 const enum PlaySpeed {
-  SPEED_1 = "",
+  SPEED_1 = "1",
   SPEED_1_2 = "1_2",
   SPEED_1_5 = "1_5"
 }
@@ -37,7 +37,8 @@ class PlayerUiComponent implements OnInit, OnDestroy {
     
   }
 
-  @Input() playerNonVisible = false; 
+  @Input() playerNonVisible = false;
+  @Input() speedBtnNonVisible = true;
   @Input() playKind: PlayKind = PlayKind.BibleMode;
 
   @Input() book:number = 1;
@@ -79,7 +80,6 @@ class PlayerUiComponent implements OnInit, OnDestroy {
     this.player.stop();
     this.player.release();
   }
-  
 
   forward() {
 
@@ -150,6 +150,24 @@ class PlayerUiComponent implements OnInit, OnDestroy {
       case PlayState.PAUSE:
         this.resume();
         break;
+    }
+  }
+
+  changeSpeed(num:string) {
+    if (this.currPlaySpeed != num) {
+      switch(num) {
+        case '1':
+          this.currPlaySpeed = PlaySpeed.SPEED_1;
+          break;
+        case '1_2':
+          this.currPlaySpeed = PlaySpeed.SPEED_1_2;
+          break;
+        case '1_5':
+          this.currPlaySpeed = PlaySpeed.SPEED_1_5;
+          break;
+      }
+      // console.log("this currPlaySpeed ==> ", this.currPlaySpeed, " playStat ==>", this.playState);
+      this.stop();
     }
   }
 

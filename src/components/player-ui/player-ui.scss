@@ -42,4 +42,10 @@ player-ui {
             }
         }
     }
+    .speed-btns {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        padding-left: 20px;
+    }
 }

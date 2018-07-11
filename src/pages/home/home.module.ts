@@ -9,7 +9,9 @@ import { PipesModule } from '../../pipes/pipes.module';
   ],
   imports: [
     IonicPageModule.forChild(HomePage),
-    PipesModule
+    PipesModule,
   ],
+  entryComponents: [
+  ]
 })
 export class HomePageModule {}

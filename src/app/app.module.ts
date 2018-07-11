@@ -14,6 +14,7 @@ import { FileTransfer } from '@ionic-native/file-transfer';
 import { Media } from '@ionic-native/media';
 import { PlayerProvider } from '../providers/player/player';
 import { HymnSearchTypeComponent } from '../components/hymn-search-type/hymn-search-type';
+import { AdPopupComponent } from '../components/ad-popup/ad-popup';
 import { RestProvider } from '../providers/rest/rest';
 import { UtilProvider } from '../providers/util/util';
 import { IonicImageViewerModule } from 'ionic-img-viewer';
@@ -28,6 +29,7 @@ import { InAppBrowser } from '@ionic-native/in-app-browser'
   declarations: [
     MyApp,
     HymnSearchTypeComponent,
+    AdPopupComponent,
   ],
   imports: [
     BrowserModule,
@@ -43,6 +45,7 @@ import { InAppBrowser } from '@ionic-native/in-app-browser'
   entryComponents: [
     MyApp,
     HymnSearchTypeComponent,
+    AdPopupComponent,
   ],
   providers: [
     StatusBar,
