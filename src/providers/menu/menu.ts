@@ -205,7 +205,7 @@ export class MenuProvider {
           page: '',
           selected: false,
           menuLevel: 'top_menu',
-          url: 'http://bible25ad.bible25.com/bible25ad/ad/mobile_main_popup_ad/app_index.php'
+          url: 'http://bible25ad.bible25.com/bible25ad/ad/mobile_main_popup_ad/index_page.php'
       })
       .set('search', {
           name: '목회자수첩검색',
