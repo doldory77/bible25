@@ -262,7 +262,7 @@ export class MyApp implements OnInit, OnDestroy {
           if (idx == 3) { param.uuid = value }
         });
         
-        console.log("========> param: ", param);
+        // console.log("========> param: ", param);
         // if (param.isNew) {
           this.rest.addDevice(param)
             .then(data => console.log(data))
