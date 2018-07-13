@@ -1,5 +1,5 @@
 import { Component, ViewChild, OnInit, OnDestroy } from '@angular/core';
-import { Nav, Platform } from 'ionic-angular';
+import { Nav, Platform, Item } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { LoadingController, AlertController } from 'ionic-angular';
@@ -11,6 +11,9 @@ import { Push, PushObject, PushOptions } from '@ionic-native/push';
 import { NativeAudio } from '@ionic-native/native-audio';
 import { GlobalVarsProvider } from '../providers/global-vars/global-vars';
 import { Network } from '@ionic-native/network';
+import { Device } from '@ionic-native/device';
+import { RestProvider } from '../providers/rest/rest';
+import { DeviceInfo } from '../model/model-type';
 // import { Subscription } from 'rxjs/Subscription';
 // import { Observable } from 'rxjs/Observable';
 import { Observable, Subscription } from 'rxjs/Rx'
@@ -64,6 +67,8 @@ export class MyApp implements OnInit, OnDestroy {
     private nativeAudio: NativeAudio,
     private push: Push,
     private network: Network,
+    private device: Device,
+    private rest: RestProvider,
     private screenOrientation: ScreenOrientation,
     private globalVars: GlobalVarsProvider,
     private browser: InAppBrowser) {
@@ -178,13 +183,7 @@ export class MyApp implements OnInit, OnDestroy {
       }, err => {console.error(err)});
       return;
     }
-    // if (menu === 'showAd') {
-    //   this.inAppBrowserObj = this.browser.create(targetMenu.url, '_blank', this.inAppBrowserPptions);
-    //   this.inAppSubscription = this.inAppBrowserObj.on('exit').subscribe(data => {
-    //     if (this.inAppBrowserObj) try { this.inAppBrowserObj.close(); this.inAppSubscription.unsubscribe(); this.inAppBrowserObj = undefined; } catch (err) { console.error(err); }  
-    //   }, err => {console.error(err)});
-    //   return;
-    // }
+    
     if (targetMenu.url) {
       this.nav.popToRoot().then(() => {
         this.goUrl(targetMenu.url);
@@ -231,6 +230,49 @@ export class MyApp implements OnInit, OnDestroy {
       });
   }
 
+  sendToServerDeviceInfo(userId: string, confirmValue: string) {
+    var param: DeviceInfo = {
+      user_id:"",
+      token:"",
+      platform:"",
+      model:"",
+      uuid:"",
+      isNew:false
+    };
+
+    param.user_id = userId;
+
+    Promise.all([
+      this.globalVars.getValueWithStorage('deviceToken'),
+      this.globalVars.getValueWithStorage('devicePlatform'),
+      this.globalVars.getValueWithStorage('deviceModel'),
+      this.globalVars.getValueWithStorage('deviceUUID')
+    ])
+      .then((values:any[]) => {
+        values.forEach((value, idx, arr) => {
+          if (idx == 0) {
+            if (confirmValue !== value) {
+              param.isNew = true;
+              this.globalVars.addValueWithStorage("deviceToken", confirmValue);
+            }
+            param.token = confirmValue;
+          }
+          if (idx == 1) { param.platform = value }
+          if (idx == 2) { param.model = value }
+          if (idx == 3) { param.uuid = value }
+        });
+        
+        console.log("========> param: ", param);
+        // if (param.isNew) {
+          this.rest.addDevice(param)
+            .then(data => console.log(data))
+            .catch(error => console.error(error))
+        // }
+
+      })
+      .catch(error => console.error(error));
+  }
+
   initPushNotification() {
     // console.info("=== Push Notification Init ===");
 
@@ -253,10 +295,19 @@ export class MyApp implements OnInit, OnDestroy {
     pushObject.on('error').subscribe(error => console.log('Error with Push Plugin', error));
 
     pushObject.on('registration').subscribe((data: any) => {
-      // console.log('device token -> ', data.registrationId);
-      // console.log('registrationType -> ', data.registrationType);
-      
+      console.log('device token -> ', data.registrationId);
+      console.log('registrationType -> ', data.registrationType);
+
+      this.globalVars.addValueWithStorage('deviceModel', this.device.model);
+      this.globalVars.addValueWithStorage('devicePlatform', this.device.platform);
+      this.globalVars.addValueWithStorage('deviceUUID', this.device.uuid);
+      this.globalVars.addValueWithStorage('deviceOsVersion', this.device.version);
+
       // TODO - send device token to server
+      setTimeout(() => {
+        this.sendToServerDeviceInfo("", data.registrationId);
+      }, 2000);
+      
     });
 
     pushObject.on('notification').subscribe((data: any) => {

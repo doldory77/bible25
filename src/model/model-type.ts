@@ -15,6 +15,16 @@ interface AppInfoType {
     selected_eng_names: string
 }
 
+interface DeviceInfo {
+    user_id: string,
+    token: string,
+    platform: string,
+    model: string,
+    uuid: string,
+    isNew?:boolean,
+    api?:string
+}
+
 class BibleLearnStateType {
     isLearn: boolean;
     result:boolean;
@@ -55,5 +65,5 @@ interface Code {
 }
 
 export {
-    MenuType, AppInfoType, BibleLearnStateType, BibleUser, Church, Code
+    MenuType, AppInfoType, DeviceInfo, BibleLearnStateType, BibleUser, Church, Code
 }

@@ -23,6 +23,7 @@
     "@angular/platform-browser-dynamic": "5.2.9",
     "@ionic-native/core": "4.6.0",
     "@ionic-native/deeplinks": "^4.7.0",
+    "@ionic-native/device": "^4.9.1",
     "@ionic-native/file": "^4.6.0",
     "@ionic-native/file-transfer": "^4.6.0",
     "@ionic-native/in-app-browser": "^4.7.0",

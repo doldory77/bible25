@@ -23,7 +23,8 @@ import { NativeAudio } from '@ionic-native/native-audio';
 import { Network } from '@ionic-native/network';
 import { GlobalVarsProvider } from '../providers/global-vars/global-vars';
 import { IonicStorageModule } from '@ionic/storage';
-import { InAppBrowser } from '@ionic-native/in-app-browser'
+import { InAppBrowser } from '@ionic-native/in-app-browser';
+import { Device } from '@ionic-native/device';
 
 @NgModule({
   declarations: [
@@ -64,7 +65,8 @@ import { InAppBrowser } from '@ionic-native/in-app-browser'
     NativeAudio,
     Network,
     GlobalVarsProvider,
-    InAppBrowser
+    InAppBrowser,
+    Device
   ]
 })
 export class AppModule {}

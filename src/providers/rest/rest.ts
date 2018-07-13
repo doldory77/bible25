@@ -1,6 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Observable'
+import { Observable } from 'rxjs/Observable';
+import { DeviceInfo } from '../../model/model-type';
+import { resolveDefinition } from '../../../node_modules/@angular/core/src/view/util';
 
 /*
   Generated class for the RestProvider provider.
@@ -17,6 +19,7 @@ export class RestProvider {
   
   bible_support_info_url = "http://ch2ho.bible25.com/m/bbs/board99.php?book=#book&jang=#jang&t=#tab";
   bible_code_url = "http://ch2ho.bible25.com/m/bbs/code.php";
+  bible_device_url = "http://ch2ho.bible25.com/m/bible_device.php";
   bible_support_img_prefix_url = "http://chweb.biblesmartphone.co.kr/_bible_img/";
   gyodok_content_url = "http://gyodok.bible25.co.kr/gyodok/gyodokContent?gyodok_id=#num";
 
@@ -106,5 +109,29 @@ export class RestProvider {
         )
     })
   }
+
+  addDevice(deviceInfo: DeviceInfo): Promise<any> {
+    return new Promise((resolve, reject) => {
+      this.http.post(this.bible_device_url, {
+        api:"device_in2",
+        user_id:deviceInfo.user_id,
+        token:deviceInfo.token,
+        platform:deviceInfo.platform,
+        model:deviceInfo.model,
+        uuid:deviceInfo.uuid
+      })
+        .subscribe(
+          (res: any) => {
+            if (res.result == 'fail') {
+              reject(res);
+            }
+            resolve(res);
+          },
+          err => {reject(err)}
+        )
+    });
+  }
+
+
  
 }
