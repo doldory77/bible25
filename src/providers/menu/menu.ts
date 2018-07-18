@@ -214,6 +214,20 @@ export class MenuProvider {
           menuLevel: 'top_menu',
           url: 'http://ministrynote.com/bbs/search_bible25.php?sfl=wr_subject&sop=and&stx='
       })
+      .set('moindaum', {
+          name: '기독교백화점',
+          page: '',
+          selected: false,
+          menuLevel: 'top_menu',
+          url: 'http://moindaum.com/ms58951376/store_shop_list05?__blank'
+      })
+      .set('health', {
+          name: '홀리헬스',
+          page: '',
+          selected: false,
+          menuLevel: 'top_menu',
+          url: 'm.holy-health.co.kr/?phone_num=&phone_num='
+      })
 
   constructor() {
 

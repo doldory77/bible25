@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { Content } from 'ionic-angular';
+import { Content, Platform } from 'ionic-angular';
 import { IonicPage, NavController, NavParams, AlertController, LoadingController, Loading, PopoverController } from 'ionic-angular';
 import { DbProvider } from '../../providers/db/db';
 import { HymnSearchTypeComponent } from '../../components/hymn-search-type/hymn-search-type';
@@ -39,6 +39,7 @@ export class HymnPage {
     public alertCtrl: AlertController,
     public indicator: LoadingController,
     private popoverCtrl: PopoverController,
+    private platform: Platform,
     private nativeAudio: NativeAudio) {
 
       this.topMenuData.push({title:'교독문', menuIdx:0, selected:false});
@@ -69,7 +70,9 @@ export class HymnPage {
     this.isNoneVisibleSearch = !this.isNoneVisibleSearch;
     // console.log(this.isNoneVisibleSearch);
     this.screenUpdate();
-    this.nativeAudio.play('click', () => {});
+    if (!this.platform.is('ios')) {
+      this.nativeAudio.play('click', () => {});
+    }
   }
 
   showDetail(pnum: string) {
@@ -176,7 +179,9 @@ export class HymnPage {
         }
       ]
     }).present();
-    this.nativeAudio.play('click', () => {});
+    if (!this.platform.is('ios')) {
+      this.nativeAudio.play('click', () => {});
+    }
   }
 
   showSearchType(myEvent) {

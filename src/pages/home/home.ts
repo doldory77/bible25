@@ -10,8 +10,9 @@ import {
   ActionSheetController,
   Content,
   ViewController,
-  App,
-  ModalController
+  // App,
+  ModalController,
+  Events
 } from 'ionic-angular';
 
 import { Observable, Subscription } from 'rxjs/Rx'
@@ -35,7 +36,8 @@ export class HomePage {
     public sheetCtrl: ActionSheetController,
     private globalVars: GlobalVarsProvider,
     private nativeAudio: NativeAudio,
-    private app: App,
+    // private app: App,
+    private events: Events,
     private modalCtrl: ModalController,
     public menuProvider: MenuProvider,) {
 
@@ -103,7 +105,9 @@ export class HomePage {
 
   ionViewDidLoad() {
     this.iframe = document.getElementById('iframe')['contentWindow'];
-    this.unRegisterBackButton = this.customBackButton();
+    if (!this.platform.is('ios')) {
+      this.unRegisterBackButton = this.customBackButton();
+    }
   }
 
   /*
@@ -133,12 +137,16 @@ export class HomePage {
   }
 
   toggleMenu() {
-    this.nativeAudio.play('click', () => {});
+    if (!this.platform.is('ios')) {
+      this.nativeAudio.play('click', () => {});
+    }
     this.menuCtrl.toggle();
   }
 
   onBack() {
-    this.nativeAudio.play('click', () => {});
+    if (!this.platform.is('ios')) {
+      this.nativeAudio.play('click', () => {});
+    }
     this.iframe.history.back();
   }
 
@@ -220,17 +228,23 @@ export class HomePage {
   }
 
   configPage() {
-    this.nativeAudio.play('click', () => {});
-    this.navCtrl.push('ConfigPage');
+    this.events.publish("shareSns");
+    
+    // this.nativeAudio.play('click', () => {});
+    // this.navCtrl.push('ConfigPage');
   }
 
   myPage() {
-    this.nativeAudio.play('click', () => {});
+    if (!this.platform.is('ios')) {
+      this.nativeAudio.play('click', () => {});
+    }
     this.navCtrl.push('MyPage');
   }
 
   toggleSearchBar() {
-    this.nativeAudio.play('click', () => {});
+    if (!this.platform.is('ios')) {
+      this.nativeAudio.play('click', () => {});
+    }
     this.topSearchBtnFlag = !this.topSearchBtnFlag;
     this.screenUpdate();
   }

@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { DeviceInfo } from '../../model/model-type';
-import { resolveDefinition } from '../../../node_modules/@angular/core/src/view/util';
+// import { resolveDefinition } from '../../../node_modules/@angular/core/src/view/util';
 
 /*
   Generated class for the RestProvider provider.

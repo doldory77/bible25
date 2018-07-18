@@ -19,7 +19,7 @@
   </ion-navbar> -->
   <ion-toolbar>
     <div class="tool-bar-title">
-      <img class="tool-bar-prev-btn" navPop src="assets/imgs/btn_prev.png">
+      <img class="tool-bar-prev-btn" cNavpop src="assets/imgs/btn_prev.png">
       <span class="menu-item-inner-title">찬송</span>
     </div>
   </ion-toolbar>
@@ -33,7 +33,7 @@
           <img [src]="isBookMarked ? 'assets/imgs/btn_favorite_on.png' : 'assets/imgs/btn_favorite.png'" width="26.5">
       </div>
   </div>
-  <player-ui [playerNonVisible]="false"
+  <player-ui [playerNonVisible]="playerNonVisible"
     [playKind]="1"
     [p_num]="p_num"
     (onPlayComplete)="onPlayComplete($event)"

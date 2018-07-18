@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { Component, ViewChild } from '@angular/core';
+import { IonicPage, NavController, NavParams, Content } from 'ionic-angular';
 import { DbProvider } from '../../providers/db/db';
 import { UtilProvider } from '../../providers/util/util';
 import { Pinchable } from '../../model/pinchable';
@@ -12,12 +12,14 @@ import { ImageViewerController } from 'ionic-img-viewer';
 })
 export class HymnDetailPage extends Pinchable {
 
+  @ViewChild(Content) content: Content;
   isBookMarked: boolean = false;
 
   viewType: number = 0;
   p_num: string = '001';
   subject: string = '';
   song: string = '';
+  playerNonVisible: boolean = true;
 
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
@@ -30,6 +32,10 @@ export class HymnDetailPage extends Pinchable {
 
   ionViewDidLoad() {
     this.getHymnDetail(this.p_num);
+    setTimeout(() => {
+      this.playerNonVisible = false;
+      this.content.resize();
+    }, 300);
   }
 
   ionViewWillEnter() {
@@ -37,7 +43,7 @@ export class HymnDetailPage extends Pinchable {
   }
 
   ionViewWillLeave() {
-    
+    this.playerNonVisible = true;
   }
 
   getHymnDetail(p_num: string) {

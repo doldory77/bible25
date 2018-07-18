@@ -1,5 +1,5 @@
 import { Component, ViewChild, OnInit, OnDestroy } from '@angular/core';
-import { Nav, Platform, Item } from 'ionic-angular';
+import { Nav, Platform, Events } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { LoadingController, AlertController } from 'ionic-angular';
@@ -71,18 +71,27 @@ export class MyApp implements OnInit, OnDestroy {
     private rest: RestProvider,
     private screenOrientation: ScreenOrientation,
     private globalVars: GlobalVarsProvider,
+    private events: Events,
     private browser: InAppBrowser) {
 
+    this.events.subscribe('shareSns', () => {
+      this.callToIframe({data:'안녕하세요'});
+    });
     this.initializeApp();
     this.iframeEventObserve();
-    this.showAd();
     
     // this.screenOrientation.lock(this.screenOrientation.ORIENTATIONS.PORTRAIT);
 
   }
 
+  callToIframe(data:any) {
+    // console.log("==========> data: ", data);
+    const home: HomePage = <HomePage> this.nav.getByIndex(0).instance;
+    home.iframe.postMessage(JSON.stringify(data), "*");
+  }
+
   iframeEventObserve() {
-    window['iframe_call'] = {apiNum:0};
+    window['iframe_call'] = {apiNum:0,param:""};
     window.addEventListener('message', function(e){
       switch(e.data.page) {
         case 'bible':
@@ -94,6 +103,10 @@ export class MyApp implements OnInit, OnDestroy {
         case 'posmall':
           window['iframe_call'].apiNum = 3;
           break;
+        case 'kakao':
+          window['iframe_call'].apiNum = 4;
+          window['iframe_call'].param = e.data.param;
+          break;
         default:
       }
     });
@@ -103,6 +116,15 @@ export class MyApp implements OnInit, OnDestroy {
     this.platform.ready().then(() => {
       this.statusBar.styleDefault();
       this.splashScreen.hide();
+
+      this.nativeAudio.preloadSimple('click', 'assets/audio/click_on.mp3')
+        .then(() => {console.info('sound loaded')})
+        .catch(error => {console.error("=== ERROR === ", error)});
+        
+        this.showAd();
+
+        if (!this.platform.is('ios')) {
+        }
     });
   }
 
@@ -137,10 +159,6 @@ export class MyApp implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.menuData = this.menuProvider.MenuData;
-    this.nativeAudio.preloadSimple('click', 'assets/audio/click_on.mp3')
-        .then(() => {console.info('sound loaded')}, error => {console.error(error)});
-    this.nativeAudio.preloadSimple('click2', 'assets/audio/click_on2.mp3')
-        .then(() => {console.info('sound loaded')}, error => {console.error(error)});
     this.checkPushPermission();
     this.networkCheck();
 
@@ -158,6 +176,11 @@ export class MyApp implements OnInit, OnDestroy {
         case 3:
           this.openPage('posmall');
           break;
+        case 4:
+          let param = window['iframe_call'].param;
+          window['iframe_call'].param = "";
+          this.openSnsSharePage('kakao', param);
+          break;
         default:
       }
     });
@@ -171,8 +194,24 @@ export class MyApp implements OnInit, OnDestroy {
 
   menuData: Map<string, MenuType>;
 
+  openSnsSharePage(menu: string, param?: string) {
+    
+    var url: string = param;
+    if (menu === 'kakao') {
+      this.inAppBrowserObj = this.browser.create(url, '_blank', this.inAppBrowserPptions);
+      this.inAppSubscription = this.inAppBrowserObj.on('exit').subscribe(data => {
+        if (this.inAppBrowserObj) try { this.inAppBrowserObj.close(); this.inAppSubscription.unsubscribe(); this.inAppBrowserObj = undefined; } catch (err) { console.error(err); }  
+      }, err => {console.error(err)});
+    }
+  }
+
   openPage(menu: string) {
-    this.nativeAudio.play('click', () => {});
+    this.nativeAudio.play('click', () => {})
+      // .then(() => {console.log("랄랄라~~~")})
+      .catch(error => console.error("=== ERROR1: ",error));
+
+    if (!this.platform.is('ios')) {
+    }
     let targetMenu: MenuType = this.menuData.get(menu);
     this.menuHighlight(menu);
     // console.log(targetMenu);
@@ -183,7 +222,6 @@ export class MyApp implements OnInit, OnDestroy {
       }, err => {console.error(err)});
       return;
     }
-    
     if (targetMenu.url) {
       this.nav.popToRoot().then(() => {
         this.goUrl(targetMenu.url);
@@ -314,7 +352,9 @@ export class MyApp implements OnInit, OnDestroy {
       console.log('titleNotification -> ', data.title);
       console.log('additionalData -> ', data.additionalData.customData);
 
-      this.nativeAudio.play('click', () => { console.log('success play audio') });
+      if (!this.platform.is('ios')) {
+        this.nativeAudio.play('click', () => {});
+      }
       
       if (data.additionalData.foreground) {
         console.log('titleNotificationForegroundCheck -> ', data.title);

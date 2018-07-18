@@ -94,8 +94,11 @@
     <plugin name="cordova-plugin-nativeaudio" spec="~3.0.9" />
     <plugin name="cordova-plugin-network-information" spec="^2.0.1" />
     <allow-navigation href="http://192.168.0.26:8089" />
+    <allow-navigation href="*" />
     <allow-navigation href="ch2ho.bible25.com" />
     <allow-navigation href="bible25ad.bible25.com" />
+    <allow-navigation href="ministrynote.com" />
+    <allow-navigation href="gyogye.cafe24.com" />
     <plugin name="ionic-plugin-deeplinks" spec="^1.0.15">
         <variable name="URL_SCHEME" value="bible25" />
         <variable name="DEEPLINK_SCHEME" value="http" />

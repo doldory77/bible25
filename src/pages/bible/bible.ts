@@ -85,6 +85,7 @@ export class BiblePage extends Pinchable implements OnScrollDetect {
   }
 
   ionViewWillLeave() {
+    this.playerNonVisible = true;
     this.globalVars.addValueWithStorage('fontSize', Number(this.fontSize.replace('em','')));
     this.destroyScrollDetector(this.scrollDetector);
   }
@@ -182,6 +183,10 @@ export class BiblePage extends Pinchable implements OnScrollDetect {
     this.screenUpdate();
 
     if (menuNum > 0) {
+      if (this.playerUI.playState == 1) {
+        this.playerUI.command();
+      }
+      this.playerNonVisible = true;
       this.isBibleMode = false;
       this.loading = this.indicator.create({
         showBackdrop: false,
@@ -210,6 +215,10 @@ export class BiblePage extends Pinchable implements OnScrollDetect {
         })
     } else {
       this.isBibleMode = true;
+      if (this.playerUI.playState == 2) {
+        this.playerNonVisible = false;
+        this.playerUI.command();
+      }
       setTimeout(() => {
         this.screenUpdate();
       }, 10);
