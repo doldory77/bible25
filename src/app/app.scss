@@ -272,3 +272,15 @@ ion-content .scroll-content {
     }
 
 }
+
+.share-main-popover .popover-content {
+    width: 50px;
+    .btn {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 30px;
+        width: 30px;
+        margin: 10px;
+    }
+}

@@ -25,11 +25,13 @@ import { GlobalVarsProvider } from '../providers/global-vars/global-vars';
 import { IonicStorageModule } from '@ionic/storage';
 import { InAppBrowser } from '@ionic-native/in-app-browser';
 import { Device } from '@ionic-native/device';
+import { ShareMainComponent } from '../components/share-main/share-main';
 
 @NgModule({
   declarations: [
     MyApp,
     HymnSearchTypeComponent,
+    ShareMainComponent,
     AdPopupComponent,
   ],
   imports: [
@@ -46,6 +48,7 @@ import { Device } from '@ionic-native/device';
   entryComponents: [
     MyApp,
     HymnSearchTypeComponent,
+    ShareMainComponent,
     AdPopupComponent,
   ],
   providers: [

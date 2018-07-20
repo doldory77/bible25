@@ -12,7 +12,8 @@ import {
   ViewController,
   // App,
   ModalController,
-  Events
+  Events,
+  PopoverController
 } from 'ionic-angular';
 
 import { Observable, Subscription } from 'rxjs/Rx'
@@ -20,6 +21,7 @@ import { GlobalVarsProvider } from '../../providers/global-vars/global-vars';
 import { NativeAudio } from '@ionic-native/native-audio';
 import { MenuProvider } from '../../providers/menu/menu';
 import { AdPopupComponent } from '../../components/ad-popup/ad-popup';
+import { ShareMainComponent } from '../../components/share-main/share-main';
 
 @IonicPage()
 @Component({
@@ -39,6 +41,7 @@ export class HomePage {
     // private app: App,
     private events: Events,
     private modalCtrl: ModalController,
+    private popoverCtrl: PopoverController,
     public menuProvider: MenuProvider,) {
 
   }
@@ -251,6 +254,17 @@ export class HomePage {
   
   screenUpdate(){
     this.content.resize();
+  }
+
+  share(myEvent) {
+    let popover = this.popoverCtrl.create(ShareMainComponent, {}, {cssClass:'share-main-popover'});
+    popover.present({
+      ev: myEvent
+    });
+    // popover.present();
+    popover.onDidDismiss(data => {
+      console.log(data);
+    });
   }
 
 }
