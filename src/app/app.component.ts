@@ -198,7 +198,7 @@ export class MyApp implements OnInit, OnDestroy {
     
     var url: string = param;
     if (menu === 'kakao') {
-      this.inAppBrowserObj = this.browser.create(url, '_blank', this.inAppBrowserPptions);
+      this.inAppBrowserObj = this.browser.create(url, '_system', this.inAppBrowserPptions);
       this.inAppSubscription = this.inAppBrowserObj.on('exit').subscribe(data => {
         if (this.inAppBrowserObj) try { this.inAppBrowserObj.close(); this.inAppSubscription.unsubscribe(); this.inAppBrowserObj = undefined; } catch (err) { console.error(err); }  
       }, err => {console.error(err)});

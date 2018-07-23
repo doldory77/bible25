@@ -69,7 +69,7 @@ import { ShareMainComponent } from '../components/share-main/share-main';
     Network,
     GlobalVarsProvider,
     InAppBrowser,
-    Device
+    Device,
   ]
 })
 export class AppModule {}

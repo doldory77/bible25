@@ -36,6 +36,7 @@
     "@ionic-native/sqlite": "^4.6.0",
     "@ionic-native/status-bar": "4.6.0",
     "@ionic/storage": "2.1.3",
+    "com.sangs.plugin": "file:../../tmp2/customPlugin",
     "cordova-android": "7.1.0",
     "cordova-ios": "4.5.4",
     "cordova-plugin-device": "^2.0.1",
@@ -107,7 +108,8 @@
         "DEEPLINK_5_HOST": " "
       },
       "cordova-plugin-inappbrowser": {},
-      "cordova-plugin-screen-orientation": {}
+      "cordova-plugin-screen-orientation": {},
+      "com.sangs.plugin": {}
     },
     "platforms": [
       "android",

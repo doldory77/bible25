@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { ViewController, NavParams } from 'ionic-angular';
 import { InAppBrowser, InAppBrowserOptions, InAppBrowserObject } from '@ionic-native/in-app-browser';
 import { Observable, Subscription } from 'rxjs/Rx'
+import { EXTRA_MSG } from '../../model/model-type';
 
 @Component({
   selector: 'share-main',
@@ -56,7 +57,13 @@ export class ShareMainComponent {
   }
 
   recommendation() {
-    console.log('추천하기');
+    // console.log('추천하기');
+    var param = {
+      title: '',
+      subject: '',
+      text: EXTRA_MSG.RECOMMENDATIION_INFO
+    };
+    window['cordova'].plugins.customPlugin.func('customPlugin', 'share', [param], (res) => {}, (err) => {alert(err)});
     this.close();
   }
 

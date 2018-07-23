@@ -64,6 +64,10 @@ interface Code {
     name: string;
 }
 
+enum EXTRA_MSG {
+    RECOMMENDATIION_INFO = '[바이블25]무료앱 배포-성경,찬송,새신자가이드,전도편지,성경사전,성경연구자료를 만나보세요. http://bible25.com/bible.php'
+}
+
 export {
-    MenuType, AppInfoType, DeviceInfo, BibleLearnStateType, BibleUser, Church, Code
+    MenuType, AppInfoType, DeviceInfo, BibleLearnStateType, BibleUser, Church, Code, EXTRA_MSG
 }
