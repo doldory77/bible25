@@ -29,6 +29,7 @@ page-bible {
         .bible-content {
             padding-left: 1.4em;
             display: inline-block;
+            text-align: justify;
         }
     }
     .bible-prev-button {
@@ -98,5 +99,25 @@ page-bible {
             width: 20%;
         }
 
+    }
+    .bible-move-box {
+        position: fixed;
+        bottom: 100px;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 10px;
+
+        .bible-move-btn {
+            height: 42px;
+            width: 42px;
+            background-color: #33afe9;
+            opacity: 0.4;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;    
+        }
     }
 }

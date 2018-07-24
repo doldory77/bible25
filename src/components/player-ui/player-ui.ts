@@ -58,7 +58,7 @@ class PlayerUiComponent implements OnInit, OnDestroy {
   
   trackerSubscription: Subscription;
   isMediaRoop: boolean = false;
-  isAutoPlay: boolean = false;
+  isAutoPlay: boolean = true;
 
   currPlaySpeed: string = PlaySpeed.SPEED_1;
 

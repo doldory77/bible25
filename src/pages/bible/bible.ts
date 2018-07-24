@@ -12,6 +12,7 @@ import { OnScrollDetect, ScrollDetectable } from '../../model/onscroll-detect';
 import { PlayerUiComponent } from '../../components/player-ui/player-ui';
 import { GlobalVarsProvider } from '../../providers/global-vars/global-vars';
 import { NativeAudio } from '@ionic-native/native-audio';
+import { Clipboard } from '@ionic-native/clipboard';
 import { ValueTransformer } from '../../../node_modules/@angular/compiler/src/util';
 
 
@@ -51,6 +52,7 @@ export class BiblePage extends Pinchable implements OnScrollDetect {
     private util: UtilProvider,
     private nativeAudio: NativeAudio,
     private events: Events,
+    private clipboard: Clipboard,
     private globalVars: GlobalVarsProvider) {
 
       super();
@@ -90,7 +92,7 @@ export class BiblePage extends Pinchable implements OnScrollDetect {
   }
   
   ionViewWillEnter() {
-    this.onScrollBottomDetect(this.content);
+    // this.onScrollBottomDetect(this.content);
     this.loadBible();
     this.globalVars.getValueWithStorage('fontSize').then((value) => {
       this.fontSize = value + "em";
@@ -140,7 +142,7 @@ export class BiblePage extends Pinchable implements OnScrollDetect {
       .then(result => {
         this.util.showToast('즐겨찾기에 추가되었습니다.', 3000);
         this.refleshBibl();
-        
+        this.isBookMarked = true;
       })
       .catch(err => {
         console.error(err);
@@ -296,7 +298,16 @@ export class BiblePage extends Pinchable implements OnScrollDetect {
   }
 
   clipboardCopy() {
-
+    var contents = [];
+    this.bibleContents
+      .filter(item => item.selected)
+      .forEach(value => {
+        contents.push('[' + this.bookName + ' ' + this.bibleJang + ':' + value.jul + '] ' + value.content);
+      });
+      if (contents.length > 0) {
+        this.clipboard.copy(contents.join(','));
+        this.util.showToast('클립보드에 복사하였습니다.', 3000);
+      }
   }  
 
   onScrollBottomDetect(content:Content) {
@@ -407,5 +418,15 @@ export class BiblePage extends Pinchable implements OnScrollDetect {
 
   onBackward(event) {
     this.backward();
+  }
+
+  scrollHandler(ev) {
+    var dim: any =  this.content.getContentDimensions();
+    // console.log('viewHeigh[', dim.contentHeight, '], totalHeigh[', dim.scrollHeight, '], distanceTop[', this.content.scrollTop, ']');
+    if (dim.scrollHeight - 100 <= (dim.contentHeight + this.content.scrollTop)) {
+      this.isShow = true;
+    } else {
+      this.isShow = false;
+    }
   }
 }

@@ -26,6 +26,7 @@ import { IonicStorageModule } from '@ionic/storage';
 import { InAppBrowser } from '@ionic-native/in-app-browser';
 import { Device } from '@ionic-native/device';
 import { ShareMainComponent } from '../components/share-main/share-main';
+import { Clipboard } from '@ionic-native/clipboard';
 
 @NgModule({
   declarations: [
@@ -69,6 +70,7 @@ import { ShareMainComponent } from '../components/share-main/share-main';
     Network,
     GlobalVarsProvider,
     InAppBrowser,
+    Clipboard,
     Device,
   ]
 })
