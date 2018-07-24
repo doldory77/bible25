@@ -4,7 +4,7 @@ export class Pinchable {
     // // static MIN_SCALE = 0.9;
     // static MIN_SCALE = 1.1;
     // static BASE_SCALE = 1.5;
-    static MAX_SCALE = 1.5;
+    static MAX_SCALE = 2.0;
     // static MIN_SCALE = 0.9;
     static MIN_SCALE = 1.0;
     static BASE_SCALE = 1.0;

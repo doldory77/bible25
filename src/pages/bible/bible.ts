@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { IonicPage, NavController, NavParams, LoadingController, Loading } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, LoadingController, Loading, Events } from 'ionic-angular';
 import { DbProvider } from '../../providers/db/db';
 import { MenuType } from '../../model/model-type'
 import { MenuProvider } from '../../providers/menu/menu'
@@ -11,6 +11,9 @@ import { Pinchable } from '../../model/pinchable';
 import { OnScrollDetect, ScrollDetectable } from '../../model/onscroll-detect';
 import { PlayerUiComponent } from '../../components/player-ui/player-ui';
 import { GlobalVarsProvider } from '../../providers/global-vars/global-vars';
+import { NativeAudio } from '@ionic-native/native-audio';
+import { ValueTransformer } from '../../../node_modules/@angular/compiler/src/util';
+
 
 @IonicPage()
 @Component({
@@ -46,6 +49,8 @@ export class BiblePage extends Pinchable implements OnScrollDetect {
     private indicator: LoadingController,
     private rest: RestProvider,
     private util: UtilProvider,
+    private nativeAudio: NativeAudio,
+    private events: Events,
     private globalVars: GlobalVarsProvider) {
 
       super();
@@ -74,6 +79,11 @@ export class BiblePage extends Pinchable implements OnScrollDetect {
 
   }
 
+  configPage() {
+    this.nativeAudio.play('click', () => {});
+    this.navCtrl.push('ConfigPage');
+  }
+
   ionViewDidLoad() {
     this.menuData[0].selected = true;
     this.scrollDetector = new ScrollDetectable();
@@ -82,12 +92,23 @@ export class BiblePage extends Pinchable implements OnScrollDetect {
   ionViewWillEnter() {
     this.onScrollBottomDetect(this.content);
     this.loadBible();
+    this.globalVars.getValueWithStorage('fontSize').then((value) => {
+      this.fontSize = value + "em";
+    });
+    this.playerUI.stop();
   }
 
   ionViewWillLeave() {
     this.playerNonVisible = true;
-    this.globalVars.addValueWithStorage('fontSize', Number(this.fontSize.replace('em','')));
+    if (typeof this.fontSize === 'string') {
+      this.fontSize = this.fontSize.replace('em', '');
+    }
+    this.globalVars.addValueWithStorage('fontSize', Number(this.fontSize));
     this.destroyScrollDetector(this.scrollDetector);
+  }
+
+  checkBookMark() {
+    return this.bibleContents.findIndex(item => item.isBookMarked);
   }
 
   tmpNum: number = 92;
@@ -134,12 +155,14 @@ export class BiblePage extends Pinchable implements OnScrollDetect {
         if (!this.util.isEmptyNumber(book)) {
           this.bibleBook = book;
         } else {
-          this.bibleBook = this.util.isDefaultNumber(this.db.appInfo.view_bible_book, 1);
+          let tmpBook = this.util.isDefaultNumber(this.db.appInfo.view_bible_book, 1);
+          this.bibleBook = tmpBook;
         }
         if (!this.util.isEmptyNumber(jang)) {
           this.bibleJang = jang;
         } else {
-          this.bibleJang = this.util.isDefaultNumber(this.db.appInfo.view_bible_jang, 1);
+          let tmpJang = this.util.isDefaultNumber(this.db.appInfo.view_bible_jang, 1);
+          this.bibleJang = tmpJang;
         }
 
         this.bookName = this.db.appInfo.book_name;
@@ -154,6 +177,7 @@ export class BiblePage extends Pinchable implements OnScrollDetect {
         this.db.getBibleContent(this.bibleContents, params)
           .then(() => {
             this.content.scrollToTop();
+            this.isBookMarked = (this.checkBookMark() > -1)
           })
           .catch(err => {
             console.error(err);
@@ -242,6 +266,38 @@ export class BiblePage extends Pinchable implements OnScrollDetect {
       this.isBookMarkExists = false;
     }
   }
+
+  itemAllDeSelect() {
+    this.bibleContents.forEach((value, idx, arr) => {
+      value.selected = false;
+    });
+    this.isBookMarkExists = false;
+  }
+
+  share() {
+    var param = {
+      title: '',
+      subject: '',
+      text: ''
+    };
+    var contents = [];
+    this.bibleContents
+      .filter(item => item.selected)
+      .forEach(value => {
+        contents.push('[' + this.bookName + ' ' + this.bibleJang + ':' + value.jul + '] ' + value.content);
+      });
+    if (contents.length > 0) {
+      param.text = contents.join(',');
+      window['cordova']
+        .plugins
+        .customPlugin
+        .func('customPlugin', 'share', [param], (res) => {}, (err) => {alert(err)});
+    }
+  }
+
+  clipboardCopy() {
+
+  }  
 
   onScrollBottomDetect(content:Content) {
     this.scrollDetector.onScrollBottomDetect(

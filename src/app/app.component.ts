@@ -103,7 +103,7 @@ export class MyApp implements OnInit, OnDestroy {
         case 'posmall':
           window['iframe_call'].apiNum = 3;
           break;
-        case 'kakao':
+        case 'photo':
           window['iframe_call'].apiNum = 4;
           window['iframe_call'].param = e.data.param;
           break;
@@ -179,7 +179,7 @@ export class MyApp implements OnInit, OnDestroy {
         case 4:
           let param = window['iframe_call'].param;
           window['iframe_call'].param = "";
-          this.openSnsSharePage('kakao', param);
+          this.openSharePage('photo', param);
           break;
         default:
       }
@@ -194,14 +194,16 @@ export class MyApp implements OnInit, OnDestroy {
 
   menuData: Map<string, MenuType>;
 
-  openSnsSharePage(menu: string, param?: string) {
+  openSharePage(menu: string, param?: string) {
     
     var url: string = param;
     if (menu === 'kakao') {
-      this.inAppBrowserObj = this.browser.create(url, '_system', this.inAppBrowserPptions);
+      this.inAppBrowserObj = this.browser.create(url, '_blank', this.inAppBrowserPptions);
       this.inAppSubscription = this.inAppBrowserObj.on('exit').subscribe(data => {
         if (this.inAppBrowserObj) try { this.inAppBrowserObj.close(); this.inAppSubscription.unsubscribe(); this.inAppBrowserObj = undefined; } catch (err) { console.error(err); }  
       }, err => {console.error(err)});
+    } else if (menu === 'photo') {
+      window['cordova'].plugins.customPlugin.func('customPlugin', 'externalApp', [{packageName:url}], (res) => {}, (err) => {alert(err)});
     }
   }
 
@@ -215,7 +217,7 @@ export class MyApp implements OnInit, OnDestroy {
     let targetMenu: MenuType = this.menuData.get(menu);
     this.menuHighlight(menu);
     // console.log(targetMenu);
-    if (menu === 'posmall' || menu === 'showAd') {
+    if (menu === 'posmall' || menu === 'showAd' || menu === 'moindaum' || menu === 'holy') {
       this.inAppBrowserObj = this.browser.create(targetMenu.url, '_blank', this.inAppBrowserPptions);
       this.inAppSubscription = this.inAppBrowserObj.on('exit').subscribe(data => {
         if (this.inAppBrowserObj) try { this.inAppBrowserObj.close(); this.inAppSubscription.unsubscribe(); this.inAppBrowserObj = undefined; } catch (err) { console.error(err); }  

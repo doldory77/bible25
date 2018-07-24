@@ -262,8 +262,11 @@ ion-content .scroll-content {
     }
     .gb-header-title {
         color: #fff;
-        font-size: 1.3em;
+        font-size: 1.5em;
         font-weight: bold;
+        position: absolute;
+        left: 50%;
+        transform: translate(-50%);
     }
     .gb-header-ctrl {
         display: flex;

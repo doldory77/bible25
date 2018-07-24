@@ -96,11 +96,11 @@ export class ConfigPage {
   }
 
   increaseFont() {
-    if (this.fontSize < 1.5) {
+    if (this.fontSize < 2.0) {
       this.fontSize = Number((this.fontSize + 0.1).toFixed(1));
       this.globalVars.addValueWithStorage('fontSize', this.fontSize);
     } else {
-      this.util.showToast('폰트의 최대 크기는 15입니다.', 3000);
+      this.util.showToast('폰트의 최대 크기는 20입니다.', 3000);
     }
     this.displayFont = Math.floor(this.fontSize * 10) + "";
   }

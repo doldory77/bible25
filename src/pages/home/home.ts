@@ -231,10 +231,10 @@ export class HomePage {
   }
 
   configPage() {
-    this.events.publish("shareSns");
+    // this.events.publish("shareSns");
     
-    // this.nativeAudio.play('click', () => {});
-    // this.navCtrl.push('ConfigPage');
+    this.nativeAudio.play('click', () => {});
+    this.navCtrl.push('ConfigPage');
   }
 
   myPage() {

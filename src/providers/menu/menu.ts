@@ -123,6 +123,13 @@ export class MenuProvider {
           menuLevel: 'top_menu',
           url: ''
       })
+      .set('mypage', {
+          name: '마이페이지',
+          page: 'MyPage',
+          selected: false,
+          menuLevel: 'top_menu',
+          url: ''
+      })
       .set('hymn', {
           name: '찬송',
           page: 'HymnPage',
@@ -221,12 +228,12 @@ export class MenuProvider {
           menuLevel: 'top_menu',
           url: 'http://moindaum.com/ms58951376/store_shop_list05?__blank'
       })
-      .set('health', {
+      .set('holy', {
           name: '홀리헬스',
           page: '',
           selected: false,
           menuLevel: 'top_menu',
-          url: 'm.holy-health.co.kr/?phone_num=&phone_num='
+          url: 'm.holy-health.co.kr'
       })
 
   constructor() {

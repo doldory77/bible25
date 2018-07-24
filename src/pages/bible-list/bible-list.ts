@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, Events } from 'ionic-angular';
 import { DbProvider } from '../../providers/db/db'
 
 /**
@@ -30,6 +30,7 @@ export class BibleListPage {
 
   constructor(public navCtrl: NavController, 
     public navParams: NavParams,
+    private events: Events,
     private db: DbProvider) {
   }
 
