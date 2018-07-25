@@ -8,8 +8,12 @@ import { EXTRA_MSG } from '../../model/model-type';
   selector: 'share-main',
   template:`
     <div class="box">
-      <div class="btn" (click)="support()">후원</div>
-      <div class="btn" (click)="recommendation()">추천</div>
+      <div class="btn" (click)="support()">
+        <ion-icon name="share" style="color:#000; font-size: 40px;"></ion-icon>
+      </div>
+      <div class="btn" (click)="recommendation()">
+        <ion-icon name="share" style="color:#000; font-size: 40px;"></ion-icon>
+      </div>
     </div>
   `
 })

@@ -182,7 +182,7 @@ class PlayerUiComponent implements OnInit, OnDestroy {
   }
 
   play() {
-    
+
     this.stop();
     this.playState = PlayState.PLAY;
 
@@ -213,7 +213,7 @@ class PlayerUiComponent implements OnInit, OnDestroy {
           console.error(err);
           this.dismissLoadingBar();
         })
-    }
+    }   
   }
 
   pause() {

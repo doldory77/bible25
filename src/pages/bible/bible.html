@@ -123,12 +123,20 @@
 
   <div class="bible-tool-box" [ngStyle]="{'display':isBookMarkExists ? '' : 'none'}">
     <div class="bible-tool-left">
-      <div class="bible-tool-btn" (click)="share()">공유</div>
-      <div class="bible-tool-btn" (click)="clipboardCopy()">복사</div>
-      <div class="bible-tool-btn" (click)="saveBookMark()">즐겨찾기</div>
+      <div class="bible-tool-btn" (click)="share()">
+          <ion-icon name="share" style="color:#000; font-size: 40px;"></ion-icon>
+      </div>
+      <div class="bible-tool-btn" (click)="clipboardCopy()">
+          <ion-icon name="clipboard" style="color:#000; font-size: 40px;"></ion-icon>
+      </div>
+      <div class="bible-tool-btn" (click)="saveBookMark()">
+          <ion-icon name="bookmark" style="color:#000; font-size: 40px;"></ion-icon>
+      </div>
       <!-- <div class="bible-tool-btn" [navPush]="'MyPage'">즐겨찾기</div> -->
     </div>
-    <div class="bible-tool-right" (click)="itemAllDeSelect()">종료</div>
+    <div class="bible-tool-right" (click)="itemAllDeSelect()">
+        <ion-icon name="close-circle" style="color:#000; font-size: 40px;"></ion-icon>
+    </div>
   </div>
 
 </ion-content>

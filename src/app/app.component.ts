@@ -184,6 +184,7 @@ export class MyApp implements OnInit, OnDestroy {
         default:
       }
     });
+
   }
 
   ngOnDestroy() {
@@ -219,6 +220,11 @@ export class MyApp implements OnInit, OnDestroy {
     // console.log(targetMenu);
     if (menu === 'posmall' || menu === 'showAd' || menu === 'moindaum' || menu === 'holy') {
       this.inAppBrowserObj = this.browser.create(targetMenu.url, '_blank', this.inAppBrowserPptions);
+      if (menu === 'showAd') {
+        this.inAppBrowserObj.on('loadstop').subscribe(event => {
+          this.inAppBrowserObj.executeScript({code:"(function(){ $('body').css('height', '100%'); console.log('==============> aaaaaa'); })()"});
+        });
+      }
       this.inAppSubscription = this.inAppBrowserObj.on('exit').subscribe(data => {
         if (this.inAppBrowserObj) try { this.inAppBrowserObj.close(); this.inAppSubscription.unsubscribe(); this.inAppBrowserObj = undefined; } catch (err) { console.error(err); }  
       }, err => {console.error(err)});
