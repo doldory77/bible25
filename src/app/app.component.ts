@@ -107,6 +107,12 @@ export class MyApp implements OnInit, OnDestroy {
           window['iframe_call'].apiNum = 4;
           window['iframe_call'].param = e.data.param;
           break;
+        case 'donate':
+          window['iframe_call'].apiNum = 5;
+          break;
+        case 'snsShare':
+          window['iframe_call'].apiNum = 6;
+          break;
         default:
       }
     });
@@ -181,6 +187,13 @@ export class MyApp implements OnInit, OnDestroy {
           window['iframe_call'].param = "";
           this.openSharePage('photo', param);
           break;
+        case 5:
+          this.openSharePage('donate', "");
+          break;
+        case 6:
+          const home: HomePage = <HomePage> this.nav.getByIndex(0).instance;
+          home.snsShare();
+          break;
         default:
       }
     });
@@ -205,6 +218,11 @@ export class MyApp implements OnInit, OnDestroy {
       }, err => {console.error(err)});
     } else if (menu === 'photo') {
       window['cordova'].plugins.customPlugin.func('customPlugin', 'externalApp', [{packageName:url}], (res) => {}, (err) => {alert(err)});
+    } else if (menu === 'donate') {
+      this.inAppBrowserObj = this.browser.create('https://www.ihappynanum.com/Nanum/B/L7Y849VB0V', '_blank', this.inAppBrowserPptions);
+      this.inAppSubscription = this.inAppBrowserObj.on('exit').subscribe(data => {
+        if (this.inAppBrowserObj) try { this.inAppBrowserObj.close(); this.inAppSubscription.unsubscribe(); this.inAppBrowserObj = undefined; } catch (err) { console.error(err); }  
+      }, err => {console.error(err)});
     }
   }
 

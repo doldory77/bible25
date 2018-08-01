@@ -1,0 +1,175 @@
+<ion-header>
+
+    <!-- <ion-navbar>
+      <ion-title>마이페이지</ion-title>
+    </ion-navbar> -->
+  
+    <ion-toolbar>
+      <div class="tool-bar-title">
+        <img class="tool-bar-prev-btn" navPop src="assets/imgs/btn_prev.png">
+        <span class="menu-item-inner-title">마이페이지</span>
+      </div>
+    </ion-toolbar>
+  
+    <div class="my-tab-menu">
+      <div class="menu-item" *ngFor="let menu of getMenu(); let i = index" (click)="toggleTabMenu(i)">
+        <div class="menu-item-inner" [ngClass]="{borderHilight:menu.selected}" [style.border-right]="i == 0 ? '1px solid #e0e0e0':''">
+          <div class="menu-item-inner-title" [ngClass]="{selectedText:menu.selected}">{{menu.title}}</div>
+        </div>
+      </div>
+    </div>
+  
+  </ion-header>
+  
+  
+  <ion-content>
+    <div *ngIf="currViewMode == 0">
+      <div class="bookmark-list-header" (click)="isBibleShow = !isBibleShow">
+        <div>
+          <span class="box-ico2"></span>
+          <span class="bookmark-list-header-title">성경</span>
+        </div>
+        <div>
+          <div class="mypage-arrow">
+            <img src="assets/imgs/bg_menuArrow.png" [ngClass]="{spinimageUp:isBibleShow == true, spinimageDown:isBibleShow == false}">
+          </div>
+        </div>
+      </div>
+      <ion-list *ngIf="isBibleShow" class="bookmark-item-container">
+        <ion-item *ngFor="let item of bibleBookMarkData" class="bookmark-item-row">
+          <div class="bookmark-item">
+            <div (click)="goBibleContent(item.book, item.jang)">{{item.bibletype}} >{{item.name}} > {{item.jang}}장 <span class="bookmark-item-jul">({{item.jul}})절</span></div>
+            <div (click)="removeBibleBookMark(item)">
+              <ion-icon name="trash"></ion-icon>
+            </div>
+          </div>
+        </ion-item>
+      </ion-list>
+  
+      <div class="bookmark-list-header" (click)="isHymnShow = !isHymnShow">
+          <div>
+            <span class="box-ico2"></span>
+            <span class="bookmark-list-header-title">찬송</span>
+          </div>
+        <div>
+          <div class="mypage-arrow">
+            <img src="assets/imgs/bg_menuArrow.png" [ngClass]="{spinimageUp:isHymnShow == true, spinimageDown:isHymnShow == false}">
+          </div>
+        </div>
+      </div>
+      <ion-list *ngIf="isHymnShow" class="bookmark-item-container">
+        <ion-item *ngFor="let item of hymnBookMarkData" class="bookmark-item-row">
+          <div class="bookmark-item">
+            <div>
+              <div (click)="goHymnContent(item.p_num)">{{item.p_num}}. {{item.subject}}</div>
+              <div class="hymn-sub-title">통일찬송가 {{item.p_num_old}}장</div>
+            </div>
+            <div (click)="removeHymnBookMark(item)">
+              <ion-icon name="trash"></ion-icon>
+            </div>
+          </div>
+        </ion-item>
+      </ion-list>
+    </div>
+  
+    <ion-list *ngIf="currViewMode == 1">
+      <ion-item class="viewmode1-header">
+        <ion-label>성경읽기여부</ion-label>
+        <ion-toggle [(ngModel)]="isReadingSchedul"></ion-toggle>
+      </ion-item>
+      <ion-item class="viewmode1-row">
+        <ion-label>시작한 날짜:</ion-label>
+        <ion-datetime displayFormat="YYYY-MM-DD" [(ngModel)]="startReadingDate"></ion-datetime>
+      </ion-item>
+      <ion-item class="viewmode1-row">
+        <ion-label>목표한 날짜:</ion-label>
+        <ion-datetime displayFormat="YYYY-MM-DD" [(ngModel)]="endReadingDate"></ion-datetime>
+      </ion-item>
+      <!-- <ion-item>
+        <ion-label>목표량:</ion-label>
+        <ion-select (ionChange)="setReadingAmount($event)" [(ngModel)]="targetAmount" interface="popover">
+          <ion-option value="1">1독</ion-option>
+          <ion-option value="2">2독</ion-option>
+          <ion-option value="3">3독</ion-option>
+          <ion-option value="4">4독</ion-option>
+        </ion-select>
+      </ion-item> -->
+      <div style="height:10px;"></div>
+      <ion-item class="viewmode1-row">
+        <div style="color:#423e3e;">경과일수:</div>
+        <div item-end class="bible-range">
+          <div class="bible-range-outer">
+            <div class="bible-range-inner" [style.width]="untilCurrDayPercentByCeil"></div>
+          </div>
+          <div class="bible-range-display">
+            <div>{{currDayCount}}/{{totalDurationDayCount}}</div>
+            <div>{{untilCurrDayPercent}}%</div>
+          </div>
+        </div>
+      </ion-item>
+      <ion-item class="viewmode1-row">
+        <div style="color:#423e3e;">학습장수:</div>
+        <div item-end class="bible-range">
+          <div class="bible-range-outer">
+            <div class="bible-range-inner" [style.width]="untilCurrLearnJangPercentByCeil"></div>
+          </div>
+          <div class="bible-range-display">
+            <div>{{currDayLearnJangCount}}/{{totalLearnJangCount}}</div>
+            <div>{{untilCurrLearnJangPercent}}%</div>
+          </div>
+        </div>
+      </ion-item>
+      <ion-item *ngIf="isReadingSchedul && currDayLearnJangCount > 0">
+        <div>현재까지는 매일 평균 {{untilCurrAvgJangCnt}}장씩 읽으셨습니다.</div>
+        <div>앞으로 매일 {{remainExpectationAvgJangCnt}}장씩 읽으시면 됩니다.</div>
+      </ion-item>
+      <ion-item>
+        <div class="bible-range-button-box">
+          <div (click)="resetLearnBible()">설정초기화</div>
+          <div (click)="saveLearnConfig()" style="background-color: #33afe9;">설정저장</div>
+          <div [navPush]="'LearnBiblePage'" style="background-color: #33afe9;">진도현황</div>
+          <!-- <button ion-button (click)="resetLearnBible()">설정초기화</button>
+          <button ion-button (click)="saveLearnConfig()">설정저장</button>
+          <button ion-button [navPush]="'LearnBiblePage'">진도현황</button> -->
+        </div>
+      </ion-item>
+    </ion-list>
+    
+    <ion-list *ngIf="currViewMode == 2">
+      <ion-item>
+        원활안 서비스 이용을 위해 최소 정보가 필요합니다.
+      </ion-item>
+      <ion-item>
+        <ion-label floating>사용자명/별칭</ion-label> 
+        <ion-input type="text" [(ngModel)]="user.nickname"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label>소속교회</ion-label>
+        <ion-select [(ngModel)]="user.church">
+          <ion-option *ngFor="let church of churches" [value]="church.id" [selected]="user.church == church.id">{{church.name}}</ion-option>
+        </ion-select>
+      </ion-item>
+      <ion-item>
+        <ion-label>연령대</ion-label>
+        <ion-select [(ngModel)]="user.age">
+          <ion-option *ngFor="let age of ages" [value]="age.code" [selected]="age.code == user.age">{{age.name}}</ion-option>
+        </ion-select>
+      </ion-item>
+      <ion-item>
+        <ion-label>성별</ion-label>
+        <ion-select [(ngModel)]="user.gender">
+          <ion-option *ngFor="let gender of genders" [value]="gender.code" [selected]="gender.code == user.gender">{{gender.name}}</ion-option>
+        </ion-select>
+      </ion-item>
+      <ion-item>
+        <ion-label>가입목적</ion-label>
+        <ion-select [(ngModel)]="user.join_purpose">
+          <ion-option *ngFor="let purpose of purposes" [value]="purpose.code" [selected]="purpose.code == user.join_purpose">{{purpose.name}}</ion-option>
+        </ion-select>
+      </ion-item>
+      <ion-buttons>
+        <button ion-button full>저장</button>
+      </ion-buttons>
+    </ion-list>
+  
+  </ion-content>  

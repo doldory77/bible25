@@ -7,8 +7,13 @@
       </ion-title> -->
       <div class="cust-menu-title">
         <img class="imgTitle" src="assets/imgs/img_logo.png">
-        <div menuClose (click)="openPage('home')">
-          <ion-icon name="home" color="light"></ion-icon>
+        <div class="cust-menu-right-buttons">
+          <div menuClose (click)="openPage('home')">
+            <ion-icon name="home" color="light"></ion-icon>
+          </div>
+          <div menuClose (click)="openPage('configpage')" style="margin-right: 15px;">
+            <ion-icon name="cog" color="light"></ion-icon>
+          </div>
         </div>
       </div>
     </ion-toolbar>

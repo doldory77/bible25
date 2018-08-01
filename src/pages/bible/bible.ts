@@ -42,6 +42,7 @@ export class BiblePage extends Pinchable implements OnScrollDetect {
   isBookMarked: boolean = false;
   isBookMarkExists: boolean = false;
   currTitle: string = '성경';
+  iframe: any;
 
   constructor(public navCtrl: NavController, 
     public navParams: NavParams,
@@ -83,12 +84,18 @@ export class BiblePage extends Pinchable implements OnScrollDetect {
 
   configPage() {
     this.nativeAudio.play('click', () => {});
-    this.navCtrl.push('ConfigPage');
+    this.navCtrl.push('BibleConfigPage');
+  }
+
+  favoritePage() {
+    this.nativeAudio.play('click', () => {});
+    this.navCtrl.push('FavoritesPage');
   }
 
   ionViewDidLoad() {
     this.menuData[0].selected = true;
     this.scrollDetector = new ScrollDetectable();
+    this.iframe = document.getElementById('iframe_add1')['contentWindow'];
   }
   
   ionViewWillEnter() {
@@ -334,6 +341,7 @@ export class BiblePage extends Pinchable implements OnScrollDetect {
   }
 
   forwardClick() {
+    this.iframe.location.reload(true);
     this.forward()
       .then((result:any) => {
         if (this.playerUI.playState == 1) {
@@ -347,6 +355,7 @@ export class BiblePage extends Pinchable implements OnScrollDetect {
   }
 
   backwardClick() {
+    this.iframe.location.reload(true);
     this.backward()
       .then((result:any) => {
         if (this.playerUI.playState == 1) {

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { ViewController, NavParams } from 'ionic-angular';
+import { ViewController, NavParams, Platform } from 'ionic-angular';
 import { InAppBrowser, InAppBrowserOptions, InAppBrowserObject } from '@ionic-native/in-app-browser';
 import { Observable, Subscription } from 'rxjs/Rx'
 import { EXTRA_MSG } from '../../model/model-type';
@@ -21,6 +21,7 @@ export class ShareMainComponent {
 
   constructor(public viewCtrl: ViewController, 
     public navParams: NavParams,
+    private platform: Platform,
     private browser: InAppBrowser) {
 
   }
@@ -67,7 +68,11 @@ export class ShareMainComponent {
       subject: '',
       text: EXTRA_MSG.RECOMMENDATIION_INFO
     };
-    window['cordova'].plugins.customPlugin.func('customPlugin', 'share', [param], (res) => {}, (err) => {alert(err)});
+    if (this.platform.is('ios')) {
+      window['cordova'].plugins.customPlugin.func('customPlugin', 'share', [EXTRA_MSG.RECOMMENDATIION_INFO], null, (err) => {alert(err)});
+    } else {
+      window['cordova'].plugins.customPlugin.func('customPlugin', 'share', [param], (res) => {}, (err) => {alert(err)});
+    }
     this.close();
   }
 

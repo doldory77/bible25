@@ -111,8 +111,8 @@
       },
       "cordova-plugin-inappbrowser": {},
       "cordova-plugin-screen-orientation": {},
-      "com.sangs.plugin": {},
-      "cordova-clipboard": {}
+      "cordova-clipboard": {},
+      "com.sangs.plugin": {}
     },
     "platforms": [
       "android",

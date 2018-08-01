@@ -22,6 +22,7 @@ import { NativeAudio } from '@ionic-native/native-audio';
 import { MenuProvider } from '../../providers/menu/menu';
 import { AdPopupComponent } from '../../components/ad-popup/ad-popup';
 import { ShareMainComponent } from '../../components/share-main/share-main';
+import { EXTRA_MSG } from '../../model/model-type';
 
 @IonicPage()
 @Component({
@@ -265,6 +266,24 @@ export class HomePage {
     popover.onDidDismiss(data => {
       console.log(data);
     });
+  }
+
+  donate() {
+    let url = this.menuProvider.MenuData.get('donate').url;
+    this.goUrl(url);
+  }
+
+  snsShare() {
+    var param = {
+      title: '',
+      subject: '',
+      text: EXTRA_MSG.RECOMMENDATIION_INFO
+    };
+    if (this.platform.is('ios')) {
+      window['cordova'].plugins.customPlugin.func('customPlugin', 'share', [EXTRA_MSG.RECOMMENDATIION_INFO], null, (err) => {alert(err)});
+    } else {
+      window['cordova'].plugins.customPlugin.func('customPlugin', 'share', [param], (res) => {}, (err) => {alert(err)});
+    }
   }
 
 }

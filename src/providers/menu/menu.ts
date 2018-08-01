@@ -130,6 +130,13 @@ export class MenuProvider {
           menuLevel: 'top_menu',
           url: ''
       })
+      .set('configpage', {
+          name: '환경설정',
+          page: 'ConfigPage',
+          selected: false,
+          menuLevel: 'top_menu',
+          url: ''
+      })
       .set('hymn', {
           name: '찬송',
           page: 'HymnPage',
@@ -234,6 +241,13 @@ export class MenuProvider {
           selected: false,
           menuLevel: 'top_menu',
           url: 'm.holy-health.co.kr'
+      })
+      .set('donate', {
+          name: '후원',
+          page: '',
+          selected: false,
+          menuLevel: 'top_menu',
+          url: 'http://ch2ho.bible25.com/m/donate.php'
       })
 
   constructor() {

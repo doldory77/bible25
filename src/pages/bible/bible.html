@@ -18,7 +18,7 @@
     </div>
   </ion-toolbar> -->
 
-  <div class="gb-header">
+  <!-- <div class="gb-header">
     <div class="gb-header-pop" cNavpop style="margin-right: 40px;">
       <img src="assets/imgs/btn_prev.png">
     </div>
@@ -28,15 +28,18 @@
         <img src="assets/imgs/ico_setup.png" width="24">
       </div>
     </div>
-  </div>
+  </div> -->
 
+  <div text-center class="ad-demo-1">
+    <iframe id="iframe_add1" src="http://bible25ad.bible25.com/bible25ad/ad/mobile_sub_detail_bible_ad/" style="width: 100%; border: none;" frameBorder="0" scrolling="no"></iframe>
+  </div>
 
   <ion-grid [hidden]="!isBibleMode">
     <ion-row>
-      <ion-col col-4 text-center>
+      <ion-col col-3 text-center>
         <button ion-button clear small [navPush]="'BibleListPage'"><span class="header-title">{{bookName}}({{bibleJang}}장)</span></button>
       </ion-col>
-      <ion-col col-4 text-center>
+      <ion-col col-3 text-center>
         <button ion-button clear small [navPush]="'BibleLangPage'"><span class="header-title">{{selectedLanguage}}</span></button>
       </ion-col>
       <ion-col col-2 text-center>
@@ -48,10 +51,15 @@
         </div>
       </ion-col>
       <ion-col col-2 text-center>
+        <div class="header-ico" (click)="configPage()">
+            <img src="assets/imgs/ico_setup2.png" width="24">
+        </div>
+      </ion-col>
+      <ion-col col-2 text-center>
           <!-- <button ion-button clear icon-only small (click)="saveBookMark()">
             <ion-icon name="bookmark" [color]="isBookMarkExists ? 'danger' : 'primary'"></ion-icon>
           </button> -->
-          <div class="header-ico">
+          <div class="header-ico" (click)="favoritePage()">
             <img [src]="isBookMarked ? 'assets/imgs/btn_favorite_on.png' : 'assets/imgs/btn_favorite.png'" width="26.5">
           </div>
       </ion-col>
