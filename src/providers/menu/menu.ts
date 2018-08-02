@@ -130,6 +130,13 @@ export class MenuProvider {
           menuLevel: 'top_menu',
           url: ''
       })
+      .set('favorites', {
+          name: '즐겨찾기',
+          page: 'FavoritesPage',
+          selected: false,
+          menuLevel: 'top_menu',
+          url: ''
+      })
       .set('configpage', {
           name: '환경설정',
           page: 'ConfigPage',
@@ -248,6 +255,13 @@ export class MenuProvider {
           selected: false,
           menuLevel: 'top_menu',
           url: 'http://ch2ho.bible25.com/m/donate.php'
+      })
+      .set('ad', {
+          name: '광고문의',
+          page: '',
+          selected: false,
+          menuLevel: 'top_menu',
+          url: 'http://bible25ad.bible25.com/bible25ad/ad/page03_2.php'
       })
 
   constructor() {

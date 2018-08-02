@@ -15,8 +15,13 @@
       </div>
     </div>
     <div class="menu-item" (click)="viewMode = 1">
-      <div class="menu-item-inner" [ngClass]="{borderHilight:viewMode == 1}">
+      <div class="menu-item-inner" [ngClass]="{borderHilight:viewMode == 1}" style="border-right: 1px solid #e0e0e0">
           <div class="menu-item-inner-title" [ngClass]="{selectedText:viewMode == 1}">듣기표</div>
+      </div>
+    </div>
+    <div class="menu-item" (click)="viewMode = 2">
+      <div class="menu-item-inner" [ngClass]="{borderHilight:viewMode == 2}">
+          <div class="menu-item-inner-title" [ngClass]="{selectedText:viewMode == 2}">설정</div>
       </div>
     </div>
     
@@ -26,7 +31,7 @@
 
 
 <ion-content>
-  <ion-grid class="learn-bible-box">
+  <ion-grid class="learn-bible-box" *ngIf="viewMode != 2">
     <ion-row align-items-center *ngFor="let item of getBibleBookTitle()">
       <ion-col col-3><div class="learn-bible-item-title">{{item.name}}</div></ion-col>
       <ion-col col-9>
@@ -39,4 +44,57 @@
       </ion-col>
     </ion-row>
   </ion-grid>
+
+  <ion-list *ngIf="viewMode == 2">
+    <ion-item class="viewmode1-header">
+      <ion-label>성경읽기여부</ion-label>
+      <ion-toggle [(ngModel)]="isReadingSchedul"></ion-toggle>
+    </ion-item>
+    <ion-item class="viewmode1-row">
+      <ion-label>시작한 날짜:</ion-label>
+      <ion-datetime displayFormat="YYYY-MM-DD" [(ngModel)]="startReadingDate"></ion-datetime>
+    </ion-item>
+    <ion-item class="viewmode1-row">
+      <ion-label>목표한 날짜:</ion-label>
+      <ion-datetime displayFormat="YYYY-MM-DD" [(ngModel)]="endReadingDate"></ion-datetime>
+    </ion-item>
+      
+    <div style="height:10px;"></div>
+    <ion-item class="viewmode1-row">
+      <div style="color:#423e3e;">경과일수:</div>
+      <div item-end class="bible-range">
+        <div class="bible-range-outer">
+          <div class="bible-range-inner" [style.width]="untilCurrDayPercentByCeil"></div>
+        </div>
+        <div class="bible-range-display">
+          <div>{{currDayCount}}/{{totalDurationDayCount}}</div>
+          <div>{{untilCurrDayPercent}}%</div>
+        </div>
+      </div>
+    </ion-item>
+    <ion-item class="viewmode1-row">
+      <div style="color:#423e3e;">학습장수:</div>
+      <div item-end class="bible-range">
+        <div class="bible-range-outer">
+          <div class="bible-range-inner" [style.width]="untilCurrLearnJangPercentByCeil"></div>
+        </div>
+        <div class="bible-range-display">
+          <div>{{currDayLearnJangCount}}/{{totalLearnJangCount}}</div>
+          <div>{{untilCurrLearnJangPercent}}%</div>
+        </div>
+      </div>
+    </ion-item>
+    <ion-item *ngIf="isReadingSchedul && currDayLearnJangCount > 0">
+      <div>현재까지는 매일 평균 {{untilCurrAvgJangCnt}}장씩 읽으셨습니다.</div>
+      <div>앞으로 매일 {{remainExpectationAvgJangCnt}}장씩 읽으시면 됩니다.</div>
+    </ion-item>
+    <ion-item>
+      <div class="bible-range-button-box">
+        <div (click)="resetLearnBible()">설정초기화</div>
+        <div (click)="saveLearnConfig()" style="background-color: #33afe9;">설정저장</div>
+        <div (click)="viewMode = 0" style="background-color: #33afe9;">진도현황</div>
+      </div>
+    </ion-item>
+  </ion-list>
+
 </ion-content>

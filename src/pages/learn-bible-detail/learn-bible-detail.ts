@@ -35,8 +35,11 @@ export class LearnBibleDetailPage extends Pinchable implements OnScrollDetect {
   listScrollEndSubscription: Subscription;
   isChecked: boolean = false;
   isShow: boolean = false;
+
+  iframe: any;
   
   loadBible(book?:number, jang?:number) {
+    console.log("loadBible()", book, " | ", jang);
     if (book && book > 0) this.bibleBook = book;
     if (jang && jang > 0) this.bibleJang = jang;
 
@@ -48,6 +51,8 @@ export class LearnBibleDetailPage extends Pinchable implements OnScrollDetect {
     this.loadBible();
     this.scrollDetector = new ScrollDetectable();
     this.onScrollBottomDetect(this.content);
+
+    this.iframe = document.getElementById('iframe_add2')['contentWindow'];
   }
 
   ionViewWillEnter() {
@@ -123,6 +128,7 @@ export class LearnBibleDetailPage extends Pinchable implements OnScrollDetect {
   }
 
   forward() {
+    this.iframe.location.reload(true);
     this.db.getLastJangByBibleBook(this.bibleBook)
       .then(rs => {
         if (this.bibleJang + 1 > rs.rows.item(0).total_jang) {
@@ -138,7 +144,36 @@ export class LearnBibleDetailPage extends Pinchable implements OnScrollDetect {
       })
   }
 
+  forward2(): Promise<any> {
+    return this.db.getLastJangByBibleBook(this.bibleBook)
+      .then(rs => {
+        let _book:number;
+        let _jang:number;
+        if (this.bibleJang + 1 > rs.rows.item(0).total_jang) {
+          if (this.bibleBook + 1 <= 66) {
+            _book = this.bibleBook + 1;
+            _jang = this.bibleJang + 1;
+          }
+        } else {
+          _book = this.bibleBook;
+          _jang = this.bibleJang + 1;
+        }
+
+        this.db.updateAppInfo('bible', {book:_book, jang:_jang})
+          .then(() => {
+            this.loadBible();
+          })
+
+        return Promise.resolve({book:_book, jang:_jang})
+      })
+      .catch(err => {
+        console.error(err);
+        return Promise.reject(err);
+      })
+  }
+
   backward() {
+    this.iframe.location.reload(true);
     if (this.bibleJang - 1 <= 0) {
       if (this.bibleBook - 1 > 0) {
         this.loadBible(this.bibleBook - 1, 1);
@@ -169,6 +204,7 @@ export class LearnBibleDetailPage extends Pinchable implements OnScrollDetect {
   }
 
   onForward(event) {
+    console.log("onForward() ===> ", event);
     this.forward();
   }
 

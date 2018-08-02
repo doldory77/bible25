@@ -272,7 +272,8 @@ class PlayerUiComponent implements OnInit, OnDestroy {
                 } else {
                   if (this.isAutoPlay) {
                     this.forward();
-                    this.onForward.emit({isAutoPlay:this.isAutoPlay, book:this.book, jang:this.jang, p_num:this.p_num});
+                    console.log("player-ui ======> onForward.emit: book:", this.book, " , jang:", this.jang);
+                    // this.onForward.emit({isAutoPlay:this.isAutoPlay, book:this.book, jang:this.jang, p_num:this.p_num});
                     return;
                   }
                   this.stop();

@@ -28,7 +28,7 @@
 
       <ion-grid>
         <ion-row *ngFor="let item of bibleContents">
-          <ion-col col-1 style="text-align: right;"><span class="item-idx">{{item.jul}}.</span></ion-col>
+          <ion-col col-1 style="text-align: right;"><span class="item-idx">{{item.jul}}</span></ion-col>
           <ion-col col-11 [style.fontSize]="fontSize">{{item.content}}</ion-col>
         </ion-row>
       </ion-grid>
@@ -61,3 +61,8 @@
     </ion-fab>
     
 </ion-content>
+<ion-footer>
+  <div text-center class="ad-demo-1">
+    <iframe id="iframe_add2" src="http://bible25ad.bible25.com/bible25ad/ad/mobile_sub_detail_bible_ad/" style="width: 100%; border: none;" frameBorder="0" scrolling="no"></iframe>
+  </div>
+</ion-footer>

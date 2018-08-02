@@ -36,31 +36,36 @@
 
   <ion-grid [hidden]="!isBibleMode">
     <ion-row>
-      <ion-col col-3 text-center>
-        <button ion-button clear small [navPush]="'BibleListPage'"><span class="header-title">{{bookName}}({{bibleJang}}장)</span></button>
+      <ion-col col-1 text-center>
+          <div class="header-ico" cNavpop>
+              <img src="assets/imgs/btn_prev2.png" height="20">
+          </div>
+      </ion-col>  
+      <ion-col col-5 text-center>
+        <button ion-button clear small [navPush]="'BibleListPage'"><span class="header-title" style="font-size: 0.9em;">{{bookName}}({{bibleJang}}장)</span></button>
       </ion-col>
       <ion-col col-3 text-center>
-        <button ion-button clear small [navPush]="'BibleLangPage'"><span class="header-title">{{selectedLanguage}}</span></button>
+        <button ion-button clear small [navPush]="'BibleLangPage'"><span class="header-title" style="font-size: 0.9em;">{{selectedLanguage}}</span></button>
       </ion-col>
-      <ion-col col-2 text-center>
+      <ion-col col-1 text-center>
         <!-- <button ion-button clear icon-only small [color]="playerNonVisible ? 'primary' : 'danger'" (click)="togglePlayer()">
           <ion-icon name="volume-up"></ion-icon>
         </button> -->
         <div class="header-ico" (click)="togglePlayer()">
-          <img [src]="playerNonVisible ? 'assets/imgs/btn_sound.png' : 'assets/imgs/btn_sound_on.png'" width="28.5">
+          <img [src]="playerNonVisible ? 'assets/imgs/btn_sound.png' : 'assets/imgs/btn_sound_on.png'" width="22.5">
         </div>
       </ion-col>
-      <ion-col col-2 text-center>
+      <ion-col col-1 text-center>
         <div class="header-ico" (click)="configPage()">
-            <img src="assets/imgs/ico_setup2.png" width="24">
+            <img src="assets/imgs/ico_setup2.png" width="22">
         </div>
       </ion-col>
-      <ion-col col-2 text-center>
+      <ion-col col-1 text-center>
           <!-- <button ion-button clear icon-only small (click)="saveBookMark()">
             <ion-icon name="bookmark" [color]="isBookMarkExists ? 'danger' : 'primary'"></ion-icon>
           </button> -->
           <div class="header-ico" (click)="favoritePage()">
-            <img [src]="isBookMarked ? 'assets/imgs/btn_favorite_on.png' : 'assets/imgs/btn_favorite.png'" width="26.5">
+            <img [src]="isBookMarked ? 'assets/imgs/btn_favorite_on.png' : 'assets/imgs/btn_favorite.png'" width="22.5">
           </div>
       </ion-col>
     </ion-row>
@@ -90,7 +95,7 @@
     <ion-list [hidden]="isBibleMode">
       <ion-item text-wrap *ngFor="let item of bibleSupportContents">
         <div class="bible-support-title" *ngIf="item.title != ''">{{item.title}}&nbsp;<span *ngIf="item.bible != ''">({{item.bible}})</span></div>
-        <div *ngIf="item.context != ''" [innerHtml]="item.context" [style.fontSize]="fontSize"></div>
+        <div *ngIf="item.context != ''" [innerHtml]="item.context" [style.fontSize]="fontSize" [style.backgroundColor]="backgroundColor" [style.color]="fontColor"></div>
         <div *ngIf="item.img_name != ''">
           <img [src]="item.img_name">
           <div *ngIf="item.title != ''">{{item.title}} <span>({{item.jang}} : item.jul)</span></div>

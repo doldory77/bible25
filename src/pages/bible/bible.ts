@@ -104,6 +104,12 @@ export class BiblePage extends Pinchable implements OnScrollDetect {
     this.globalVars.getValueWithStorage('fontSize').then((value) => {
       this.fontSize = value + "em";
     });
+    this.globalVars.getValueWithStorage('fontColor').then((value) => {
+      this.fontColor = value;
+    });
+    this.globalVars.getValueWithStorage('backgroundColor').then((value) => {
+      this.backgroundColor = value;
+    });
     this.playerUI.stop();
   }
 

@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { IonicPageModule } from 'ionic-angular';
 import { FavoritesPage } from './favorites';
+import { DirectivesModule } from '../../directives/directives.module';
 
 @NgModule({
   declarations: [
@@ -8,6 +9,7 @@ import { FavoritesPage } from './favorites';
   ],
   imports: [
     IonicPageModule.forChild(FavoritesPage),
+    DirectivesModule,
   ],
 })
 export class FavoritesPageModule {}
