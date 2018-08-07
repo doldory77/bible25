@@ -113,6 +113,10 @@ export class MyApp implements OnInit, OnDestroy {
         case 'snsShare':
           window['iframe_call'].apiNum = 6;
           break;
+        case 'subAd':
+          window['iframe_call'].apiNum = 7;
+          window['iframe_call'].param = e.data.param;
+          break;
         default:
       }
     });
@@ -172,6 +176,7 @@ export class MyApp implements OnInit, OnDestroy {
       let currentApiNum = window['iframe_call'].apiNum;
       window['iframe_call'].apiNum = 0;
       // console.log(currentApiNum + " ===> " + window['iframe_call'].apiNum);
+      var url:string = '';
       switch(currentApiNum) {
         case 1:
           this.openPage('bible');
@@ -194,6 +199,10 @@ export class MyApp implements OnInit, OnDestroy {
           const home: HomePage = <HomePage> this.nav.getByIndex(0).instance;
           home.snsShare();
           break;
+        case 7:
+          url = window['iframe_call'].param;
+          window['iframe_call'].param = "";
+          this.openSharePage('subAd', url);
         default:
       }
     });
@@ -211,7 +220,7 @@ export class MyApp implements OnInit, OnDestroy {
   openSharePage(menu: string, param?: string) {
     
     var url: string = param;
-    if (menu === 'kakao') {
+    if (menu === 'subAd') {
       this.inAppBrowserObj = this.browser.create(url, '_blank', this.inAppBrowserPptions);
       this.inAppSubscription = this.inAppBrowserObj.on('exit').subscribe(data => {
         if (this.inAppBrowserObj) try { this.inAppBrowserObj.close(); this.inAppSubscription.unsubscribe(); this.inAppBrowserObj = undefined; } catch (err) { console.error(err); }  
@@ -240,7 +249,7 @@ export class MyApp implements OnInit, OnDestroy {
       this.inAppBrowserObj = this.browser.create(targetMenu.url, '_blank', this.inAppBrowserPptions);
       if (menu === 'showAd') {
         this.inAppBrowserObj.on('loadstop').subscribe(event => {
-          this.inAppBrowserObj.executeScript({code:"(function(){ $('body').css('height', '100%'); console.log('==============> aaaaaa'); })()"});
+          this.inAppBrowserObj.executeScript({code:"(function(){ $('body').css('height', '100%'); })()"});
         });
       }
       this.inAppSubscription = this.inAppBrowserObj.on('exit').subscribe(data => {
