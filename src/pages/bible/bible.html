@@ -131,25 +131,33 @@
   </ion-fab> -->
 
   <div class="bible-move-box" [style.display]="isShow ? '' : 'none'">
-    <div class="bible-move-btn" (click)="backwardClick()">이전</div>
-    <div class="bible-move-btn" (click)="forwardClick()">이후</div>
+    <div class="bible-move-btn" (click)="backwardClick()">
+      <img src="assets/imgs/prev.png" width="42">
+    </div>
+    <div class="bible-move-btn" (click)="forwardClick()">
+      <img src="assets/imgs/next.png" width="42">
+    </div>
   </div>
 
   <div class="bible-tool-box" [ngStyle]="{'display':isBookMarkExists ? '' : 'none'}">
     <div class="bible-tool-left">
       <div class="bible-tool-btn" (click)="share()">
-          <ion-icon name="share" style="color:#000; font-size: 40px;"></ion-icon>
+          <!-- <ion-icon name="share" style="color:#000; font-size: 40px;"></ion-icon> -->
+          <img src="assets/imgs/02_sharing.png" width="24" height="34">
       </div>
       <div class="bible-tool-btn" (click)="clipboardCopy()">
-          <ion-icon name="clipboard" style="color:#000; font-size: 40px;"></ion-icon>
+          <!-- <ion-icon name="clipboard" style="color:#000; font-size: 40px;"></ion-icon> -->
+          <img src="assets/imgs/02_copy.png" width="24" height="34">
       </div>
       <div class="bible-tool-btn" (click)="saveBookMark()">
-          <ion-icon name="bookmark" style="color:#000; font-size: 40px;"></ion-icon>
+          <!-- <ion-icon name="bookmark" style="color:#000; font-size: 40px;"></ion-icon> -->
+          <img src="assets/imgs/02_bookmark.png" width="32" height="34">
       </div>
       <!-- <div class="bible-tool-btn" [navPush]="'MyPage'">즐겨찾기</div> -->
     </div>
     <div class="bible-tool-right" (click)="itemAllDeSelect()">
-        <ion-icon name="close-circle" style="color:#000; font-size: 40px;"></ion-icon>
+        <!-- <ion-icon name="close-circle" style="color:#33afe9; font-size: 32px;"></ion-icon> -->
+        <img src="assets/imgs/02_close.png" width="27" height="34">
     </div>
   </div>
 

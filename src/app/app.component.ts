@@ -117,6 +117,9 @@ export class MyApp implements OnInit, OnDestroy {
           window['iframe_call'].apiNum = 7;
           window['iframe_call'].param = e.data.param;
           break;
+          case 'bible2':
+          window['iframe_call'].apiNum = 8;
+          break;
         default:
       }
     });
@@ -203,6 +206,10 @@ export class MyApp implements OnInit, OnDestroy {
           url = window['iframe_call'].param;
           window['iframe_call'].param = "";
           this.openSharePage('subAd', url);
+          break;
+        case 8:
+          this.openPage('bible2');
+          break;
         default:
       }
     });

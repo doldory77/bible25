@@ -123,6 +123,13 @@ export class MenuProvider {
           menuLevel: 'top_menu',
           url: ''
       })
+      .set('bible2', {
+          name: '성경통독',
+          page: 'LearnBiblePage',
+          selected: false,
+          menuLevel: 'top_menu',
+          url: ''
+      })
       .set('mypage', {
           name: '마이페이지',
           page: 'MyPage',
